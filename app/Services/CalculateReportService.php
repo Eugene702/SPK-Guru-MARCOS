@@ -24,17 +24,39 @@ class CalculateReportService
         ];
 
         $data = $calculation->map(function ($item) {
-            $formatScore = function ($score) {
-                return $score === 4 ? "Sangat Baik" : ($score === 3 ? "Baik" : ($score === 2 ? "Cukup" : ($score === 1 ? "Kurang" : "Tidak Ada")));
+            $formatScore = function ($score, $isAdmin = false) {
+                if($isAdmin){
+                    if($score == 4){
+                        return "Lengkap";
+                    }else if($score == 3){
+                        return 'Cukup';
+                    }else if($score == 2){
+                        return 'Kurang';
+                    }else{
+                        return 'Tidak Ada';
+                    }
+                }else{
+                    if($score == 4){
+                        return "Sangat Baik";
+                    }else if($score == 3){
+                        return 'Baik';
+                    }else if($score == 2){
+                        return 'Cukup';
+                    }else if($score == 1){
+                        return 'Kurang';
+                    }else{
+                        return 'Tidak Ada';
+                    }
+                }
             };
 
             return [
                 'guru_id' => $item->guru_id,
                 'nama' => $item->guru->user->name ?? 'Nama tidak tersedia',
                 'supervisi' => $item->supervisi,
-                'administrasi' => $formatScore($item->administrasiSubKriteria->bobot_sub_kriteria ?? 0),
-                'presensi' => $formatScore($item->presensi ?? 0),
-                'kehadiran_dikelas' => $formatScore($item->kehadiran_dikelas ?? 0),
+                'administrasi' => $formatScore(round($item->administrasiSubKriteria->bobot_sub_kriteria ?? 0), true),
+                'presensi' => $formatScore(round($item->presensi ?? 0)),
+                'kehadiran_dikelas' => $formatScore(round($item->kehadiran_dikelas ?? 0)),
                 'sertifikat_pengembangan' => $item->sertifikat_pengembangan ?? 0,
                 'kegiatan_sosial' => $item->kegiatan_sosial ?? 0,
                 'rekan_sejawat' => $item->rekan_sejawat ?? 0,
@@ -154,6 +176,7 @@ class CalculateReportService
             ->toArray();
         
         return compact(
+            'scoreWeights',
             'data',
             'liguistics',
             'idealSolution',

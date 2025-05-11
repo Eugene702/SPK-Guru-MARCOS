@@ -73,7 +73,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('dataperhitungan/hitung/{penilaianadmin_id}', [PerhitunganController::class, 'hitung'])->name('dataperhitungan.hitung');
 
     // Final Result Data
-    Route::get('data-hasil-akhir', [\App\Http\Controllers\Admin\FinalResultDataController::class, 'index'])->name('final-result-data.index');
+    Route::prefix('data-hasil-akhir')->name('final-result-data.')->group(function(){
+        Route::get('', [\App\Http\Controllers\Admin\FinalResultDataController::class, 'index'])->name('index');
+        Route::get('print', [\App\Http\Controllers\Admin\FinalResultDataController::class, 'print'])->name('print');
+    });
 });
 
 

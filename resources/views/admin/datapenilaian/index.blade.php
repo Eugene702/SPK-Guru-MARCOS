@@ -19,7 +19,7 @@
             {{-- Alert sukses end --}}
 
             {{-- Tabel start --}}
-            <h1 class="text-xl font-bold mb-2 mt-10">Data yang sudah ternilai</h1>
+            <h1 class="text-xl font-bold mb-2 mt-10">Data yang belum ternilai</h1>
             <table class="w-full table-auto border-collapse border border-gray-300">
                 <thead class="bg-thead">
                     <tr>
@@ -34,7 +34,7 @@
                 </thead>
                 <tbody>
                     @foreach($gurus as $index => $guru)
-                        @if(!$guru->penilaianAdmin)
+                        @if($guru->penilaianAdmin)
                             @continue
                         @endif
 
@@ -142,7 +142,7 @@
             {{-- Tabel end --}}
 
             {{-- Tabel start --}}
-            <h1 class="text-xl font-bold mb-2 mt-10">Data yang belum ternilai</h1>
+            <h1 class="text-xl font-bold mb-2 mt-10">Data yang sudah ternilai</h1>
             <table class="w-full table-auto border-collapse border border-gray-300">
                 <thead class="bg-thead">
                     <tr>
@@ -157,7 +157,7 @@
                 </thead>
                 <tbody>
                     @foreach($gurus as $index => $guru)
-                        @if($guru->penilaianAdmin)
+                        @if(!$guru->penilaianAdmin)
                             @continue
                         @endif
 
