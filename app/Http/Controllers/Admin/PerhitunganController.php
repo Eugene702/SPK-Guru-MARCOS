@@ -24,13 +24,6 @@ class PerhitunganController extends Controller
             $query->where('jabatan', 'Kepala Sekolah');
         })->delete();
 
-        // Ambil semua data perhitungan yang tidak memiliki guru dengan jabatan 'Kepala Sekolah'        
-        // $perhitungans = Perhitungan::with(['guru.user', 'administrasiSubKriteria'])
-        //     ->whereHas('guru', function ($query) {
-        //         $query->where('jabatan', '!=', 'Kepala Sekolah'); // sesuaikan nama kolom dan nilainya
-        //     })
-        //     ->get();
-
         $calculateReportService = app(\App\Services\CalculateReportService::class);
         return view('admin.dataperhitungan', $calculateReportService->calculate());
     }
