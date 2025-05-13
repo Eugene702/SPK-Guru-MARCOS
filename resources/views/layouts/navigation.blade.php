@@ -10,7 +10,8 @@
                     </a>
                 </div> --}}
 
-                <div class="p-4 font-bold text-lg">
+                <div class="p-4 font-bold text-lg flex items-center gap-2">
+                    <img src="/logo.png" class="w-10 h-auto" />
                     SMAN 1 MEGAMENDUNG
                 </div>
 
