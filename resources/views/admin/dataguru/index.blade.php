@@ -16,6 +16,10 @@
                     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
                         {{ session('success') }}
                     </div>
+                @elseif(session('error'))
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                        {{ session('error') }}
+                    </div>
                 @endif
                 {{-- Alert sukses end --}}
 
@@ -120,7 +124,7 @@
                                     <h4 class="text-md font-semibold mb-2 text-center">Pilih Kelas</h4>
                                     <div
                                         class="h-[300px] overflow-y-auto border p-3 space-y-2 rounded-md border-gray-300 shadow-sm">
-                                        @foreach ($kelas as $item)
+                                        @foreach ($opsiKelas as $item)
                                             <label class="flex items-center space-x-2">
                                                 <input type="checkbox" name="kelas[]" value="{{ $item->id }}"
                                                     {{ isset($guru) && $guru->kelas->contains($item->id) ? 'checked' : '' }}>
@@ -160,45 +164,6 @@
                     </thead>
                     <tbody>
                         @foreach ($gurus as $index => $guru)
-                            <!-- Modal Edit Data Guru -->
-                            <div id="modal-edit-{{ $guru->id }}"
-                                class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-                                <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-                                    <h2 class="text-xl font-bold mb-4">Edit Data Guru</h2>
-                                    <form action="{{ route('admin.dataguru.update', ['id' => $guru->id]) }}"
-                                        method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="grid grid-cols-2 gap-4">
-                                            <input type="text" name="nip" class="border p-2 rounded"
-                                                value="{{ $guru->nip }}" required>
-                                            <input type="text" name="nama" class="..."
-                                                value="{{ $guru->user->name }}">
-                                            <input type="text" name="jabatan" class="border p-2 rounded"
-                                                value="{{ $guru->jabatan }}" required>
-                                            <input type="text" name="mata_pelajaran" class="border p-2 rounded"
-                                                value="{{ $guru->mata_pelajaran }}" required>
-                                            <input type="number" name="jumlah_jam_mengajar"
-                                                class="border p-2 rounded" value="{{ $guru->jumlah_jam_mengajar }}"
-                                                required>
-                                            <input type="number" name="jumlah_presensi" class="border p-2 rounded"
-                                                value="{{ $guru->jumlah_presensi }}" required>
-                                            <input type="email" name="email" class="border p-2 rounded"
-                                                value="{{ $guru->user->email }}">
-                                            <input type="password" name="password" class="border p-2 rounded"
-                                                placeholder="Kosongkan jika tidak diubah">
-                                        </div>
-                                        <div class="mt-4 flex justify-end gap-2">
-                                            <button type="button"
-                                                onclick="document.getElementById('modal-edit-{{ $guru->id }}').classList.add('hidden')"
-                                                class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
-                                            <button type="submit"
-                                                class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">Update</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-
                             <tr class="text-center border-b">
                                 <td class="border px-2 py-1">{{ $index + 1 }}</td>
                                 <td class="border px-2 py-1">{{ $guru->nip }}</td>
@@ -237,6 +202,138 @@
                                         <button type="submit" class="text-red-500 hover:text-red-700"><i
                                                 class="fa-solid fa-trash"></i></button>
                                     </form>
+
+                                    <!-- Modal Edit Data Guru -->
+                                    <div id="modal-edit-{{ $guru->id }}"
+                                        class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+                                        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-screen-xl">
+                                            <h2 class="text-xl font-bold mb-4">Edit Data Guru</h2>
+                                            <form action="{{ route('admin.dataguru.update', ['id' => $guru->id]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="grid grid-cols-4 gap-6">
+
+                                                    <!-- Kolom 1: User Info -->
+                                                    <div class="space-y-4">
+                                                        <h4 class="text-md font-semibold mb-2 text-center">User Info
+                                                        </h4>
+                                                        <div>
+                                                            <label class="block mb-1 text-sm">Nama Guru</label>
+                                                            <input type="text" name="name"
+                                                                class="w-full border p-2 rounded-md border-gray-300 shadow-sm"
+                                                                value="{{ $guru->user->name ?? '' }}"
+                                                                placeholder="Nama Guru" required>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block mb-1 text-sm">Email</label>
+                                                            <input type="email" name="email"
+                                                                class="w-full border p-2 rounded-md border-gray-300 shadow-sm"
+                                                                value="{{ $guru->user->email ?? '' }}"
+                                                                placeholder="Email" required>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block mb-1 text-sm">Password</label>
+                                                            <input type="password" name="password"
+                                                                class="w-full border p-2 rounded-md border-gray-300 shadow-sm"
+                                                                placeholder="Password">
+                                                        </div>
+                                                        <div>
+                                                            <label class="block mb-1 text-sm">Role</label>
+                                                            <select name="role"
+                                                                class="w-full border px-3 py-2 rounded-md border-gray-300 shadow-sm"
+                                                                required>
+                                                                <option value="">-- Pilih Role --</option>
+                                                                <option value="Guru">Guru</option>
+                                                                <option value="KepalaSekolah">KepalaSekolah</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Kolom 2: Guru Info -->
+                                                    <div class="space-y-4">
+                                                        <h4 class="text-md font-semibold mb-2 text-center">Guru Info
+                                                        </h4>
+                                                        <div>
+                                                            <label class="block mb-1 text-sm">NIP</label>
+                                                            <input type="text" name="nip"
+                                                                class="w-full border p-2 rounded-md border-gray-300 shadow-sm"
+                                                                value="{{ $guru->nip }}" placeholder="NIP"
+                                                                required>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block mb-1 text-sm">Jabatan</label>
+                                                            <select name="jabatan"
+                                                                class="w-full border px-3 py-2 rounded-md border-gray-300 shadow-sm"
+                                                                required>
+                                                                <option value="">-- Pilih Jabatan --</option>
+                                                                <option value="Guru">Guru</option>
+                                                                <option value="Kepala Sekolah">Kepala Sekolah</option>
+                                                            </select>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block mb-1 text-sm">Jumlah Jam
+                                                                Mengajar</label>
+                                                            <input type="number" name="jumlah_jam_mengajar"
+                                                                class="w-full border p-2 rounded-md border-gray-300 shadow-sm"
+                                                                value="{{ $guru->jumlah_jam_mengajar }}"
+                                                                placeholder="Jumlah Jam Mengajar" required>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block mb-1 text-sm">Jumlah Presensi</label>
+                                                            <input type="number" name="jumlah_presensi"
+                                                                class="w-full border p-2 rounded-md border-gray-300 shadow-sm"
+                                                                value="{{ $guru->jumlah_presensi }}"
+                                                                placeholder="Jumlah Presensi" required>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Kolom 3: Mata Pelajaran -->
+                                                    <div class="space-y-4">
+                                                        <h4 class="text-md font-semibold mb-2 text-center">Pilih Mata
+                                                            Pelajaran
+                                                        </h4>
+                                                        <div
+                                                            class="h-[300px] overflow-y-auto border p-3 space-y-2 rounded-md border-gray-300 shadow-sm">
+                                                            @foreach ($mataPelajarans as $mapel)
+                                                                <label class="flex items-center space-x-2">
+                                                                    <input type="checkbox" name="mata_pelajaran[]"
+                                                                        value="{{ $mapel->id }}"
+                                                                        class="accent-green-500"
+                                                                        checked="{{ $guru->mataPelajarans->contains($mapel->id) ? 'checked' : '' }}">
+                                                                    <span>{{ $mapel->nama_mata_pelajaran }}</span>
+                                                                </label>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Kolom 4: Kelas -->
+                                                    <div class="space-y-4">
+                                                        <h4 class="text-md font-semibold mb-2 text-center">Pilih Kelas
+                                                        </h4>
+                                                        <div
+                                                            class="h-[300px] overflow-y-auto border p-3 space-y-2 rounded-md border-gray-300 shadow-sm">
+                                                            @foreach ($opsiKelas as $kelasItem)
+                                                                <label class="flex items-center space-x-2">
+                                                                    <input type="checkbox" name="kelas[]"
+                                                                        value="{{ $kelasItem->id ?? '' }}"
+                                                                        {{ $guru->kelas->contains($kelasItem->id ?? '') ? 'checked' : '' }}>
+                                                                    <span>{{ $kelasItem->nama_kelas ?? '' }}</span>
+                                                                </label>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-4 flex justify-end gap-2">
+                                                    <button type="button"
+                                                        onclick="document.getElementById('modal-edit-{{ $guru->id }}').classList.add('hidden')"
+                                                        class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
+                                                    <button type="submit"
+                                                        class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">Update</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
