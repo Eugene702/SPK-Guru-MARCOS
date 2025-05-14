@@ -15,9 +15,7 @@ use App\Http\Controllers\PenilaianKepsekController;
 use App\Http\Controllers\PenilaianRekanSejawatController;
 
 // ubah ini jadi halaman login
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/login');
 
 // keknya ga diperlukan
 Route::get('/dashboard', function () {

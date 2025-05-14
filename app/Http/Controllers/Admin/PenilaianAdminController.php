@@ -15,7 +15,10 @@ class PenilaianAdminController extends Controller
      */
     public function index()
     {
-        $gurus = Guru::with(['user', 'perhitungan.administrasiSubKriteria', 'penilaianAdmin'])->get();
+        $gurus = Guru::whereHas('user', function($query){
+            $query->withoutRole('KepalaSekolah');
+        })
+            ->with(['user', 'perhitungan.administrasiSubKriteria', 'penilaianAdmin'])->get();
         $subkriteriaAdministrasi = SubKriteria::where('kriteria_id', 2)->get();
         return view('admin.datapenilaian.index', compact('gurus', 'subkriteriaAdministrasi'));
     }
