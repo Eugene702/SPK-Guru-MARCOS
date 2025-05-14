@@ -90,6 +90,7 @@ public function storePenilaian(Request $request)
 
     if ($guru->jumlah_jam_mengajar > 0) {
         $kehadiran_dikelas = ($request->jam_masuk / $guru->jumlah_jam_mengajar) * 100;
+        $value = $kehadiran_dikelas >= 90 ? 4 : ($kehadiran_dikelas >= 80 ? 3 : ($kehadiran_dikelas >= 70 ? 2 : 1));
 
         // DEBUG LOG
         \Log::info('Nilai Kehadiran Dihitung:', [
@@ -105,7 +106,7 @@ public function storePenilaian(Request $request)
         );
 
         $perhitungan->update([
-            'kehadiran_dikelas' => $kehadiran_dikelas,
+            'kehadiran_dikelas' => $value,
         ]);
     } else {
         return back()->with('error', 'Jumlah jam mengajar guru tidak valid.');
@@ -139,10 +140,11 @@ public function updatePenilaian(Request $request, $id)
     // Hitung kehadiran di kelas ulang
     if ($guru->jumlah_jam_mengajar > 0) {
         $kehadiran_dikelas = ($request->jam_masuk / $guru->jumlah_jam_mengajar) * 100;
+        $value = $kehadiran_dikelas >= 90 ? 4 : ($kehadiran_dikelas >= 80 ? 3 : ($kehadiran_dikelas >= 70 ? 2 : 1));
 
         // Update ke tabel perhitungans
         $perhitungan = Perhitungan::firstOrCreate(['guru_id' => $request->guru_id]);
-        $perhitungan->fill(['kehadiran_dikelas' => $kehadiran_dikelas])->save();
+        $perhitungan->fill(['kehadiran_dikelas' => $value])->save();
 
     }
 
