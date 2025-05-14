@@ -37,16 +37,16 @@ Route::get('/admin/index', [AdminController::class, 'index']);
 // Route User Admin
 Route::prefix('admin')->name('admin.')->group(function () {
     // Admin login 
-    
+
 
     // CRUD SISWA oleh admin
     Route::get('/datasiswa', [DataSiswaController::class, 'index'])->name('datasiswa.index');
-    Route::get('/datasiswa/create',[DataSiswaController::class,'create'])->name('datasiswa.create');
-    Route::post('/datasiswa/store',[DataSiswaController::class,'store'])->name('datasiswa.store');
-    Route::get('/datasiswa/{siswa}',[DataSiswaController::class,'show'])->name('datasiswa.show');
-    Route::get('/datasiswa/{siswa}/edit',[DataSiswaController::class,'edit'])->name('datasiswa.edit');
-    Route::put('/datasiswa/{siswa}',[DataSiswaController::class,'update'])->name('datasiswa.update');
-    Route::delete('/datasiswa/{siswa}',[DataSiswaController::class,'destroy'])->name('datasiswa.destroy');
+    Route::get('/datasiswa/create', [DataSiswaController::class, 'create'])->name('datasiswa.create');
+    Route::post('/datasiswa/store', [DataSiswaController::class, 'store'])->name('datasiswa.store');
+    Route::get('/datasiswa/{siswa}', [DataSiswaController::class, 'show'])->name('datasiswa.show');
+    Route::get('/datasiswa/{siswa}/edit', [DataSiswaController::class, 'edit'])->name('datasiswa.edit');
+    Route::put('/datasiswa/{siswa}', [DataSiswaController::class, 'update'])->name('datasiswa.update');
+    Route::delete('/datasiswa/{siswa}', [DataSiswaController::class, 'destroy'])->name('datasiswa.destroy');
 
     // CRUD GURU oleh admin
     Route::get('/dataguru', [DataGuruController::class, 'index'])->name('dataguru.index');
@@ -71,8 +71,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Perhitungan
     Route::get('dataperhitungan', [PerhitunganController::class, 'index'])->name('dataperhitungan');
     Route::get('dataperhitungan/hitung/{penilaianadmin_id}', [PerhitunganController::class, 'hitung'])->name('dataperhitungan.hitung');
+
+    // Final Result Data
+    Route::prefix('data-hasil-akhir')->name('final-result-data.')->group(function(){
+        Route::get('', [\App\Http\Controllers\Admin\FinalResultDataController::class, 'index'])->name('index');
+        Route::get('print', [\App\Http\Controllers\Admin\FinalResultDataController::class, 'print'])->name('print');
     });
-    
+});
+
 
 // Route User Guru
 Route::prefix('guru')->middleware(['auth'])->as('guru.')->group(function () {
@@ -86,7 +92,7 @@ Route::prefix('guru')->middleware(['auth'])->as('guru.')->group(function () {
 
 // Route User Siswa
 // Siswa login -> dashboard
-Route::get('siswa/index',[SiswaController::class,'index'])->name('siswa.index');
+Route::get('siswa/index', [SiswaController::class, 'index'])->name('siswa.index');
 
 // Penilaian siswa
 Route::prefix('siswa')->name('siswa.')->middleware('auth')->group(function () {
@@ -97,13 +103,13 @@ Route::prefix('siswa')->name('siswa.')->middleware('auth')->group(function () {
 
 // Route User Kepala Sekolah
 Route::prefix('kepsek')->name('kepsek.')->middleware('auth')->group(function () {
-// Dashboard Kepala Sekolah
-Route::get('/index', [PenilaianKepsekController::class, 'dashboard'])->name('index');       
-// Data Penilaian Guru oleh Kepala Sekolah
-Route::get('/penilaian', [PenilaianKepsekController::class, 'index'])->name('penilaian.index');
-Route::get('/penilaian/{guru_id}', [PenilaianKepsekController::class, 'form'])->name('penilaian.form');
-Route::post('/penilaian', [PenilaianKepsekController::class, 'store'])->name('penilaian.store');
+    // Dashboard Kepala Sekolah
+    Route::get('/index', [PenilaianKepsekController::class, 'dashboard'])->name('index');
+    // Data Penilaian Guru oleh Kepala Sekolah
+    Route::get('/penilaian', [PenilaianKepsekController::class, 'index'])->name('penilaian.index');
+    Route::get('/penilaian/{guru_id}', [PenilaianKepsekController::class, 'form'])->name('penilaian.form');
+    Route::post('/penilaian', [PenilaianKepsekController::class, 'store'])->name('penilaian.store');
 });
-                
 
-require __DIR__.'/auth.php';
+
+require __DIR__ . '/auth.php';
