@@ -25,28 +25,31 @@ class AuthenticatedSessionController extends Controller
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): RedirectResponse
-    {
-        $request->authenticate();
+{
+    $request->authenticate();
+    $request->session()->regenerate();
 
-        $request->session()->regenerate();
-        $user = Auth::user();
-        if ($user->hasRole('Admin')) {
-            return redirect('/admin/index');
-        
-        }elseif($user->hasRole('KepalaSekolah')){
-            return redirect()->route('kepsek.index');
+    $user = Auth::user();
 
-        }elseif($user->hasRole('Guru')){
-            return redirect()->route('guru.index');
-
-        }elseif($user->hasRole('Siswa')){
-            return redirect()->route('siswa.index');
-        }
-
-        
-
-        return redirect()->intended(route('dashboard', absolute: false));
+    // Cek apakah user memiliki role
+    if ($user->hasRole('Admin')) {
+        return redirect('/admin/index');
+    } elseif ($user->hasRole('KepalaSekolah')) {
+        return redirect()->route('kepsek.index');
+    } elseif ($user->hasRole('Guru')) {
+        return redirect()->route('guru.index');
+    } elseif ($user->hasRole('Siswa')) {
+        return redirect()->route('siswa.index');
     }
+
+    // Jika tidak memiliki role
+    Auth::logout(); // Logout user
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect()->route('login')->with('status', 'Login gagal: Anda tidak memiliki hak akses.');
+}
+
 
     /**
      * Destroy an authenticated session.

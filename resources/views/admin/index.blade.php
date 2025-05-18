@@ -10,8 +10,123 @@
                 {{-- <h1 class="text-2xl font-bold">Dashboard</h1><br> --}}
                 <h1 class="text-2xl font-bold">Selamat Datang [nama]</h1>
 
+                
 
-<div class="max-w-6xl mx-auto px-4 py-6">
+{{-- <!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Hasil Perangkingan</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      padding: 40px;
+    }
+
+    .ranking-container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      padding: 32px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 24px;
+    }
+
+    .description {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #555;
+      font-style: italic;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #eaf2f8;
+    }
+
+    .rank-1 {
+      background-color: #ffeaa7 !important;
+      font-weight: bold;
+    }
+
+    .badge {
+      padding: 4px 8px;
+      background: #2ecc71;
+      color: white;
+      border-radius: 12px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="ranking-container">
+  <h2>🏆 Hasil Perangkingan Terbaik</h2>
+  <div class="description">Berikut adalah daftar peringkat berdasarkan hasil evaluasi akhir.</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Peringkat</th>
+        <th>Nama Alternatif</th>
+        <th>Skor Akhir</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="rank-1">
+        <td>1</td>
+        <td>Guru A</td>
+        <td>89.75</td>
+        <td><span class="badge">Terbaik</span></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Guru B</td>
+        <td>85.20</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Guru C</td>
+        <td>81.10</td>
+        <td>-</td>
+      </tr>
+      <!-- Tambahkan data lainnya sesuai kebutuhan -->
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html> --}}
+
+{{-- <div class="max-w-6xl mx-auto px-4 py-6">
     <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2 justify-center">
         <i class="fas fa-list-alt text-blue-600"></i>
         Langkah-Langkah Melakukan Penilaian
@@ -84,7 +199,7 @@
             <p class="text-gray-700"><strong>Selesai!</strong> Penilaian sudah berhasil disimpan 🎉</p>
         </div>
     </div>
-</div>
+</div> --}}
 
 
             </main>

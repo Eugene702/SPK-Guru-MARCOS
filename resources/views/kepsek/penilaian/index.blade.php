@@ -8,10 +8,20 @@
 
             {{-- Konten lainnya disini --}}
             <main class="flex-1 p-10 overflow-auto">
-                <h1 class="text-2xl font-bold mb-6">Daftar Guru untuk Dinilai</h1>
+                <div class="mb-10">
+                    <div class="text-gray-800 text-center rounded-xl shadow-md p-6 bg-amber-400/25">
+                        <h2 class="text-3xl font-bold mb-2">📋 Penilaian Guru oleh Kepala Sekolah</h2>
+                        <p class="text-md">
+                            Selamat datang di halaman penilaian guru. Di sini, Anda dapat memberikan evaluasi secara objektif terhadap performa guru dalam aspek supervisi di kelas.
+                            <br>
+                            <span class="font-semibold">✨ Tujuan utama penilaian ini adalah untuk meningkatkan kualitas pendidikan melalui apresiasi dan pengembangan berkelanjutan.</span>
+                        </p>
+                    </div>
+                </div>
 
                 {{-- Tabel Start --}}
-                <div class="overflow-x-auto shadow rounded-lg">
+                <div class="overflow-x-auto max-w-7xl mx-auto bg-white shadow-xl rounded-xl p-6">
+                    <p class="text-center mb-4">Silakan isi penilaian berdasarkan kuesioner yang tersedia.</p>
                     <table class="min-w-full table-auto border border-gray-200">
                         <thead class="bg-thead">
                             <tr>
