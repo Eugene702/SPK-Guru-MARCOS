@@ -17,34 +17,38 @@
             this.totalAttendance = ''
         },
         handleSubmit(e) {
-            const response = { isValid: false, message: '' }
-            if (this.subject.length === 0) {
-                response.isValid = true
-                response.message = 'Mohon pilih Mata Pelajaran'
-            }
-    
-            if (this.classLevel.length === 0) {
-                response.isValid = true
-                response.message = `${response.message}\nMohon pilih Kelas`
-            }
-    
-            if (response.isValid) {
-                Swal.fire({
-                    title: 'Ada yang salah!',
-                    html: response.message,
-                    icon: 'warning',
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end',
-                })
-            } else {
+            if (this.role === 'KepalaSekolah') {
                 e.target.submit()
+            } else {
+                const response = { isValid: false, message: '' }
+                if (this.subject.length === 0) {
+                    response.isValid = true
+                    response.message = 'Mohon pilih Mata Pelajaran'
+                }
+    
+                if (this.classLevel.length === 0) {
+                    response.isValid = true
+                    response.message = `${response.message}\nMohon pilih Kelas`
+                }
+    
+                if (response.isValid) {
+                    Swal.fire({
+                        title: 'Ada yang salah!',
+                        html: response.message,
+                        icon: 'warning',
+                        showConfirmButton: false,
+                        toast: true,
+                        position: 'top-end',
+                    })
+                } else {
+                    e.target.submit()
+                }
             }
         },
         init() {
             this.$watch('role', value => value === 'KepalaSekolah' ? reset() : null)
             this.$watch('editId', value => {
-                if(value != null){
+                if (value != null) {
                     const data = this.data.find(e => e.id === editId)
                     this.name = data.user.name
                     this.email = data.user.email
@@ -63,7 +67,8 @@
             class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
             <div class="bg-white p-6 rounded-lg shadow-lg w-[95%] max-w-screen-xl">
                 <h2 class="text-xl font-bold mb-6 text-center">Tambah Data Guru</h2>
-                <form x-bind:action="`{{ url('/admin/dataguru') }}/${editId}`" method="POST" @submit.prevent="handleSubmit">
+                <form x-bind:action="`{{ url('/admin/dataguru') }}/${editId}`" method="POST"
+                    @submit.prevent="handleSubmit">
                     @csrf
                     @method('PUT')
                     <div class="grid grid-cols-4 gap-6">
@@ -111,27 +116,30 @@
                             <div>
                                 <label class="block mb-1 text-sm">Jabatan</label>
                                 <select name="jabatan"
-                                    class="w-full border px-3 py-2 rounded-md border-gray-300 shadow-sm" required x-model="position">
+                                    class="w-full border px-3 py-2 rounded-md border-gray-300 shadow-sm" required
+                                    x-model="position">
                                     <option value="">-- Pilih Jabatan --</option>
                                     <option value="Guru">Guru</option>
                                     <option value="Kepala Sekolah">Kepala Sekolah</option>
                                 </select>
                             </div>
-                            <div  x-show="role != 'KepalaSekolah'" x-cloak>
+                            <div x-show="role != 'KepalaSekolah'" x-cloak>
                                 <label class="block mb-1 text-sm">Jumlah Jam Mengajar</label>
                                 <input type="number" name="jumlah_jam_mengajar"
                                     class="w-full border p-2 rounded-md border-gray-300 shadow-sm teachingHour"
-                                    placeholder="Jumlah Jam Mengajar" :required="role != 'KepalaSekolah'" x-model="teachingHour">
+                                    placeholder="Jumlah Jam Mengajar" :required="role != 'KepalaSekolah'"
+                                    x-model="teachingHour">
                             </div>
-                            <div  x-show="role != 'KepalaSekolah'" x-cloak>
+                            <div x-show="role != 'KepalaSekolah'" x-cloak>
                                 <label class="block mb-1 text-sm">Jumlah Presensi</label>
                                 <input type="number" name="jumlah_presensi"
                                     class="w-full border p-2 rounded-md border-gray-300 shadow-sm totalAttendance"
-                                    placeholder="Jumlah Presensi" :required="role != 'KepalaSekolah'" x-model="totalAttendance">
+                                    placeholder="Jumlah Presensi" :required="role != 'KepalaSekolah'"
+                                    x-model="totalAttendance">
                             </div>
                         </div>
 
-                        <div class="space-y-4"  x-show="role != 'KepalaSekolah'" x-cloak>
+                        <div class="space-y-4" x-show="role != 'KepalaSekolah'" x-cloak>
                             <h4 class="text-md font-semibold mb-2 text-center">Pilih Mata Pelajaran</h4>
                             <div
                                 class="h-[300px] overflow-y-auto border p-3 space-y-2 rounded-md border-gray-300 shadow-sm">

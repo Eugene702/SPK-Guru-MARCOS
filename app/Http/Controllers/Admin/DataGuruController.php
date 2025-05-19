@@ -64,6 +64,7 @@ class DataGuruController extends Controller
 
         $user = $guru->user;
         DB::transaction(function () use ($request, $id, $user) {
+            $user->syncRoles($request->role);
             Guru::where('id', '=', $id)->update([
                 'nip' => $request->nip,
                 'jabatan' => $request->jabatan,
