@@ -1,6 +1,18 @@
 <div x-data="{
     editId: null,
     data: {{ $gurus }},
+    handleOnClickDelete(e) {
+        Swal.fire({
+            title: 'Hapus guru!',
+            text: 'Apakah kamu yakin ingin menghapus guru ini?',
+            icon: 'question',
+            showCancelButton: true,
+        }).then(result => {
+            if (result.isConfirmed) {
+                e.target.submit();
+            }
+        })
+    }
 }">
     <table class="w-full table-auto border-collapse border border-gray-300">
         <thead class="bg-thead">
@@ -48,7 +60,7 @@
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                         <form action="{{ route('admin.dataguru.destroy', $guru->id) }}" method="POST"
-                            class="deleteUser" onsubmit="return handleOnClickDelete(event)">
+                            class="deleteUser" @submit.prevent="handleOnClickDelete">
                             @csrf @method('DELETE')
                             <button type="submit" class="text-red-500 hover:text-red-700"><i
                                     class="fa-solid fa-trash"></i></button>
