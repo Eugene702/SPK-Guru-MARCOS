@@ -16,14 +16,14 @@
                             <tr>
                                 <th class="border px-4 py-2">Nama</th>
                                 @foreach (collect($scoreWeights)->keys() as $row)
-                                    <th class="border px-4 py-2 capitalize">{{ str_replace("_", " ", $row) }}</th>
+                                    <th class="border px-4 py-2 capitalize">{{ str_replace('_', ' ', $row) }}</th>
                                 @endforeach
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($data as $row)
                                 <tr>
-                                    <td class="border px-4 py-2">{{ $row['nama']  }}</td>
+                                    <td class="border px-4 py-2">{{ $row['nama'] }}</td>
                                     @foreach ($scoreWeights as $keys => $_)
                                         <td class="border px-4 py-2">{{ $row[$keys] }}</td>
                                     @endforeach
@@ -40,14 +40,14 @@
                             <tr>
                                 <th class="border px-4 py-2">Nama</th>
                                 @foreach (collect($scoreWeights)->keys() as $row)
-                                    <th class="border px-4 py-2 capitalize">{{ str_replace("_", " ", $row) }}</th>
+                                    <th class="border px-4 py-2 capitalize">{{ str_replace('_', ' ', $row) }}</th>
                                 @endforeach
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($liguistics as $row)
                                 <tr>
-                                    <td class="border px-4 py-2">{{ $row['nama']  }}</td>
+                                    <td class="border px-4 py-2">{{ $row['nama'] }}</td>
                                     @foreach ($scoreWeights as $keys => $_)
                                         <td class="border px-4 py-2">{{ $row[$keys] }}</td>
                                     @endforeach
@@ -64,7 +64,7 @@
                             <tr>
                                 <th class="border px-4 py-2">Nama</th>
                                 @foreach (collect($scoreWeights)->keys() as $row)
-                                    <th class="border px-4 py-2 capitalize">{{ str_replace("_", " ", $row) }}</th>
+                                    <th class="border px-4 py-2 capitalize">{{ str_replace('_', ' ', $row) }}</th>
                                 @endforeach
                             </tr>
                         </thead>
@@ -78,7 +78,7 @@
 
                             @foreach ($idealSolution['data'] as $row)
                                 <tr>
-                                    <td class="border px-4 py-2">{{ $row['nama']  }}</td>
+                                    <td class="border px-4 py-2">{{ $row['nama'] }}</td>
                                     @foreach ($scoreWeights as $keys => $_)
                                         <td class="border px-4 py-2">{{ $row[$keys] }}</td>
                                     @endforeach
@@ -102,7 +102,7 @@
                             <tr>
                                 <th class="border px-4 py-2">Nama</th>
                                 @foreach (collect($scoreWeights)->keys() as $row)
-                                    <th class="border px-4 py-2 capitalize">{{ str_replace("_", " ", $row) }}</th>
+                                    <th class="border px-4 py-2 capitalize">{{ str_replace('_', ' ', $row) }}</th>
                                 @endforeach
                             </tr>
                         </thead>
@@ -116,7 +116,7 @@
 
                             @foreach ($normalized['data'] as $row)
                                 <tr>
-                                    <td class="border px-4 py-2">{{ $row['nama']  }}</td>
+                                    <td class="border px-4 py-2">{{ $row['nama'] }}</td>
                                     @foreach ($scoreWeights as $keys => $_)
                                         <td class="border px-4 py-2">{{ $row[$keys] }}</td>
                                     @endforeach
@@ -140,7 +140,7 @@
                             <tr>
                                 <th class="border px-4 py-2">Nama</th>
                                 @foreach (collect($scoreWeights)->keys() as $row)
-                                    <th class="border px-4 py-2 capitalize">{{ str_replace("_", " ", $row) }}</th>
+                                    <th class="border px-4 py-2 capitalize">{{ str_replace('_', ' ', $row) }}</th>
                                 @endforeach
                             </tr>
                         </thead>
@@ -154,7 +154,7 @@
 
                             @foreach ($weighting['data'] as $row)
                                 <tr>
-                                    <td class="border px-4 py-2">{{ $row['nama']  }}</td>
+                                    <td class="border px-4 py-2">{{ $row['nama'] }}</td>
                                     @foreach ($scoreWeights as $keys => $_)
                                         <td class="border px-4 py-2">{{ $row[$keys] }}</td>
                                     @endforeach
@@ -244,11 +244,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($ranking as $index => $row)
+                            @foreach ($ranking as $row)
                                 <tr>
                                     <td class="border px-4 py-2">{{ $row['nama'] }}</td>
                                     <td class="border px-4 py-2">{{ $row['fk'] }}</td>
-                                    <td class="border px-4 py-2">{{ $index + 1 }}</td>
+                                    <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

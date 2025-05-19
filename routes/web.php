@@ -29,8 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::redirect('/admin/index', "/admin");
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-Route::get('/admin/index', [AdminController::class, 'index']);
 
 // Route User Admin
 Route::prefix('admin')->name('admin.')->group(function () {

@@ -19,30 +19,29 @@ class DataSiswaController extends Controller
     }
 
     public function store(Request $request)
-{
+    {
 
-    // dd($request->all());
-    $request->validate([
-        'nama_siswa' => 'required',
-        'kelas_id' => 'required|exists:kelas,id',
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required|min:6',
-    ]);
+        $request->validate([
+            'nama_siswa' => 'required',
+            'kelas_id' => 'required|exists:kelas,id',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+        ]);
 
-    // Buat user baru
-    $user = User::create([
-        'name' => $request->nama_siswa,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-    ]);
+        // Buat user baru
+        $user = User::create([
+            'name' => $request->nama_siswa,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
 
-    $user->assignRole('Siswa');
+        $user->assignRole('Siswa');
 
-    // Buat siswa dan hubungkan dengan user dan kelas
-    Siswa::create([
-        'user_id' => $user->id,
-        'kelas_id' => $request->kelas_id,
-    ]);
+        // Buat siswa dan hubungkan dengan user dan kelas
+        Siswa::create([
+            'user_id' => $user->id,
+            'kelas_id' => $request->kelas_id,
+        ]);
 
         return redirect()->route('admin.datasiswa.index')->with('success', 'Data siswa berhasil ditambahkan.');
     }
