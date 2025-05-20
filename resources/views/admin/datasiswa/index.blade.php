@@ -58,6 +58,9 @@
                                     required>
                                     <option value="">-- Pilih Kelas --</option>
                                     @foreach ($kelass as $kelas)
+                                        @if (count($kelas->siswas) > 0)
+                                            @continue
+                                        @endif
                                         <option value="{{ $kelas->id }}">{{ $kelas->nama_kelas }}</option>
                                     @endforeach
                                 </select>
@@ -115,6 +118,10 @@
                                             <select name="kelas_id"
                                                 class="w-full border p-2 rounded-md border-gray-300 shadow-sm">
                                                 @foreach ($kelass as $kelas)
+                                                    @if ($kelas->id != $siswa->kelas_id && count($kelas->siswas) > 0)
+                                                        @continue
+                                                    @endif
+
                                                     <option value="{{ $kelas->id }}"
                                                         {{ $kelas->id == $siswa->kelas_id ? 'selected' : '' }}>
                                                         {{ $kelas->nama_kelas }}
@@ -146,7 +153,8 @@
                                         class="text-yellow-500 hover:text-yellow-700">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </a>
-                                    <form action="{{ route('admin.datasiswa.destroy', $siswa->id) }}" method="POST" class="deleteStudent">
+                                    <form action="{{ route('admin.datasiswa.destroy', $siswa->id) }}" method="POST"
+                                        class="deleteStudent">
                                         @csrf @method('DELETE')
                                         <button type="submit" class="text-red-500 hover:text-red-700"><i
                                                 class="fa-solid fa-trash"></i></button>

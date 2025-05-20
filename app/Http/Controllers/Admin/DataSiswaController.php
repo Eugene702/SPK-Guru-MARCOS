@@ -14,7 +14,7 @@ class DataSiswaController extends Controller
     public function index()
     {
         $siswas = Siswa::with(['kelas', 'user'])->get(); // Load relasi kelas dan user
-        $kelass = Kelas::all(); // Ambil semua kelas untuk dropdown
+        $kelass = Kelas::with('siswas:id,kelas_id')->get();
         return view('admin.datasiswa.index', compact('siswas', 'kelass'));
     }
 
