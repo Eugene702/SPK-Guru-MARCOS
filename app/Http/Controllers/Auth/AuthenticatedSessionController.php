@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
 
     // Cek apakah user memiliki role
     if ($user->hasRole('Admin')) {
-        return redirect('/admin/index');
+        return redirect('/admin');
     } elseif ($user->hasRole('KepalaSekolah')) {
         return redirect()->route('kepsek.index');
     } elseif ($user->hasRole('Guru')) {

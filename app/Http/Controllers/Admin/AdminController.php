@@ -10,7 +10,14 @@ class AdminController extends Controller
 {
     public function index()
     {
-        return view('admin.index');
+        try{
+            $calculateReportService = app(\App\Services\CalculateReportService::class);
+            return view('admin.index', [
+                'ranking' => $calculateReportService->calculate()['ranking']
+            ]);
+        }catch(\Exception $e){
+            return redirect()->back()->with('error', 'Ada kesalahan pada server!');
+        }
     }
 
     public function addguru()
