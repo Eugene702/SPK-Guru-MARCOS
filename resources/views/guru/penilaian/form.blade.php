@@ -7,27 +7,33 @@
         @include('components.sidebar-guru')
 
         <main class="flex-1 p-10 overflow-auto">
-            <div class="max-w-4xl mx-auto">
-                <h1 class="text-3xl font-bold mb-6">Data Penilaian</h1>
+            <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Form Penilaian Guru</h1>
 
                 <form method="POST" action="{{ route('guru.penilaian.store') }}">
                     @csrf
                     <input type="hidden" name="guru_id" value="{{ $guru->id }}">
 
-                    <div class="space-y-4">
+                    <div class="flex gap-6 mb-6">
+                        <div class="w-1/2">
                         <!-- Nama Guru -->
-                        <div>
                             <label class="block font-semibold text-lg mb-1">Nama Guru</label>
                             <input type="text" value="{{ $guru->user->name }}" disabled
                                    class="w-full bg-white text-black rounded-lg px-4 py-2 cursor-not-allowed" />
                         </div>
 
                         <!-- Jabatan -->
-                        <div>
+                        <div class="w-1/2">
                             <label class="block font-semibold text-lg mb-1">Jabatan</label>
                             <input type="text" value="{{ $guru->jabatan }}" disabled
                                    class="w-full bg-white text-black rounded-lg px-4 py-2 cursor-not-allowed" />
                         </div>
+                    </div>
+
+                    <!-- Judul Kuesioner -->
+                    <div class="text-lg text-orange-800 font-semibold mb-6">
+                        Berikut kuesioner penilaian guru oleh kepala sekolah:
+                    </div>
 
                         <!-- Pernyataan -->
                         @foreach ($pernyataan as $item)
@@ -49,13 +55,12 @@
                             </div>
                         </div>
                         @endforeach
-                    </div>
 
                     <!-- Tombol -->
                     <div class="mt-6 flex justify-end space-x-4">
                         <a href="{{ route('guru.penilaian.index') }}" 
-                           class="bg-gray-300 hover:bg-gray-400 px-6 py-2 rounded-lg">Batal</a>
-                        <button type="submit" class="bg-sidebar hover:bg-thead text-black font-semibold px-6 py-2 rounded-lg">
+                           class="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-lg">Batal</a>
+                        <button type="submit" class="bg-sidebar hover:bg-thead text-black font-semibold px-4 py-2 rounded-lg">
                             Simpan
                         </button>
                     </div>

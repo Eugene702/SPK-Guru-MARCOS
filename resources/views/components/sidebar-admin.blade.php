@@ -13,7 +13,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.datakriteria') }}" class="flex items-center gap-2 hover:bg-creamy hover:text-black px-2 py-2 rounded transition {{ request()->routeIs('admin.datakriteria') ? 'bg-creamy' : '' }}">
+                <a href="/admin/datakriteria" class="flex items-center gap-2 hover:bg-creamy hover:text-black px-2 py-2 rounded transition {{ request()->routeIs('admin.datakriteria') ? 'bg-creamy' : '' }}">
                     <i class="fas fa-tachometer-alt w-5"></i> Data Kriteria
                 </a>
             </li>

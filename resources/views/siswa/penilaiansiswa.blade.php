@@ -7,20 +7,35 @@
             @include('components.sidebar-siswa')
 
             <main class="flex-1 p-10">
-                <h1 class="text-2xl font-bold mb-6">Penilaian Guru Oleh Siswa</h1>
+                <div class="mb-10">
+                    <div class="text-gray-800 text-center rounded-xl shadow-md p-6 bg-amber-400/25">
+                        <h2 class="text-3xl font-bold mb-2">📋 Penilaian Guru oleh Siswa</h2>
+                        <p class="text-md">
+                            Selamat datang di halaman penilaian guru. Di sini, Anda dapat memberikan evaluasi secara objektif terhadap performa guru dalam aspek kehadiran di kelas.
+                            <br>
+                            <span class="font-semibold">✨ Tujuan utama penilaian ini adalah untuk meningkatkan kualitas pendidikan melalui apresiasi dan pengembangan berkelanjutan.</span>
+                        </p>
+                    </div>
+                </div>
 
+<<<<<<< HEAD
+=======
+                {{-- Tabel Start --}}
+                <div class="max-w-7xl mx-auto bg-white shadow-xl rounded-xl p-6">
+                    <p class="text-center mb-4">Silakan isi sesuai agenda kelasmu!</p>
+>>>>>>> 2834a5e945cafcba6e8f5227c3b1ff7317fc682f
                 <div class="overflow-x-auto">
                     <h1 class="text-xl font-bold">Belum dinilai</h1>
                     <table class="min-w-full table-auto border border-gray-300">
                         <thead class="bg-thead">
                             <tr>
-                                <th class="border px-6 py-3">No</th>
-                                <th class="border px-6 py-3">Nama Guru</th>
-                                <th class="border px-6 py-3">Mata Pelajaran</th>
-                                <th class="border px-6 py-3">Jumlah Jam Masuk Kelas</th>
-                                <th class="border px-6 py-3">Jumlah Jam Pemberian Tugas di Kelas</th>
-                                <th class="border px-6 py-3">Jumlah Jam Tidak Masuk Kelas</th>
-                                <th class="border px-6 py-3">Aksi</th>
+                                <th class="border px-6 py-3 text-sm">No</th>
+                                <th class="border px-6 py-3 text-sm">Nama Guru</th>
+                                <th class="border px-6 py-3 text-sm">Mata Pelajaran</th>
+                                <th class="border px-6 py-3 text-sm">Jumlah Jam Masuk Kelas</th>
+                                <th class="border px-6 py-3 text-sm">Jumlah Jam Pemberian Tugas di Kelas</th>
+                                <th class="border px-6 py-3 text-sm">Jumlah Jam Tidak Masuk Kelas</th>
+                                <th class="border px-6 py-3 text-sm">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">

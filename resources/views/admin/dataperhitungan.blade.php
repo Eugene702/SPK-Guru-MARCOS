@@ -1,16 +1,25 @@
 <title>@yield('title', 'Data Perhitungan')</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-<body class="bg-white text-black">
+<body class="bg-creamy">
     <x-app-layout>
-        <div class="flex min-h-screen">
+        <div class="flex flex-col md:flex-row min-h-screen">
             @include('components.sidebar-admin')
 
             <!-- Konten dashboard lainnya di sini -->
-            <main class="flex-1 p-10">
-                <h1 class="text-2xl font-bold">Data Perhitungan</h1>
-                <section class="mt-5">
-                    <h1 class="text-2xl font-semibold text-center">Perhitungan MARCOS</h1>
+            <main class="flex-1 p-6 space-y-10">
+                <div class="mb-10">
+                    <div class="text-gray-800 text-center rounded-xl shadow-md p-6 bg-amber-400/25">
+                        <h1 class="text-3xl font-bold text-gray-800 mb-4">Proses Perhitungan MARCOS</h1>
+                        <p class="text-gray-700">
+                        Di bawah ini adalah tahapan-tahapan penting dalam proses pengambilan keputusan menggunakan metode <strong>MARCOS</strong>. Ikuti alur dari normalisasi hingga rangking akhir untuk mengetahui hasil evaluasi terbaik.
+                        </p>
+                    </div>
+                </div>
+
+                <section class="mt-5 bg-white p-6 rounded-xl shadow-md">
+                    <h2 class="text-xl font-semibold text-orange-500 mb-2">1. Skor Awal Alternatif</h2>
+                    <p class="text-gray-600 mb-4">Berikut adalah skor awal masing-masing guru berdasarkan kriteria yang telah ditentukan.</p>
                     <table class="w-full table-auto border-collapse border border-gray-300">
                         <thead class="bg-thead">
                             <tr>
@@ -33,8 +42,9 @@
                     </table>
                 </section>
 
-                <section class="mt-5">
-                    <h1 class="text-2xl font-semibold text-center">Hasil Skor Linguistik</h1>
+                <section class="mt-5 bg-white p-6 rounded-xl shadow-md">
+                    <h2 class="text-xl font-semibold text-orange-500 mb-2">2. Konversi Skor ke Linguistik</h2>
+                    <p class="text-gray-600 mb-4">Skor awal dikonversi menjadi bentuk linguistik agar lebih representatif dalam proses evaluasi.</p>
                     <table class="w-full table-auto border-collapse border border-gray-300">
                         <thead class="bg-thead">
                             <tr>
@@ -57,8 +67,9 @@
                     </table>
                 </section>
 
-                <section class="mt-5">
-                    <h1 class="text-2xl font-semibold text-center">Nilai Ideal & Anti-Ideal</h1>
+                <section class="mt-5 bg-white p-6 rounded-xl shadow-md">
+                    <h2 class="text-xl font-semibold text-orange-500 mb-2">3. Penentuan Solusi Ideal (AI) & Anti-Ideal (AAI)</h2>
+                    <p class="text-gray-600 mb-4">Solusi ideal dan anti-ideal digunakan sebagai acuan pembanding terhadap seluruh alternatif.</p>
                     <table class="w-full table-auto border-collapse border border-gray-300">
                         <thead class="bg-thead">
                             <tr>
@@ -95,8 +106,9 @@
                     </table>
                 </section>
 
-                <section class="mt-5">
-                    <h1 class="text-2xl font-semibold text-center">Normalisasi Matriks Keputusan</h1>
+                <section class="mt-5 bg-white p-6 rounded-xl shadow-md">
+                    <h2 class="text-xl font-semibold text-orange-500 mb-2">4. Normalisasi Matriks Keputusan</h2>
+                    <p class="text-gray-600 mb-4">Normalisasi dilakukan untuk menyetarakan nilai antar alternatif terhadap solusi ideal.</p>
                     <table class="w-full table-auto border-collapse border border-gray-300">
                         <thead class="bg-thead">
                             <tr>
@@ -133,8 +145,9 @@
                     </table>
                 </section>
 
-                <section class="mt-5">
-                    <h1 class="text-2xl font-semibold text-center">Skor Tertimbang</h1>
+                <section class="mt-5 bg-white p-6 rounded-xl shadow-md">
+                    <h2 class="text-xl font-semibold text-orange-500 mb-2">5. Matriks Tertimbang</h2>
+                    <p class="text-gray-600 mb-4">Nilai normalisasi dikalikan dengan bobot kriteria untuk memperoleh nilai tertimbang.</p>
                     <table class="w-full table-auto border-collapse border border-gray-300">
                         <thead class="bg-thead">
                             <tr>
@@ -171,8 +184,9 @@
                     </table>
                 </section>
 
-                <section class="mt-5">
-                    <h1 class="text-2xl font-semibold text-center">Hasil Akhir</h1>
+                <section class="mt-5 bg-white p-6 rounded-xl shadow-md">
+                     <h2 class="text-xl font-semibold text-orange-500 mb-2">6. Fungsi Utilitas</h2>
+                    <p class="text-gray-600 mb-4">Perhitungan nilai utilitas berdasarkan solusi ideal dan anti-ideal.</p>
                     <table class="w-full table-auto border-collapse border border-gray-300">
                         <thead class="bg-thead">
                             <tr>
@@ -209,8 +223,9 @@
                     </table>
                 </section>
 
-                <section class="mt-5">
-                    <h1 class="text-2xl font-semibold text-center">Perhitungan Skor Akhir</h1>
+                <section class="mt-5 bg-white p-6 rounded-xl shadow-md">
+                   <h2 class="text-xl font-semibold text-orange-500 mb-2">7. Skor Akhir Alternatif</h2>
+                    <p class="text-gray-600 mb-4">Nilai akhir diperoleh berdasarkan kombinasi dari fungsi utilitas terhadap solusi ideal dan anti-ideal.</p>
                     <table class="w-full table-auto border-collapse border border-gray-300">
                         <thead class="bg-thead">
                             <tr>
@@ -233,8 +248,9 @@
                     </table>
                 </section>
 
-                <section class="mt-5">
-                    <h1 class="text-2xl font-semibold text-center">Rangking</h1>
+                <section class="mt-5 bg-white p-6 rounded-xl shadow-md">
+                     <h2 class="text-xl font-semibold text-orange-500 mb-2">8. Rangking Akhir</h2>
+                    <p class="text-gray-600 mb-4">Berikut adalah hasil akhir pemeringkatan dari alternatif terbaik berdasarkan nilai Fk.</p>
                     <table class="w-full table-auto border-collapse border border-gray-300">
                         <thead class="bg-thead">
                             <tr>
