@@ -22,7 +22,7 @@
                                     {{ $loop->iteration }}</td>
                                 <td class="py-2 px-3 text-center border-b border-gray-200"><i
                                         class="text-yellow-500 mr-1 text-lg"></i>{{ $row['nama'] }}</td>
-                                <td class="py-2 px-3 text-center border-b border-gray-200">{{ number_format($row['fk'] * 100, 2) }}</td>
+                                <td class="py-2 px-3 text-center border-b border-gray-200">{{ number_format($row['fk'] * 100, 2) }}%</td>
                                 @if ($loop->iteration == 1)
                                     <td class="py-2 px-3 text-center border-b border-gray-200"><span
                                             class="bg-green-700 text-white px-2 py-1 rounded text-xs font-medium">Terbaik</span>
