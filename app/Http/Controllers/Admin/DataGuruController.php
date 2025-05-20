@@ -22,7 +22,12 @@ class DataGuruController extends Controller
         $roles = Role::all();
         $opsiKelas = Kelas::all();
         $mataPelajarans = MataPelajaran::all();
-        $gurus = Guru::with(['user.roles', 'kelas', 'mataPelajarans'])->get();
+        $gurus = Guru::with(['user.roles', 'kelas', 'mataPelajarans'])
+            ->get()
+            ->sortByDesc(function($query){
+                return optional($query->user->roles->first())->name == 'KepalaSekolah';
+            })
+            ->values();
         $attendanceFromFirstData = Guru::select('jumlah_presensi')
             ->whereYear('created_at', date('Y'))
             ->orderByDesc('created_at')

@@ -31,6 +31,7 @@
                                     <li>{{ $error }}</li>
                                 @endforeach
                             </ul>
+                        </div>
                     @endif
 
                     <x-admin.teacher-data.create-modal :$opsiKelas :$mataPelajarans :$attendanceFromFirstData />
