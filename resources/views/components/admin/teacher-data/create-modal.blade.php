@@ -4,7 +4,7 @@
     subject: [],
     classLevel: [],
     teachingHour: '',
-    totalAttendance: '',
+    totalAttendance: {{ $attendanceFromFirstData->jumlah_presensi }},
     reset() {
         this.subject = []
         this.classLevel = []

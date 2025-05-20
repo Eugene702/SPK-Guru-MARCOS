@@ -13,7 +13,8 @@ class CreateModal extends Component
      */
     public function __construct(
         public $opsiKelas,
-        public $mataPelajarans
+        public $mataPelajarans,
+        public $attendanceFromFirstData
     ){}
 
     /**

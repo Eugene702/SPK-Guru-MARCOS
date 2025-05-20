@@ -8,7 +8,6 @@ use App\Models\Guru;
 use App\Http\Controllers\Controller;
 use App\Models\GuruKelas;
 use App\Models\GuruMataPelajaran;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -20,11 +19,15 @@ class DataGuruController extends Controller
 {
     public function index()
     {
-        $roles = Role::all(); // Ambil semua role
+        $roles = Role::all();
         $opsiKelas = Kelas::all();
-        $mataPelajarans = MataPelajaran::all(); // jangan dari Guru::with(), cukup ambil semua
+        $mataPelajarans = MataPelajaran::all();
         $gurus = Guru::with(['user.roles', 'kelas', 'mataPelajarans'])->get();
-        return view('admin.dataguru.index', compact('gurus', 'roles', 'opsiKelas', 'mataPelajarans'));
+        $attendanceFromFirstData = Guru::select('jumlah_presensi')
+            ->whereYear('created_at', date('Y'))
+            ->orderByDesc('created_at')
+            ->first();
+        return view('admin.dataguru.index', compact('gurus', 'roles', 'opsiKelas', 'mataPelajarans', 'attendanceFromFirstData'));
     }
 
     public function storeguru(StoreRequest $request)
@@ -40,7 +43,7 @@ class DataGuruController extends Controller
             $guru = Guru::create([
                 'nip' => $request->nip,
                 'jabatan' => $request->jabatan,
-                'jumlah_jam_mengajar' => $request->role === 'Guru' ? $request->jumlah_jam_mengajar : 0,
+                'jam_mengajar_ekspektasi' => $request->role === 'Guru' ? $request->jumlah_jam_mengajar : 0,
                 'jumlah_presensi' => $request->role === 'Guru' ? $request->jumlah_presensi : 0,
                 'user_id' => $user->id
     
