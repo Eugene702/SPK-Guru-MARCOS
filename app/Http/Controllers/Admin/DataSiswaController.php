@@ -72,7 +72,7 @@ class DataSiswaController extends Controller
         }
         $user->save();
 
-        return redirect()->route('admin.datasiswa.index')->with('success', 'Data guru berhasil diperbarui.');
+        return redirect()->route('admin.datasiswa.index')->with('success', 'Data siswa berhasil diperbarui.');
     }
 
     public function destroy($id)
