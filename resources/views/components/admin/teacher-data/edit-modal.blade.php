@@ -143,13 +143,15 @@
                             <h4 class="text-md font-semibold mb-2 text-center">Pilih Mata Pelajaran</h4>
                             <div
                                 class="h-[300px] overflow-y-auto border p-3 space-y-2 rounded-md border-gray-300 shadow-sm">
-                                @foreach ($mataPelajarans as $mapel)
-                                    <label class="flex items-center space-x-2">
-                                        <input type="checkbox" name="mata_pelajaran[]" value="{{ $mapel->id }}"
-                                            x-model="subject" class="accent-green-500">
-                                        <span>{{ $mapel->nama_mata_pelajaran }}</span>
-                                    </label>
-                                @endforeach
+                                <div class="grid grid-cols-2 gap-2">
+                                    @foreach ($mataPelajarans as $mapel)
+                                        <label class="flex items-center space-x-2">
+                                            <input type="checkbox" name="mata_pelajaran[]" value="{{ $mapel->id }}"
+                                                x-model="subject" class="accent-green-500">
+                                            <span>{{ $mapel->nama_mata_pelajaran }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
 
@@ -157,13 +159,15 @@
                             <h4 class="text-md font-semibold mb-2 text-center">Pilih Kelas</h4>
                             <div
                                 class="h-[300px] overflow-y-auto border p-3 space-y-2 rounded-md border-gray-300 shadow-sm">
-                                @foreach ($opsiKelas as $item)
-                                    <label class="flex items-center space-x-2">
-                                        <input type="checkbox" class="classLevel" name="kelas[]"
-                                            value="{{ $item->id }}" x-model="classLevel" />
-                                        <span>{{ $item->nama_kelas }}</span>
-                                    </label>
-                                @endforeach
+                                <div class="grid grid-cols-3 gap-2">
+                                    @foreach ($opsiKelas as $item)
+                                        <label class="flex items-center space-x-2">
+                                            <input type="checkbox" class="classLevel" name="kelas[]"
+                                                value="{{ $item->id }}" x-model="classLevel" />
+                                            <span>{{ $item->nama_kelas }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                     </div>
