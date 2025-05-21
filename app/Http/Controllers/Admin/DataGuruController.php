@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\Teacher\MasterExport;
 use App\Http\Requests\Admin\DataGuru\StoreRequest;
 use App\Http\Requests\Admin\DataGuru\UpdateRequest;
 use App\Models\Guru;
@@ -11,6 +12,7 @@ use App\Models\GuruMataPelajaran;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Role;
 use App\Models\MataPelajaran;
 use App\Models\Kelas;
@@ -118,5 +120,9 @@ class DataGuruController extends Controller
         });
 
         return redirect()->route('admin.dataguru.index')->with('success', 'Data guru berhasil dihapus.');
+    }
+
+    public function export(){
+        return Excel::download(new MasterExport, 'Template Data Guru.xlsx');
     }
 }

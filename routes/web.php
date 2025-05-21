@@ -48,6 +48,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // CRUD GURU oleh admin
     Route::get('/dataguru', [DataGuruController::class, 'index'])->name('dataguru.index');
+    Route::get('/dataguru/export', [DataGuruController::class, 'export'])->name('dataguru.export');
     Route::get('/dataguru/create', [DataGuruController::class, 'create'])->name('dataguru.create');
     Route::post('/dataguru/store', [DataGuruController::class, 'storeguru'])->name('dataguru.storeguru');
     Route::get('/dataguru/{guru}', [DataGuruController::class, 'show'])->name('dataguru.show');
