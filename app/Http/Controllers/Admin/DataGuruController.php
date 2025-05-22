@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exports\Teacher\MasterExport;
+use App\Http\Requests\Admin\DataGuru\ImportRequest;
 use App\Http\Requests\Admin\DataGuru\StoreRequest;
 use App\Http\Requests\Admin\DataGuru\UpdateRequest;
+use App\Imports\MasterImport;
 use App\Models\Guru;
 use App\Http\Controllers\Controller;
 use App\Models\GuruKelas;
@@ -124,5 +126,14 @@ class DataGuruController extends Controller
 
     public function export(){
         return Excel::download(new MasterExport, 'Template Data Guru.xlsx');
+    }
+
+    public function import(ImportRequest $request){
+        try{
+            $file = Excel::toCollection(new MasterImport, $request->file('document'));
+            dd($file);
+        }catch(\Exception $e){
+            return redirect()->back()->with('error', 'Gagal mengimpor data guru. Pastikan file yang diunggah sesuai dengan format yang ditentukan.');
+        }
     }
 }

@@ -25,26 +25,26 @@ class CalculateReportService
 
         $data = $calculation->map(function ($item) {
             $formatScore = function ($score, $isAdmin = false) {
-                if($isAdmin){
-                    if($score == 4){
+                if ($isAdmin) {
+                    if ($score == 4) {
                         return "Lengkap";
-                    }else if($score == 3){
+                    } else if ($score == 3) {
                         return 'Cukup';
-                    }else if($score == 2){
+                    } else if ($score == 2) {
                         return 'Kurang';
-                    }else{
+                    } else {
                         return 'Tidak Ada';
                     }
-                }else{
-                    if($score == 4){
+                } else {
+                    if ($score == 4) {
                         return "Sangat Baik";
-                    }else if($score == 3){
+                    } else if ($score == 3) {
                         return 'Baik';
-                    }else if($score == 2){
+                    } else if ($score == 2) {
                         return 'Cukup';
-                    }else if($score == 1){
+                    } else if ($score == 1) {
                         return 'Kurang';
-                    }else{
+                    } else {
                         return 'Tidak Ada';
                     }
                 }
@@ -174,7 +174,7 @@ class CalculateReportService
         })
             ->sortByDesc(['fk'])
             ->toArray();
-        
+
         return compact(
             'scoreWeights',
             'data',

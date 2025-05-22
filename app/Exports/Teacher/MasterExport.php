@@ -11,6 +11,8 @@ class MasterExport implements WithMultipleSheets
     public function sheets(): array{
         return [
             'UserInfo' => new UserInfoExport(),
+            'Subject' => new SubjectExport(),
+            'Class' => new ClassExport(),
             'Reference' => new ReferenceExport()
         ];
     }
