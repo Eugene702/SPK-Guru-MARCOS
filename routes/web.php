@@ -39,6 +39,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // CRUD SISWA oleh admin
     Route::get('/datasiswa', [DataSiswaController::class, 'index'])->name('datasiswa.index');
     Route::get('/datasiswa/create', [DataSiswaController::class, 'create'])->name('datasiswa.create');
+    Route::get('/datasiswa/export', [DataSiswaController::class, 'export'])->name('datasiswa.export');
+    Route::post('/datasiswa/import', [DataSiswaController::class, 'import'])->name('datasiswa.import');
     Route::post('/datasiswa/store', [DataSiswaController::class, 'store'])->name('datasiswa.store');
     Route::get('/datasiswa/{siswa}', [DataSiswaController::class, 'show'])->name('datasiswa.show');
     Route::get('/datasiswa/{siswa}/edit', [DataSiswaController::class, 'edit'])->name('datasiswa.edit');
@@ -48,7 +50,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // CRUD GURU oleh admin
     Route::get('/dataguru', [DataGuruController::class, 'index'])->name('dataguru.index');
     Route::get('/dataguru/export', [DataGuruController::class, 'export'])->name('dataguru.export');
-    Route::patch('/dataguru/import', [DataGuruController::class, 'import'])->name('dataguru.import');
+    Route::post('/dataguru/import', [DataGuruController::class, 'import'])->name('dataguru.import');
     Route::get('/dataguru/create', [DataGuruController::class, 'create'])->name('dataguru.create');
     Route::post('/dataguru/store', [DataGuruController::class, 'storeguru'])->name('dataguru.storeguru');
     Route::get('/dataguru/{guru}', [DataGuruController::class, 'show'])->name('dataguru.show');

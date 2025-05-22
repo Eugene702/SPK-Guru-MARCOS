@@ -20,11 +20,18 @@
                         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
                             {{ session('success') }}
                         </div>
+                    @elseif(session('error'))
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                            {!! session('error') !!}
+                        </div>
                     @endif
                     {{-- Alert sukses end --}}
 
                     <!-- Tombol membuka modal -->
-                    <div class="flex justify-end mb-4">
+                    <div class="flex justify-end items-end mb-4 gap-x-4">
+                        <x-upload-document-modal :routeName="'admin.datasiswa.import'" :buttonText="'Unggah Data Siswa'" />
+                        <a href="{{ route('admin.datasiswa.export') }}"
+                            class="bg-blue-600 text-white px-4 py-2 rounded bg">Unduh Template</a>
                         <button onclick="document.getElementById('modalTambah').classList.remove('hidden')"
                             class="bg-green-600 text-white px-4 py-2 rounded bg">
                             Tambah Data
@@ -95,8 +102,21 @@
 
                             <tbody class="bg-white text-gray-800">
                                 @foreach ($siswas as $index => $siswa)
-                                    <tr
-                                        class="{{ $loop->even ? 'bg-gray-50' : 'bg-white' }} text-center hover:bg-yellow-50 transition">
+                                    <tr class="{{ $loop->even ? 'bg-gray-50' : 'bg-white' }} text-center hover:bg-yellow-50 transition"
+                                        x-data="{
+                                            handleOnClickDelete(e) {
+                                                Swal.fire({
+                                                    title: 'Hapus siswa!',
+                                                    text: 'Apakah kamu yakin ingin menghapus siswa {{ $siswa->user->name }} ini?',
+                                                    icon: 'question',
+                                                    showCancelButton: true,
+                                                }).then(result => {
+                                                    if (result.isConfirmed) {
+                                                        e.target.submit();
+                                                    }
+                                                })
+                                            }
+                                        }">
                                         <td class="border px-4 py-2">{{ $index + 1 }}</td>
                                         <td class="border px-4 py-2">{{ $siswa->user->name }}</td>
                                         <td class="border px-4 py-2">{{ $siswa->kelas->nama_kelas }}</td>
@@ -107,7 +127,8 @@
                                                 class="text-yellow-500 hover:text-yellow-700">
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </a>
-                                            <form action="{{ route('admin.datasiswa.destroy', $siswa->id) }}"
+                                            <form x-on:submit.prevent="handleOnClickDelete"
+                                                action="{{ route('admin.datasiswa.destroy', $siswa->id) }}"
                                                 method="POST" class="deleteStudent">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" class="text-red-500 hover:text-red-700"><i
@@ -179,24 +200,4 @@
             </main>
         </div>
     </x-app-layout>
-
-    <script>
-        $("document").ready(() => {
-            $(".deleteStudent").on("submit", e => {
-                e.preventDefault()
-                Swal.fire({
-                    title: "Hapus murid!",
-                    text: "Apakah Anda yakin ingin menghapus murid ini?",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: "Ya, hapus!",
-                    cancelButtonText: "Tidak, batalkan!",
-                }).then(result => {
-                    if (result.isConfirmed) {
-                        e.target.submit()
-                    }
-                })
-            })
-        })
-    </script>
 </body>

@@ -42,7 +42,7 @@
     }
 }" x-init="$watch('role', value => value === 'KepalaSekolah' ? reset() : null)">
     <div class="flex justify-end mb-2 gap-2">
-        <x-admin.teacher-data.upload-document-modal />
+        <x-upload-document-modal :routeName="'admin.dataguru.import'" :buttonText="'Unggah Data Guru'" />
         <a href="{{ route('admin.dataguru.export') }}" class="bg-blue-600 text-white px-4 py-2 rounded mb-4">Unduh Template</a>
         <button class="bg-green-600 text-white px-4 py-2 rounded mb-4" x-on:click="open = true">Tambah Data</button>
     </div>
