@@ -32,6 +32,14 @@ class Guru extends Model
     {
         return $this->belongsToMany(MataPelajaran::class, 'guru_mata_pelajaran', 'guru_id', 'mata_pelajaran_id');
     }
+
+    public function subjectTeacher(){
+        return $this->hasMany(GuruMataPelajaran::class, 'guru_id', 'id');
+    }
+
+    public function classTeacher(){
+        return $this->hasMany(GuruKelas::class, 'guru_id', 'id');
+    }
     
     public function penilaianAdmin()
     {

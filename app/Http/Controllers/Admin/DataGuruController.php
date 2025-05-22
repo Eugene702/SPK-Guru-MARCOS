@@ -6,7 +6,7 @@ use App\Exports\Teacher\MasterExport;
 use App\Http\Requests\Admin\DataGuru\ImportRequest;
 use App\Http\Requests\Admin\DataGuru\StoreRequest;
 use App\Http\Requests\Admin\DataGuru\UpdateRequest;
-use App\Imports\MasterImport;
+use App\Imports\Admin\DataGuru\MasterImport;
 use App\Models\Guru;
 use App\Http\Controllers\Controller;
 use App\Models\GuruKelas;
@@ -14,6 +14,7 @@ use App\Models\GuruMataPelajaran;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Role;
 use App\Models\MataPelajaran;
@@ -131,9 +132,90 @@ class DataGuruController extends Controller
     public function import(ImportRequest $request){
         try{
             $file = Excel::toCollection(new MasterImport, $request->file('document'));
-            dd($file);
+            $data = collect($file[0])->map(function($row) use($file){
+                return [
+                    ...$row,
+                    'subject' => $file[1]->where('nip', "=", $row['nip'])->unique('subject_id')->pluck("subject_id")->toArray(),
+                    'class' => $file[2]->where('nip', "=", $row['nip'])->unique('class_id')->pluck("class_id")->toArray(),
+                ];
+            });
+
+            $role = Role::pluck('id')->toArray();
+            $validator = Validator::make($data->toArray(), [
+                '*.nip' => ['required', 'unique:gurus,nip'],
+                '*.nama' => ['required'],
+                '*.email' => ['required', 'email', 'unique:users,email'],
+                '*.jabatan' => ['required', 'in:Kepala Sekolah,Guru'],
+                '*.kata_sandi' => ['required', 'min:8'],
+                '*.role' => ['required', 'in:' . implode(',', $role)],
+                '*.jumlah_jam_mengajar' => ['required', 'integer', 'min:0'],
+                '*.jumlah_presensi' => ['required', 'integer', 'min:0'],
+                '*.subject' => ['required', 'array'],
+                '*.subject.*' => ['required', 'exists:mata_pelajarans,id'],
+                '*.class' => ['required', 'array'],
+                '*.class.*' => ['required', 'exists:kelas,id'],
+            ], [
+                '*.nip.required' => 'NIP :input tidak boleh kosong.',
+                '*.nip.unique' => 'NIP :input sudah terdaftar.',
+                '*.nama.required' => 'Nama :input tidak boleh kosong.',
+                '*.email.required' => 'Email :input tidak boleh kosong.',
+                '*.email.email' => 'Email :input tidak valid.',
+                '*.email.unique' => 'Email :input sudah terdaftar.',
+                '*.jabatan.required' => 'Jabatan :input tidak boleh kosong.',
+                '*.jabatan.in' => 'Jabatan :input tidak valid.',
+                '*.kata_sandi.required' => 'Kata sandi :input tidak boleh kosong.',
+                '*.kata_sandi.min' => 'Kata sandi :input minimal 8 karakter.',
+                '*.role.required' => 'Role :input tidak boleh kosong.',
+                '*.role.in' => 'Role :input tidak valid.',
+                '*.jumlah_jam_mengajar.required' => 'Jumlah jam mengajar :input tidak boleh kosong.',
+                '*.jumlah_jam_mengajar.integer' => 'Jumlah jam mengajar :input harus berupa angka.',
+                '*.jumlah_jam_mengajar.min' => 'Jumlah jam mengajar :input tidak boleh kurang dari 0.',
+                '*.jumlah_presensi.required' => 'Jumlah presensi :input tidak boleh kosong.',
+                '*.jumlah_presensi.integer' => 'Jumlah presensi :input harus berupa angka.',
+                '*.jumlah_presensi.min' => 'Jumlah presensi :input tidak boleh kurang dari 0.',
+                '*.subject.required' => 'Mata pelajaran :input tidak boleh kosong.',
+                '*.subject.array' => 'Mata pelajaran :input harus berupa array.',
+                '*.subject.*.required' => 'Mata pelajaran :input tidak boleh kosong.',
+                '*.subject.*.exists' => 'Mata pelajaran :input tidak valid.',
+                '*.class.required' => 'Kelas :input tidak boleh kosong.',
+                '*.class.array' => 'Kelas :input harus berupa array.',
+                '*.class.*.required' => 'Kelas :input tidak boleh kosong.',
+                '*.class.*.exists' => 'Kelas :input tidak valid.',
+            ]);
+
+            if($validator->fails()){
+                return redirect()->back()->with('error', implode('<br />', $validator->errors()->all()));
+            }
+
+            DB::transaction(function() use($data){
+                foreach($data as $row){
+                    $user = User::create([
+                        'name' => $row['nama'],
+                        'email' => $row['email'],
+                        'password' => Hash::make($row['kata_sandi'])
+                    ]);
+
+                    $role = Role::find($row['role']);
+                    $user->assignRole($role);
+                    $teacher = $user->guru()->create([
+                        'nip' => $row['nip'],
+                        'jabatan' => $row['jabatan'],
+                        'jumlah_jam_mengajar' => $row['jumlah_jam_mengajar'],
+                        'jumlah_presensi' => $row['jumlah_presensi'],
+                    ]);
+
+                    $teacher->subjectTeacher()->createMany(collect($row['subject'])->map(fn($subject) => ['mata_pelajaran_id' => $subject]));
+                    $teacher->classTeacher()->createMany(collect($row['class'])->map(fn($class) => ['kelas_id' => $class]));
+                }
+            });
+            
+            return redirect()->back()->with('success', 'Data guru berhasil diimpor.');
         }catch(\Exception $e){
-            return redirect()->back()->with('error', 'Gagal mengimpor data guru. Pastikan file yang diunggah sesuai dengan format yang ditentukan.');
+            if(config('app.debug')){
+                dd($e);
+            }
+
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengimpor data guru. Silakan coba lagi.');
         }
     }
 }

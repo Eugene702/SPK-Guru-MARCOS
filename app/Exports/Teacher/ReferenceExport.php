@@ -6,13 +6,29 @@ use App\Models\Kelas;
 use App\Models\MataPelajaran;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Spatie\Permission\Models\Role;
 
-class ReferenceExport implements FromCollection, ShouldAutoSize, WithTitle, WithStyles
+class ReferenceExport implements FromCollection, ShouldAutoSize, WithTitle, WithStyles, WithHeadings
 {
+    public function headings(): array
+    {
+        return [
+            'ROLE ID',
+            'ROLE NAME',
+            '',
+            'JABATAN',
+            '',
+            'SUBJECT ID',
+            'SUBJECT NAME',
+            '',
+            'CLASS ID',
+            'CLASS NAME'
+        ];
+    }
     public function title(): string
     {
         return "Reference";
@@ -60,20 +76,6 @@ class ReferenceExport implements FromCollection, ShouldAutoSize, WithTitle, With
             ];
         }
 
-        return collect([
-            [
-                'ROLE ID',
-                'ROLE NAME',
-                '',
-                'JABATAN',
-                '',
-                'SUBJECT ID',
-                'SUBJECT NAME',
-                '',
-                'CLASS ID',
-                'CLASS NAME'
-            ],
-            ...$rows
-        ]);
+        return collect([...$rows]);
     }
 }

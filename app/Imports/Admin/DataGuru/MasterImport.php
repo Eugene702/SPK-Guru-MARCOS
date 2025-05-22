@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Imports;
+namespace App\Imports\Admin\DataGuru;
 
 use App\Imports\Admin\DataGuru\SubjectImport;
 use App\Imports\Admin\DataGuru\UserInfoImport;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
 class MasterImport implements WithMultipleSheets
 {
     public function sheets(): array{
         return [
-            'User Info' => new UserInfoImport(),
-            'Subject' => new SubjectImport(),
-            'Class' => new ClassImport()
+            new UserInfoImport(),
+            new SubjectImport(),
+            new ClassImport(),
+            new ReferenceImport()
         ];
     }
 }

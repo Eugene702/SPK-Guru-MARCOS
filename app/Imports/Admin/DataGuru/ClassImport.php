@@ -3,26 +3,28 @@
 namespace App\Imports\Admin\DataGuru;
 
 use App\Models\Guru;
-use App\Models\GuruMataPelajaran;
+use App\Models\GuruKelas;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class SubjectImport implements WithCalculatedFormulas, ToModel, WithHeadingRow, WithValidation, WithBatchInserts
+class ClassImport implements WithCalculatedFormulas, WithHeadingRow, ToCollection, WithValidation, ToModel, WithBatchInserts
 {
-    /**
-     * @param Collection $collection
-     */
     public function model($row)
     {
         $teacher = Guru::select('id')->where('nip', '=', $row['nip'])->first();
-        return new GuruMataPelajaran([
+        return new GuruKelas([
             'guru_id' => $teacher->id,
-            'mata_pelajaran_id' => $row['subject_id'],
+            'kelas_id' => $row['class_id']
         ]);
+    }
+    public function collection(Collection $rows)
+    {
+
     }
 
     public function batchSize(): int
@@ -34,15 +36,15 @@ class SubjectImport implements WithCalculatedFormulas, ToModel, WithHeadingRow, 
     {
         return [
             'nip' => ['required'],
-            'subject_id' => ['required', 'exists:mata_pelajarans,id']
+            'class_id' => ['required', 'exists:kelas,id']
         ];
     }
 
     public function customValidationMessages()
     {
         return [
-            'subject_id.required' => 'ID Mata Pelajaran tidak boleh kosong',
-            'subject_id.exists' => 'ID Mata Pelajaran tidak ditemukan di database',
+            'class_id.string' => 'ID Kelas harus berupa string',
+            'class_id.exists' => 'ID Kelas tidak ditemukan di database',
         ];
     }
 }

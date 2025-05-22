@@ -22,7 +22,7 @@ class ImportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'document' => ['required','file','mimes:xlsx', 'size:10240']
+            'document' => ['required', 'file', 'extensions:xlsx', 'max:10240']
         ];
     }
 
@@ -30,8 +30,8 @@ class ImportRequest extends FormRequest
         return [
             'document.required' => 'File tidak boleh kosong',
             'document.file' => 'File harus berupa file',
-            'document.mimes' => 'File harus berupa file dengan format xlsx',
-            'document.size' => 'Ukuran file tidak boleh lebih dari 10 MB',
+            'document.extensions' => 'File harus berupa file dengan format xlsx',
+            'document.max' => 'Ukuran file tidak boleh lebih dari 10 MB',
         ];
     }
 }

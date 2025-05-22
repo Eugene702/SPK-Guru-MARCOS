@@ -6,12 +6,12 @@
         Unggah Data Guru
     </button>
 
-    <form action="{{ route('admin.dataguru.import') }}" class="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50"
+    <form action="{{ route('admin.dataguru.import') }}" enctype="multipart/form-data" method="post" class="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50"
         x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" x-cloak>
         @csrf
-        @method('POST')
+        @method('PATCH')
 
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 overflow-hidden transform transition-all"
             x-show="open" x-transition:enter="transition ease-out duration-300"
@@ -22,7 +22,7 @@
             <div class="px-8 py-5 border-b border-gray-100">
                 <div class="flex items-center justify-between">
                     <h3 class="text-xl font-semibold text-gray-800">Upload Dokumen</h3>
-                    <button class="text-gray-400 hover:text-gray-600 transition-colors focus:outline-none"
+                    <button type="button" class="text-gray-400 hover:text-gray-600 transition-colors focus:outline-none"
                         @click="open = false">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

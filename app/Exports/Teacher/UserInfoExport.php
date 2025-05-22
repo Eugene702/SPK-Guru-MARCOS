@@ -4,12 +4,17 @@ namespace App\Exports\Teacher;
 
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class UserInfoExport implements FromCollection, WithStyles, ShouldAutoSize, WithTitle
+class UserInfoExport implements WithStyles, ShouldAutoSize, WithTitle, WithHeadings
 {
+    public function headings(): array
+    {
+        return ['NIP', 'NAMA', 'EMAIL', 'JABATAN', 'ROLE', 'JUMLAH JAM MENGAJAR', 'JUMLAH PRESENSI', 'KATA SANDI'];
+    }
     public function title(): string{
         return "User Info";
     }
@@ -21,11 +26,5 @@ class UserInfoExport implements FromCollection, WithStyles, ShouldAutoSize, With
                 ]
             ]
         ];
-    }
-    public function collection()
-    {
-        return collect([
-            ['NIP', 'NAMA', 'EMAIL', 'JABATAN', 'ROLE', 'JUMLAH JAM MENGAJAR', 'JUMLAH PRESENSI', 'KATA SANDI']
-        ]);
     }
 }
