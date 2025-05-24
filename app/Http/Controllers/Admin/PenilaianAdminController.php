@@ -61,9 +61,6 @@ class PenilaianAdminController extends Controller
         return redirect()->back()->with('success', 'Data penilaian berhasil disimpan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
