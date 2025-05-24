@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Siswa extends Model
 {
     protected $fillable = ['kelas_id', 'user_id'];
+    protected $table = 'siswa';
 
     public function kelas()
     {

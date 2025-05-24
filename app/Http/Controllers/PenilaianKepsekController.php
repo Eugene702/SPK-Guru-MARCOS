@@ -63,7 +63,7 @@ class PenilaianKepsekController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'guru_id' => 'required|exists:gurus,id',
+            'guru_id' => 'required|exists:guru,id',
             'nilai' => 'required|array',
             'nilai.*' => 'required|integer|min:1|max:4',
         ]);

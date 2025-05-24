@@ -62,7 +62,7 @@ class PenilaianRekanSejawatController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'guru_id' => 'required|exists:gurus,id',
+            'guru_id' => 'required|exists:guru,id',
             'nilai' => 'required|array',
             'nilai.*' => 'in:0,1,2',
         ]);

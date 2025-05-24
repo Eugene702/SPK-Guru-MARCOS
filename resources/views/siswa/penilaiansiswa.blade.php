@@ -41,6 +41,7 @@
                                 @foreach ($gurus as $guru)
                                     @php
                                         $penilaian = $guru->penilaianSiswa
+                                            // ->select('*', 'jam_mengajar_realita as jam_masuk')
                                             ->where('siswa_id', auth()->user()->siswa->id)
                                             ->first();
 
@@ -56,7 +57,7 @@
                                                 {{ $mapel->nama_mata_pelajaran }}<br>
                                             @endforeach
                                         </td>
-                                        <td class="border px-6 py-4 text-center">{{ $penilaian->jam_masuk ?? '-' }}</td>
+                                        <td class="border px-6 py-4 text-center">{{ $penilaian->jam_mengajar_realita ?? '-' }}</td>
                                         <td class="border px-6 py-4 text-center">{{ $penilaian->jam_tugas ?? '-' }}</td>
                                         <td class="border px-6 py-4 text-center">
                                             {{ $penilaian->jam_tidak_masuk ?? '-' }}
@@ -174,7 +175,7 @@
                                                 {{ $mapel->nama_mata_pelajaran }}<br>
                                             @endforeach
                                         </td>
-                                        <td class="border px-6 py-4 text-center">{{ $penilaian->jam_masuk ?? '-' }}
+                                        <td class="border px-6 py-4 text-center">{{ $penilaian->jam_mengajar_realita ?? '-' }}
                                         </td>
                                         <td class="border px-6 py-4 text-center">{{ $penilaian->jam_tugas ?? '-' }}
                                         </td>

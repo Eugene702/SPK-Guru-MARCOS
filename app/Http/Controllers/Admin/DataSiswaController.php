@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exports\Student\MasterExport;
 use App\Http\Requests\Admin\Student\ImportRequest;
+use App\Http\Requests\Admin\Student\StoreRequest;
 use App\Imports\Student\MasterImport;
 use App\Models\Siswa;
 use App\Models\Kelas;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
+use Spatie\Permission\Models\Role;
 
 class DataSiswaController extends Controller
 {
@@ -25,30 +27,21 @@ class DataSiswaController extends Controller
         return view('admin.datasiswa.index', compact('siswas', 'kelass'));
     }
 
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-
-        $request->validate([
-            'nama_siswa' => 'required',
-            'kelas_id' => 'required|exists:kelas,id',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
-        ]);
-
-        // Buat user baru
-        $user = User::create([
-            'name' => $request->nama_siswa,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        $user->assignRole('Siswa');
-
-        // Buat siswa dan hubungkan dengan user dan kelas
-        Siswa::create([
-            'user_id' => $user->id,
-            'kelas_id' => $request->kelas_id,
-        ]);
+        DB::transaction(function() use($request){
+            $role = Role::firstOrCreate(['name' => 'Siswa']);
+            $user = User::create([
+                'name' => $request->nama_siswa,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+    
+            $user->assignRole($role);
+            $user->siswa()->create([
+                'kelas_id' => $request->kelas_id,
+            ]);
+        });
 
         return redirect()->route('admin.datasiswa.index')->with('success', 'Data siswa berhasil ditambahkan.');
     }

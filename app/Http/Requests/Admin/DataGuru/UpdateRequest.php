@@ -49,7 +49,7 @@ class UpdateRequest extends FormRequest
             'kelas' => ['required_if:role,Guru', 'array'],
             'kelas.*' => ['exists:kelas,id'],
             'mata_pelajaran' => ['required_if:role,Guru', 'array'],
-            'mata_pelajaran.*' => ['exists:mata_pelajarans,id']
+            'mata_pelajaran.*' => ['exists:mata_pelajaran,id']
         ];
     }
 

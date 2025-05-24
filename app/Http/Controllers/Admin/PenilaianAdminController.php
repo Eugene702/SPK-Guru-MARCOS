@@ -7,6 +7,7 @@ use App\Models\Guru;
 use App\Models\PenilaianAdmin;
 use App\Models\SubKriteria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PenilaianAdminController extends Controller
 {
@@ -15,14 +16,13 @@ class PenilaianAdminController extends Controller
      */
     public function index()
     {
-        $gurus = Guru::whereHas('user', function($query){
+        $gurus = Guru::whereHas('user', function ($query) {
             $query->withoutRole('KepalaSekolah');
         })
-            ->with(['user', 'perhitungan.administrasiSubKriteria', 'penilaianAdmin'])->get();
-        $subkriteriaAdministrasi = SubKriteria::where('kriteria_id', 2)->get();
-        return view('admin.datapenilaian.index', compact('gurus', 'subkriteriaAdministrasi'));
+            ->with(['user', 'perhitungan', 'penilaianAdmin'])->get();
+        return view('admin.datapenilaian.index', compact('gurus'));
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -45,22 +45,19 @@ class PenilaianAdminController extends Controller
             'kegiatan_sosial' => 'required|numeric',
         ]);
 
-        $guru = Guru::findOrFail($request->guru_id);
+        DB::transaction(function () use ($request) {
+            $penilaianAdmin = PenilaianAdmin::updateOrCreate(
+                ['guru_id' => $request->guru_id],
+                [
+                    'administrasi' => $request->administrasi,
+                    'presensi_realita' => $request->presensi_realita,
+                    'sertifikat_pengembangan' => $request->sertifikat_pengembangan,
+                    'kegiatan_sosial' => $request->kegiatan_sosial,
+                ]
+            );
 
-        // 1. Simpan dulu input admin ke tabel penilaianadmins
-        $penilaianAdmin = PenilaianAdmin::updateOrCreate(
-            ['guru_id' => $request->guru_id],
-            [
-                'administrasi' => $request->administrasi,
-                'presensi_realita' => $request->presensi_realita,
-                'sertifikat_pengembangan' => $request->sertifikat_pengembangan,
-                'kegiatan_sosial' => $request->kegiatan_sosial,
-            ]
-        );
-
-        // 2. Panggil proses perhitungan
-        (new PerhitunganController)->hitung($penilaianAdmin->id);
-
+            (new PerhitunganController)->hitung($penilaianAdmin);
+        });
         return redirect()->back()->with('success', 'Data penilaian berhasil disimpan.');
     }
 
@@ -92,23 +89,25 @@ class PenilaianAdminController extends Controller
             'kegiatan_sosial' => 'required|numeric',
         ]);
 
-        $penilaianAdmin = PenilaianAdmin::findOrFail($id);
-        $guru = Guru::findOrFail($request->guru_id);
 
-        if ($guru->jumlah_presensi == 0) {
-            return redirect()->back()->withErrors('Jumlah presensi ekspektasi guru tidak boleh 0.');
-        }
-    
-        // 1. Update data penilaian admin
-        $penilaianAdmin->update([
-            'administrasi' => $request->administrasi,
-            'presensi_realita' => $request->presensi_realita,
-            'sertifikat_pengembangan' => $request->sertifikat_pengembangan,
-            'kegiatan_sosial' => $request->kegiatan_sosial,
-        ]);
 
-        // 2. Panggil proses perhitungan
-        (new PerhitunganController)->hitung($penilaianAdmin->id);
+        DB::transaction(function () use ($request, $id) {
+            $penilaianAdmin = PenilaianAdmin::findOrFail($id);
+            $guru = Guru::findOrFail($request->guru_id);
+
+            if ($guru->jumlah_presensi == 0) {
+                return redirect()->back()->withErrors('Jumlah presensi ekspektasi guru tidak boleh 0.');
+            }
+
+            $penilaianAdmin->update([
+                'administrasi' => $request->administrasi,
+                'presensi_realita' => $request->presensi_realita,
+                'sertifikat_pengembangan' => $request->sertifikat_pengembangan,
+                'kegiatan_sosial' => $request->kegiatan_sosial,
+            ]);
+
+            (new PerhitunganController)->hitung($penilaianAdmin);
+        });
 
         return redirect()->back()->with('success', 'Data penilaian berhasil diperbarui.');
     }

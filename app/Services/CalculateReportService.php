@@ -10,7 +10,7 @@ class CalculateReportService
         $calculation = Perhitungan::whereHas('guru', function ($query) {
             $query->where('jabatan', '=', 'Guru');
         })
-            ->with('guru.user', 'administrasiSubKriteria')
+            ->with('guru.user')
             ->get();
 
         $scoreWeights = [
@@ -54,7 +54,7 @@ class CalculateReportService
                 'guru_id' => $item->guru_id,
                 'nama' => $item->guru->user->name ?? 'Nama tidak tersedia',
                 'supervisi' => $item->supervisi,
-                'administrasi' => $formatScore(round($item->administrasiSubKriteria->bobot_sub_kriteria ?? 0), true),
+                'administrasi' => $formatScore(round($item->administrasi ?? 0), true),
                 'presensi' => $formatScore(round($item->presensi ?? 0)),
                 'kehadiran_dikelas' => $formatScore(round($item->kehadiran_dikelas ?? 0)),
                 'sertifikat_pengembangan' => $item->sertifikat_pengembangan ?? 0,
@@ -68,7 +68,7 @@ class CalculateReportService
                 'guru_id' => $item->guru_id,
                 'nama' => $item->guru->user->name ?? 'Nama tidak tersedia',
                 'supervisi' => $item->supervisi ?? 0,
-                'administrasi' => $item->administrasiSubKriteria->bobot_sub_kriteria ?? 0,
+                'administrasi' => $item->administrasi ?? 0,
                 'presensi' => $item->presensi ?? 0,
                 'kehadiran_dikelas' => $item->kehadiran_dikelas ?? 0,
                 'sertifikat_pengembangan' => $item->sertifikat_pengembangan ?? 0,

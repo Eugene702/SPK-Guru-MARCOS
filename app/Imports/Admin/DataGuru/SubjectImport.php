@@ -34,7 +34,7 @@ class SubjectImport implements WithCalculatedFormulas, ToModel, WithHeadingRow, 
     {
         return [
             'nip' => ['required'],
-            'subject_id' => ['required', 'exists:mata_pelajarans,id']
+            'subject_id' => ['required', 'exists:mata_pelajaran,id']
         ];
     }
 

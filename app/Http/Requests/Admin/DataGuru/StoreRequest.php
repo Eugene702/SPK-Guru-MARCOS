@@ -25,7 +25,7 @@ class StoreRequest extends FormRequest
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'min:6'],
-            'nip' => ['required', 'unique:gurus,nip'],
+            'nip' => ['required', 'unique:guru,nip'],
             'jabatan' => ['required'],
             'jumlah_jam_mengajar' => ['required_if:role,Guru'],
             'jumlah_presensi' => ['required_if:role,Guru'],
@@ -33,7 +33,7 @@ class StoreRequest extends FormRequest
             'kelas' => ['required_if:role,Guru', 'array'],
             'kelas.*' => ['exists:kelas,id'],
             'mata_pelajaran' => ['required_if:role,Guru', 'array'],
-            'mata_pelajaran.*' => ['exists:mata_pelajarans,id']
+            'mata_pelajaran.*' => ['exists:mata_pelajaran,id']
         ];
     }
 

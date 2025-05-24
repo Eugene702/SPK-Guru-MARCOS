@@ -16,6 +16,9 @@ class AdminController extends Controller
                 'ranking' => $calculateReportService->calculate()['ranking']
             ]);
         }catch(\Exception $e){
+            if(config('app.debug')){
+                dd($e);
+            }
             return redirect()->back()->with('error', 'Ada kesalahan pada server!');
         }
     }

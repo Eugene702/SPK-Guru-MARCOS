@@ -4,7 +4,7 @@
     subject: [],
     classLevel: [],
     teachingHour: '',
-    totalAttendance: {{ $attendanceFromFirstData->jumlah_presensi }},
+    totalAttendance: {{ $attendanceFromFirstData->jumlah_presensi ?? 0 }},
     reset() {
         this.subject = []
         this.classLevel = []

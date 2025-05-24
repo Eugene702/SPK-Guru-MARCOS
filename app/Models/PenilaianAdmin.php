@@ -9,7 +9,7 @@ class PenilaianAdmin extends Model
 {
     use HasFactory;
 
-    protected $table = 'penilaianadmins'; // <- tabel tanpa underscore
+    protected $table = 'penilaian_oleh_admin'; // <- tabel tanpa underscore
     protected $primaryKey = 'id'; 
     public $incrementing = true;
     protected $keyType = 'int';

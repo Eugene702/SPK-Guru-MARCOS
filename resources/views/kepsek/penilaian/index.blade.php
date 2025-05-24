@@ -7,11 +7,6 @@
             @include('components.sidebar-kepsek')
 
             <main class="flex-1 p-10 overflow-auto">
-<<<<<<< HEAD
-                <h1 class="text-2xl font-bold mb-6">Daftar Guru untuk Dinilai</h1>
-                <div class="overflow-x-auto shadow rounded-lg">
-                    <h1 class="text-xl font-bold">Belum dinilai</h1>
-=======
                 <div class="mb-10">
                     <div class="text-gray-800 text-center rounded-xl shadow-md p-6 bg-amber-400/25">
                         <h2 class="text-3xl font-bold mb-2">📋 Penilaian Guru oleh Kepala Sekolah</h2>
@@ -26,7 +21,6 @@
                 {{-- Tabel Start --}}
                 <div class="overflow-x-auto max-w-7xl mx-auto bg-white shadow-xl rounded-xl p-6">
                     <p class="text-center mb-4">Silakan isi penilaian berdasarkan kuesioner yang tersedia.</p>
->>>>>>> 2834a5e945cafcba6e8f5227c3b1ff7317fc682f
                     <table class="min-w-full table-auto border border-gray-200">
                         <thead class="bg-thead">
                             <tr>

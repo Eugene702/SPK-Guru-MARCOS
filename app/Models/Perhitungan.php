@@ -9,7 +9,7 @@ class Perhitungan extends Model
 {
     use HasFactory;
 
-    protected $table = 'perhitungans'; // nama tabel
+    protected $table = 'perhitungan'; // nama tabel
     protected $fillable = [
         'guru_id', 
         'supervisi', 
