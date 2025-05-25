@@ -1,4 +1,4 @@
-<title>@yield('title', 'Data Perhitungan')</title>
+<title>@yield('title', 'Data Hasil Akhir')</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
 <body>

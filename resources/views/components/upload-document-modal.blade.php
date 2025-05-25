@@ -19,7 +19,7 @@
 
             <div class="px-8 py-5 border-b border-gray-100">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-xl font-semibold text-gray-800">Upload Dokumen</h3>
+                    <h3 class="text-xl font-semibold text-gray-800">Unggah Dokumen</h3>
                     <button type="button"
                         class="text-gray-400 hover:text-gray-600 transition-colors focus:outline-none"
                         @click="open = false">
@@ -40,7 +40,7 @@
                                     d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                             </svg>
                         </div>
-                        <h4 class="text-lg font-medium text-gray-900 mb-1">Upload File</h4>
+                        <h4 class="text-lg font-medium text-gray-900 mb-1">Unggah Dokumen</h4>
                         <p class="text-sm text-gray-500">Pilih dokumen dari perangkat Anda</p>
                     </div>
 
@@ -57,7 +57,7 @@
                                 Pilih File
                             </div>
                         </label>
-                        <p class="text-xs text-gray-400 mt-3 text-center">PDF, DOCX, XLSX (Maksimal 10MB)</p>
+                        <p class="text-xs text-gray-400 mt-3 text-center">XLSX (Maksimal 10MB)</p>
                     </div>
 
                     <div class="bg-gray-50 border border-gray-100 rounded-lg p-4 flex items-center" x-show="data">
@@ -91,7 +91,7 @@
                 </button>
                 <button type="submit"
                     class="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium shadow-sm">
-                    Upload
+                    Unggah
                 </button>
             </div>
         </div>

@@ -8,12 +8,7 @@
   
         <ul class="p-4 space-y-6">
             <li>
-                <a href="/siswa/index" class="{{ request()->routeIs('siswa.index') ? 'bg-creamy' : '' }} flex items-center gap-2 hover:bg-creamy hover:text-black px-2 py-2 rounded transition">
-                    <i class="fas fa-tachometer-alt w-5"></i> Dashboard
-                </a>
-            </li>
-            <li>
-                <a href="/siswa/penilaiansiswa" class="{{ request()->routeIs('siswa.penilaiansiswa') ? 'bg-creamy' : '' }} flex items-center gap-2 hover:bg-creamy hover:text-black px-2 py-2 rounded transition">
+                <a href="{{ route('siswa.penilaiansiswa.index') }}" class="{{ request()->routeIs('siswa.penilaiansiswa.*') ? 'bg-creamy' : '' }} flex items-center gap-2 hover:bg-creamy hover:text-black px-2 py-2 rounded transition">
                     <i class="fas fa-check-circle w-5"></i> Data Penilaian
                 </a>
             </li>

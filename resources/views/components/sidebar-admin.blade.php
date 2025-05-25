@@ -26,12 +26,12 @@
                 </a>
             </li>
             <li>
-                <a href="/admin/datapenilaian" class="flex items-center gap-2 hover:bg-creamy hover:text-black px-2 py-2 rounded transition {{ request()->routeIs('admin.datapenilaian') ? 'bg-creamy' : '' }}">
+                <a href="/admin/datapenilaian" class="flex items-center gap-2 hover:bg-creamy hover:text-black px-2 py-2 rounded transition {{ request()->routeIs('admin.datapenilaian.*') ? 'bg-creamy' : '' }}">
                     <i class="fas fa-check-circle w-5"></i> Data Penilaian
                 </a>
             </li>
             <li>
-                <a href="/admin/dataperhitungan" class="flex items-center gap-2 hover:bg-creamy hover:text-black px-2 py-2 rounded transition {{ request()->routeIs('admin.dataperhitungan') ? 'bg-creamy' : '' }}">
+                <a href="/admin/dataperhitungan" class="flex items-center gap-2 hover:bg-creamy hover:text-black px-2 py-2 rounded transition {{ request()->routeIs('admin.dataperhitungan.*') ? 'bg-creamy' : '' }}">
                     <i class="fas fa-calculator w-5"></i> Data Perhitungan
                 </a>
             </li>

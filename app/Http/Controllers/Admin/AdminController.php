@@ -30,7 +30,7 @@ class AdminController extends Controller
             }));
 
             return view('admin.index', [
-                'ranking' => $calculateReportService->calculate($calculation[now()->year])['ranking'],
+                'ranking' => $calculation->has(now()->year) ? $calculateReportService->calculate($calculation[now()->year])['ranking'] : [],
                 'barChartData' => $barChartData,
             ]);
         } catch (\Exception $e) {

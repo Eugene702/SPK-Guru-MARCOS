@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Guru;
 use App\Models\PenilaianAdmin;
-use App\Models\SubKriteria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
