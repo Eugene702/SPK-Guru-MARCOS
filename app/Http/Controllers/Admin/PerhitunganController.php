@@ -24,8 +24,12 @@ class PerhitunganController extends Controller
             $query->where('jabatan', 'Kepala Sekolah');
         })->delete();
 
+        $year = Perhitungan::select('created_at')
+            ->distinct()
+            ->orderBy('created_at', 'desc')
+            ->get();
         $calculateReportService = app(\App\Services\CalculateReportService::class);
-        return view('admin.dataperhitungan', $calculateReportService->calculate());
+        return view('admin.dataperhitungan', array_merge($calculateReportService->calculate(), ['year' => $year]));
     }
     public function hitung($penilaianAdmin)
     {
