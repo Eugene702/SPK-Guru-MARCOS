@@ -12,9 +12,11 @@
                     <div class="text-gray-800 text-center rounded-xl shadow-md p-6 bg-amber-400/25">
                         <h2 class="text-3xl font-bold mb-2">📋 Penilaian Guru oleh Rekan Sejawat</h2>
                         <p class="text-md">
-                            Selamat datang di halaman penilaian guru. Di sini, Anda dapat memberikan evaluasi secara objektif terhadap performa guru dalam berbagai aspek.
+                            Selamat datang di halaman penilaian guru. Di sini, Anda dapat memberikan evaluasi secara
+                            objektif terhadap performa guru dalam berbagai aspek.
                             <br>
-                            <span class="font-semibold">✨ Tujuan utama penilaian ini adalah untuk meningkatkan kualitas pendidikan melalui apresiasi dan pengembangan berkelanjutan.</span>
+                            <span class="font-semibold">✨ Tujuan utama penilaian ini adalah untuk meningkatkan kualitas
+                                pendidikan melalui apresiasi dan pengembangan berkelanjutan.</span>
                         </p>
                     </div>
                 </div>
@@ -33,39 +35,44 @@
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             @foreach ($gurus as $index => $guru)
-                            @php
-                            $penilaian = \App\Models\PenilaianOlehRekanSejawat::where('penilai_id', auth()->user()->guru->id)
-                                ->where('guru_id', $guru->id)
-                                ->first();
-                            @endphp
-                            <tr class="text-center">
-                                {{-- Nomor --}}
-                                <td class="px-6 py-4 border">{{ $index + 1 }}</td>
-                                <td class="px-6 py-4 border">{{ $guru->user->name }}</td>
-                                <td class="px-6 py-4 border">
-                                    @if ($penilaian)
-                                        {{ number_format($penilaian->nilai_akhir, 2) }}%
-                                    @else
-                                        <span class="text-gray-400 italic">Belum dinilai</span>
-                                    @endif
-                                </td>
-                                {{-- Aksi --}}
-                                <td class="px-6 py-4 border">
-                                    @if ($penilaian)
-                                        <a href="{{ route('guru.penilaian.form', $guru->id) }}"
-                                           class="bg-yellow-500 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded transition">
-                                            Edit
-                                        </a>
-                                    @else
-                                    <a href="{{ route('guru.penilaian.form', $guru->id) }}"
-                                        class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition">
-                                         Nilai
-                                     </a>
-                                    @endif
-                                    
-                                </td>
-                                {{-- Aksi End --}}
-                            </tr>
+                                @php
+                                    $penilaian = \App\Models\PenilaianOlehRekanSejawat::where(
+                                        'penilai_id',
+                                        '=',
+                                        auth()->user()->guru->id,
+                                    )
+                                        ->where('guru_id', '=', $guru->id)
+                                        ->whereYear('created_at', now()->year)
+                                        ->first();
+                                @endphp
+                                <tr class="text-center">
+                                    {{-- Nomor --}}
+                                    <td class="px-6 py-4 border">{{ $index + 1 }}</td>
+                                    <td class="px-6 py-4 border">{{ $guru->user->name }}</td>
+                                    <td class="px-6 py-4 border">
+                                        @if ($penilaian)
+                                            {{ number_format($penilaian->nilai_akhir, 2) }}%
+                                        @else
+                                            <span class="text-gray-400 italic">Belum dinilai</span>
+                                        @endif
+                                    </td>
+                                    {{-- Aksi --}}
+                                    <td class="px-6 py-4 border">
+                                        @if ($penilaian)
+                                            <a href="{{ route('guru.penilaian.form', $guru->id) }}"
+                                                class="bg-yellow-500 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded transition">
+                                                Edit
+                                            </a>
+                                        @else
+                                            <a href="{{ route('guru.penilaian.form', $guru->id) }}"
+                                                class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition">
+                                                Nilai
+                                            </a>
+                                        @endif
+
+                                    </td>
+                                    {{-- Aksi End --}}
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>

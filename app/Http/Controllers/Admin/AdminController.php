@@ -15,7 +15,7 @@ class AdminController extends Controller
             $calculation = Perhitungan::whereHas('guru', function ($query) {
                     $query->where('jabatan', '=', 'Guru');
                 })
-                ->where('created_at', '>=', now()->subYears(5)->startOfYear())
+                ->whereYear('created_at', '>=', now()->subYears(5)->startOfYear())
                 ->with('guru.user')
                 ->get()
                 ->groupBy(function($item){

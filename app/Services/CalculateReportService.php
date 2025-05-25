@@ -14,6 +14,7 @@ class CalculateReportService
             $calculation = Perhitungan::whereHas('guru', function ($query) {
                 $query->where('jabatan', '=', 'Guru');
             })
+                ->whereYear('created_at', now()->year)
                 ->with('guru.user')
                 ->get();
         }

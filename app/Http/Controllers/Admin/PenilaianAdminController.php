@@ -18,7 +18,13 @@ class PenilaianAdminController extends Controller
         $gurus = Guru::whereHas('user', function ($query) {
             $query->withoutRole('KepalaSekolah');
         })
-            ->with(['user', 'perhitungan', 'penilaianAdmin'])->get();
+            ->with([
+                'user',
+                'perhitungan',
+                'penilaianAdmin' => function ($query) {
+                    $query->whereYear('created_at', now()->year);
+                }
+            ])->get();
         return view('admin.datapenilaian.index', compact('gurus'));
     }
 
@@ -45,15 +51,27 @@ class PenilaianAdminController extends Controller
         ]);
 
         DB::transaction(function () use ($request) {
-            $penilaianAdmin = PenilaianAdmin::updateOrCreate(
-                ['guru_id' => $request->guru_id],
-                [
+            $penilaianAdmin = PenilaianAdmin::where('guru_id', '=', $request->guru_id)
+                ->whereYear('created_at', now()->year);
+
+            if ($penilaianAdmin->exists()) {
+                $penilaianAdmin = $penilaianAdmin->first()->update(
+                    [
+                        'administrasi' => $request->administrasi,
+                        'presensi_realita' => $request->presensi_realita,
+                        'sertifikat_pengembangan' => $request->sertifikat_pengembangan,
+                        'kegiatan_sosial' => $request->kegiatan_sosial,
+                    ]
+                );
+            } else {
+                $penilaianAdmin = PenilaianAdmin::create([
+                    'guru_id' => $request->guru_id,
                     'administrasi' => $request->administrasi,
                     'presensi_realita' => $request->presensi_realita,
                     'sertifikat_pengembangan' => $request->sertifikat_pengembangan,
                     'kegiatan_sosial' => $request->kegiatan_sosial,
-                ]
-            );
+                ]);
+            }
 
             (new PerhitunganController)->hitung($penilaianAdmin);
         });
@@ -91,7 +109,7 @@ class PenilaianAdminController extends Controller
             $penilaianAdmin = PenilaianAdmin::findOrFail($id);
             $guru = Guru::findOrFail($request->guru_id);
 
-            if ($guru->jumlah_presensi == 0) {
+            if ($guru->presensi_ekspektasi == 0) {
                 return redirect()->back()->withErrors('Jumlah presensi ekspektasi guru tidak boleh 0.');
             }
 

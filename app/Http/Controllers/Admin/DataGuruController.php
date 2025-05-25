@@ -83,7 +83,7 @@ class DataGuruController extends Controller
                 'nip' => $request->nip,
                 'jabatan' => $request->jabatan,
                 'jam_mengajar_ekspektasi' => $request->role == 'Guru' ? $request->jumlah_jam_mengajar : 0,
-                'jumlah_presensi' => $request->role == 'Guru' ? $request->jumlah_presensi : 0,
+                'presensi_ekspektasi' => $request->role == 'Guru' ? $request->jumlah_presensi : 0,
             ]);
 
             GuruKelas::where('guru_id', '=', $id)->delete();

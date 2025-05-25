@@ -41,7 +41,7 @@ class UpdateRequest extends FormRequest
             'name' => ['required'],
             'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($userId)],
             'password' => ['nullable', 'min:6'],
-            'nip' => ['required', Rule::unique('gurus', 'id')->ignore($this->route('id'))],
+            'nip' => ['required', Rule::unique('guru', 'id')->ignore($this->route('id'))],
             'jabatan' => ['required'],
             'jumlah_jam_mengajar' => ['required_if:role,Guru'],
             'jumlah_presensi' => ['required_if:role,Guru'],

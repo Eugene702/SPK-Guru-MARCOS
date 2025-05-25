@@ -36,6 +36,7 @@
                                     $penilaian = $guru
                                         ->penilaianOlehKepalaSekolah()
                                         ->where('kepala_sekolah_id', auth()->user()->guru->id)
+                                        ->whereYear('created_at', now()->year)
                                         ->first();
 
                                     if ($penilaian != null) {
@@ -88,6 +89,7 @@
                                     $penilaian = $guru
                                         ->penilaianOlehKepalaSekolah()
                                         ->where('kepala_sekolah_id', auth()->user()->guru->id)
+                                        ->whereYear('created_at', now()->year)
                                         ->first();
 
                                     if ($penilaian == null) {
