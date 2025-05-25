@@ -5,13 +5,18 @@ use App\Models\Perhitungan;
 
 class CalculateReportService
 {
-    public function calculate()
+    public function calculate($data = null)
     {
-        $calculation = Perhitungan::whereHas('guru', function ($query) {
-            $query->where('jabatan', '=', 'Guru');
-        })
-            ->with('guru.user')
-            ->get();
+        $calculation = null;
+        if ($data) {
+            $calculation = $data;
+        } else {
+            $calculation = Perhitungan::whereHas('guru', function ($query) {
+                $query->where('jabatan', '=', 'Guru');
+            })
+                ->with('guru.user')
+                ->get();
+        }
 
         $scoreWeights = [
             'supervisi' => 0.18,
