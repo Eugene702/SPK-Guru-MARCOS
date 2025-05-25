@@ -34,8 +34,8 @@
             <div class="px-8 py-6">
                 <div class="space-y-6">
                     <div class="text-center">
-                        <div class="bg-blue-50 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-4">
-                            <svg class="h-8 w-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="bg-[#fff5e6] rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-4">
+                            <svg class="h-8 w-8 text-[#ffd480]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                             </svg>
@@ -49,7 +49,7 @@
                             x-ref="fileUpload" name="document" />
                         <label for="fileUpload" class="w-full">
                             <div
-                                class="bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg transition-all shadow-md flex items-center justify-center cursor-pointer">
+                                class="bg-[#ffd480] hover:bg-[#ffca66] text-white py-3 px-4 rounded-lg transition-all shadow-md flex items-center justify-center cursor-pointer">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 4v16m8-8H4" />
@@ -62,8 +62,8 @@
 
                     <div class="bg-gray-50 border border-gray-100 rounded-lg p-4 flex items-center" x-show="data">
                         <div
-                            class="h-10 w-10 flex-shrink-0 rounded-lg bg-blue-100 flex items-center justify-center mr-3">
-                            <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            class="h-10 w-10 flex-shrink-0 rounded-lg bg-[#fff5e6] flex items-center justify-center mr-3">
+                            <svg class="h-5 w-5 text-[#ffd480]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
@@ -90,7 +90,7 @@
                     Batal
                 </button>
                 <button type="submit"
-                    class="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium shadow-sm">
+                    class="px-5 py-2.5 bg-[#ffd480] text-white rounded-lg hover:bg-[#ffca66] transition-colors focus:outline-none focus:ring-2 focus:ring-[#ffd480] font-medium shadow-sm">
                     Unggah
                 </button>
             </div>
