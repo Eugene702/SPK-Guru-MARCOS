@@ -5,8 +5,18 @@
         Swal.fire({
             title: 'Hapus guru!',
             text: 'Apakah kamu yakin ingin menghapus guru ini?',
-            icon: 'question',
+            icon: 'warning',
             showCancelButton: true,
+            confirmButtonText: 'Hapus',
+            cancelButtonText: 'Batal',
+            reverseButtons: true,
+            confirmButtonColor: '#ffd480',
+            cancelButtonColor: '#6b7280',
+            focusCancel: true,
+            customClass: {
+                confirmButton: 'swal-confirm-btn',
+                cancelButton: 'swal-cancel-btn'
+            }
         }).then(result => {
             if (result.isConfirmed) {
                 e.target.submit();

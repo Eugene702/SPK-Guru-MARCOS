@@ -26,7 +26,7 @@
                         </div>
                     @elseif($errors->any())
                         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                            {!! implode("<br />", $errors->all()) !!}
+                            {!! implode('<br />', $errors->all()) !!}
                         </div>
                     @endif
 
@@ -113,8 +113,18 @@
                                                 Swal.fire({
                                                     title: 'Hapus siswa!',
                                                     text: 'Apakah kamu yakin ingin menghapus siswa {{ $siswa->user->name }} ini?',
-                                                    icon: 'question',
+                                                    icon: 'warning',
                                                     showCancelButton: true,
+                                                    confirmButtonText: 'Hapus',
+                                                    cancelButtonText: 'Batal',
+                                                    reverseButtons: true,
+                                                    confirmButtonColor: '#ffd480',
+                                                    cancelButtonColor: '#6b7280',
+                                                    focusCancel: true,
+                                                    customClass: {
+                                                        confirmButton: 'swal-confirm-btn',
+                                                        cancelButton: 'swal-cancel-btn'
+                                                    }
                                                 }).then(result => {
                                                     if (result.isConfirmed) {
                                                         e.target.submit();
