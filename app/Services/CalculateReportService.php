@@ -5,13 +5,19 @@ use App\Models\Perhitungan;
 
 class CalculateReportService
 {
-    public function calculate()
+    public function calculate($data = null)
     {
-        $calculation = Perhitungan::whereHas('guru', function ($query) {
-            $query->where('jabatan', '=', 'Guru');
-        })
-            ->with('guru.user', 'administrasiSubKriteria')
-            ->get();
+        $calculation = null;
+        if ($data) {
+            $calculation = $data;
+        } else {
+            $calculation = Perhitungan::whereHas('guru', function ($query) {
+                $query->where('jabatan', '=', 'Guru');
+            })
+                ->whereYear('created_at', now()->year)
+                ->with('guru.user')
+                ->get();
+        }
 
         $scoreWeights = [
             'supervisi' => 0.18,
@@ -25,26 +31,26 @@ class CalculateReportService
 
         $data = $calculation->map(function ($item) {
             $formatScore = function ($score, $isAdmin = false) {
-                if($isAdmin){
-                    if($score == 4){
+                if ($isAdmin) {
+                    if ($score == 4) {
                         return "Lengkap";
-                    }else if($score == 3){
+                    } else if ($score == 3) {
                         return 'Cukup';
-                    }else if($score == 2){
+                    } else if ($score == 2) {
                         return 'Kurang';
-                    }else{
+                    } else {
                         return 'Tidak Ada';
                     }
-                }else{
-                    if($score == 4){
+                } else {
+                    if ($score == 4) {
                         return "Sangat Baik";
-                    }else if($score == 3){
+                    } else if ($score == 3) {
                         return 'Baik';
-                    }else if($score == 2){
+                    } else if ($score == 2) {
                         return 'Cukup';
-                    }else if($score == 1){
+                    } else if ($score == 1) {
                         return 'Kurang';
-                    }else{
+                    } else {
                         return 'Tidak Ada';
                     }
                 }
@@ -54,7 +60,7 @@ class CalculateReportService
                 'guru_id' => $item->guru_id,
                 'nama' => $item->guru->user->name ?? 'Nama tidak tersedia',
                 'supervisi' => $item->supervisi,
-                'administrasi' => $formatScore(round($item->administrasiSubKriteria->bobot_sub_kriteria ?? 0), true),
+                'administrasi' => $formatScore(round($item->administrasi ?? 0), true),
                 'presensi' => $formatScore(round($item->presensi ?? 0)),
                 'kehadiran_dikelas' => $formatScore(round($item->kehadiran_dikelas ?? 0)),
                 'sertifikat_pengembangan' => $item->sertifikat_pengembangan ?? 0,
@@ -68,7 +74,7 @@ class CalculateReportService
                 'guru_id' => $item->guru_id,
                 'nama' => $item->guru->user->name ?? 'Nama tidak tersedia',
                 'supervisi' => $item->supervisi ?? 0,
-                'administrasi' => $item->administrasiSubKriteria->bobot_sub_kriteria ?? 0,
+                'administrasi' => $item->administrasi ?? 0,
                 'presensi' => $item->presensi ?? 0,
                 'kehadiran_dikelas' => $item->kehadiran_dikelas ?? 0,
                 'sertifikat_pengembangan' => $item->sertifikat_pengembangan ?? 0,
@@ -174,7 +180,7 @@ class CalculateReportService
         })
             ->sortByDesc(['fk'])
             ->toArray();
-        
+
         return compact(
             'scoreWeights',
             'data',

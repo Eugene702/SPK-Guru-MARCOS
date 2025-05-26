@@ -30,6 +30,7 @@ class PenilaianRekanSejawatController extends Controller
 
         $penilaian = PenilaianOlehRekanSejawat::where('penilai_id', $penilaiId)
             ->where('guru_id', $guruId)
+            ->whereYear('created_at', now()->year)
             ->first();
 
         $nilaiSebelumnya = [];
@@ -47,22 +48,30 @@ class PenilaianRekanSejawatController extends Controller
     public function updateRataRataRekanSejawat($guruId)
     {
         $nilaiAkhirList = PenilaianOlehRekanSejawat::where('guru_id', $guruId)
+            ->whereYear('created_at', now()->year)
             ->pluck('nilai_akhir');
 
         if ($nilaiAkhirList->count() >= 1) {
             $rataRata = $nilaiAkhirList->avg();
-
-            Perhitungan::updateOrCreate(
-                ['guru_id' => $guruId],
-                ['rekan_sejawat' => $rataRata]
-            );
+            $calculate = Perhitungan::where('guru_id', '=', $guruId)
+                ->whereYear('created_at', now()->year);
+            if($calculate->exists()){
+                $calculate->first()->update([
+                    'rekan_sejawat' => $rataRata
+                ]);
+            } else {
+                Perhitungan::create([
+                    'guru_id' => $guruId,
+                    'rekan_sejawat' => $rataRata
+                ]);
+            }
         }
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'guru_id' => 'required|exists:gurus,id',
+            'guru_id' => 'required|exists:guru,id',
             'nilai' => 'required|array',
             'nilai.*' => 'in:0,1,2',
         ]);
@@ -71,6 +80,7 @@ class PenilaianRekanSejawatController extends Controller
 
         $penilaian = PenilaianOlehRekanSejawat::where('penilai_id', $penilaiId)
             ->where('guru_id', $request->guru_id)
+            ->whereYear('created_at', now()->year)
             ->first();
 
         if (!$penilaian) {
@@ -80,15 +90,8 @@ class PenilaianRekanSejawatController extends Controller
             ]);
         }
 
-
-        // Cek apakah sudah pernah menilai
-        $penilaian = PenilaianOlehRekanSejawat::firstOrCreate([
-            'penilai_id' => $penilaiId,
-            'guru_id' => $request->guru_id,
-        ]);
-
         // Hapus detail lama jika ada
-        PenilaianRekanDetail::where('penilaian_id', $penilaian->id)->delete();
+        PenilaianRekanDetail::where('penilaian_id', $penilaian->id)->whereYear('created_at', now()->year)->delete();
 
         $total = 0;
         foreach ($request->nilai as $pernyataanId => $skor) {

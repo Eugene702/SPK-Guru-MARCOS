@@ -41,7 +41,7 @@ class UpdateRequest extends FormRequest
             'name' => ['required'],
             'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($userId)],
             'password' => ['nullable', 'min:6'],
-            'nip' => ['required', Rule::unique('gurus', 'id')->ignore($this->route('id'))],
+            'nip' => ['required', Rule::unique('guru', 'id')->ignore($this->route('id'))],
             'jabatan' => ['required'],
             'jumlah_jam_mengajar' => ['required_if:role,Guru'],
             'jumlah_presensi' => ['required_if:role,Guru'],
@@ -49,7 +49,7 @@ class UpdateRequest extends FormRequest
             'kelas' => ['required_if:role,Guru', 'array'],
             'kelas.*' => ['exists:kelas,id'],
             'mata_pelajaran' => ['required_if:role,Guru', 'array'],
-            'mata_pelajaran.*' => ['exists:mata_pelajarans,id']
+            'mata_pelajaran.*' => ['exists:mata_pelajaran,id']
         ];
     }
 

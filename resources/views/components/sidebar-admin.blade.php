@@ -2,10 +2,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-
 <div class="bg-sidebar w-64 text-black flex flex-col justify-between">
     <div>
-  
         <ul class="p-4 space-y-6">
             <li>
                 <a href="/admin" class="flex items-center gap-2 hover:bg-creamy hover:text-black px-2 py-2 rounded transition {{ request()->routeIs('admin.index') ? 'bg-creamy' : '' }}">
@@ -28,12 +26,12 @@
                 </a>
             </li>
             <li>
-                <a href="/admin/datapenilaian" class="flex items-center gap-2 hover:bg-creamy hover:text-black px-2 py-2 rounded transition {{ request()->routeIs('admin.datapenilaian') ? 'bg-creamy' : '' }}">
+                <a href="/admin/datapenilaian" class="flex items-center gap-2 hover:bg-creamy hover:text-black px-2 py-2 rounded transition {{ request()->routeIs('admin.datapenilaian.*') ? 'bg-creamy' : '' }}">
                     <i class="fas fa-check-circle w-5"></i> Data Penilaian
                 </a>
             </li>
             <li>
-                <a href="/admin/dataperhitungan" class="flex items-center gap-2 hover:bg-creamy hover:text-black px-2 py-2 rounded transition {{ request()->routeIs('admin.dataperhitungan') ? 'bg-creamy' : '' }}">
+                <a href="/admin/dataperhitungan" class="flex items-center gap-2 hover:bg-creamy hover:text-black px-2 py-2 rounded transition {{ request()->routeIs('admin.dataperhitungan.*') ? 'bg-creamy' : '' }}">
                     <i class="fas fa-calculator w-5"></i> Data Perhitungan
                 </a>
             </li>

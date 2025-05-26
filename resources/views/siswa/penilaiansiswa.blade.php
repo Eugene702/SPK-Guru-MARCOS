@@ -40,8 +40,9 @@
                             <tbody class="divide-y divide-gray-200">
                                 @foreach ($gurus as $guru)
                                     @php
-                                        $penilaian = $guru->penilaianSiswa
+                                        $penilaian = $guru->penilaianSiswa()
                                             ->where('siswa_id', auth()->user()->siswa->id)
+                                            ->whereYear('created_at', now()->year)
                                             ->first();
 
                                         if ($penilaian != null) {
@@ -56,7 +57,7 @@
                                                 {{ $mapel->nama_mata_pelajaran }}<br>
                                             @endforeach
                                         </td>
-                                        <td class="border px-6 py-4 text-center">{{ $penilaian->jam_masuk ?? '-' }}</td>
+                                        <td class="border px-6 py-4 text-center">{{ $penilaian->jam_mengajar_realita ?? '-' }}</td>
                                         <td class="border px-6 py-4 text-center">{{ $penilaian->jam_tugas ?? '-' }}</td>
                                         <td class="border px-6 py-4 text-center">
                                             {{ $penilaian->jam_tidak_masuk ?? '-' }}
@@ -82,8 +83,9 @@
                                                 {{ $guru->user->name }}</h2>
 
                                             @php
-                                                $penilaian = $guru->penilaianSiswa
+                                                $penilaian = $guru->penilaianSiswa()
                                                     ->where('siswa_id', auth()->user()->siswa->id)
+                                                    ->whereYear('created_at', now()->year)
                                                     ->first();
                                             @endphp
 
@@ -158,8 +160,9 @@
                             <tbody class="divide-y divide-gray-200">
                                 @foreach ($gurus as $guru)
                                     @php
-                                        $penilaian = $guru->penilaianSiswa
+                                        $penilaian = $guru->penilaianSiswa()
                                             ->where('siswa_id', auth()->user()->siswa->id)
+                                            ->whereYear('created_at', now()->year)
                                             ->first();
 
                                         if ($penilaian == null) {
@@ -174,7 +177,7 @@
                                                 {{ $mapel->nama_mata_pelajaran }}<br>
                                             @endforeach
                                         </td>
-                                        <td class="border px-6 py-4 text-center">{{ $penilaian->jam_masuk ?? '-' }}
+                                        <td class="border px-6 py-4 text-center">{{ $penilaian->jam_mengajar_realita ?? '-' }}
                                         </td>
                                         <td class="border px-6 py-4 text-center">{{ $penilaian->jam_tugas ?? '-' }}
                                         </td>
@@ -202,8 +205,9 @@
                                                 {{ $guru->user->name }}</h2>
 
                                             @php
-                                                $penilaian = $guru->penilaianSiswa
+                                                $penilaian = $guru->penilaianSiswa()
                                                     ->where('siswa_id', auth()->user()->siswa->id)
+                                                    ->whereYear('created_at', now()->year)
                                                     ->first();
                                             @endphp
 
@@ -221,7 +225,7 @@
                                                     <label for="jam_masuk" class="block text-gray-700">Jumlah Jam
                                                         Masuk</label>
                                                     <input type="number" id="jam_masuk" name="jam_masuk"
-                                                        value="{{ $penilaian->jam_masuk ?? '' }}" required
+                                                        value="{{ $penilaian->jam_mengajar_realita ?? '' }}" required
                                                         class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                 </div>
 

@@ -34,6 +34,7 @@ class PenilaianKepsekController extends Controller
 
         $penilaian = PenilaianOlehKepalaSekolah::where('guru_id', $guru_id)
             ->where('kepala_sekolah_id', $kepalaSekolah->id)
+            ->whereYear('created_at', now()->year)
             ->first();
 
         $nilaiSebelumnya = [];
@@ -63,7 +64,7 @@ class PenilaianKepsekController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'guru_id' => 'required|exists:gurus,id',
+            'guru_id' => 'required|exists:guru,id',
             'nilai' => 'required|array',
             'nilai.*' => 'required|integer|min:1|max:4',
         ]);
@@ -71,12 +72,19 @@ class PenilaianKepsekController extends Controller
         $kepalaSekolah = auth()->user()->guru;
     
         // Cek apakah penilaian sudah ada
-        $penilaian = PenilaianOlehKepalaSekolah::firstOrCreate(
-            [
+        $penilaian = null;
+        $penilaian = PenilaianOlehKepalaSekolah::where('guru_id', '=', $request->guru_id)
+            ->where('kepala_sekolah_id', '=', $kepalaSekolah->id)
+            ->whereYear('created_at', now()->year);
+
+        if($penilaian->exists()){
+            $penilaian = $penilaian->first();
+        } else {
+            $penilaian = PenilaianOlehKepalaSekolah::create([
                 'guru_id' => $request->guru_id,
                 'kepala_sekolah_id' => $kepalaSekolah->id,
-            ]
-        );
+            ]);
+        }
     
         // Hapus detail lama dulu jika sudah ada
         PenilaianKepsekDetail::where('penilaian_id', $penilaian->id)->delete();
@@ -102,10 +110,19 @@ class PenilaianKepsekController extends Controller
         ]);
 
         // 🔥 Tambahkan atau update ke tabel perhitungans
-        Perhitungan::updateOrCreate(
-        ['guru_id' => $request->guru_id],
-        ['supervisi' => $nilaiAkhir]
-    );
+        $calculate = Perhitungan::where('guru_id', '=', $request->guru_id)
+            ->whereYear('created_at', now()->year);
+
+        if($calculate->exists()){
+            $calculate->first()->update([
+                'supervisi' => $nilaiAkhir
+            ]);
+        } else {
+            Perhitungan::create([
+                'guru_id' => $request->guru_id,
+                'supervisi' => $nilaiAkhir
+            ]);
+        }
     
         return redirect()->route('kepsek.penilaian.index')->with('success', 'Penilaian berhasil disimpan');
     }

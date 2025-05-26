@@ -18,18 +18,31 @@ class PerhitunganController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         Perhitungan::whereHas('guru', function ($query) {
             $query->where('jabatan', 'Kepala Sekolah');
         })->delete();
 
+        $data = null;
+        if ($request->has('year') && trim($request->year) != "") {
+            $data = Perhitungan::whereHas('guru', function ($query) {
+                $query->where('jabatan', '=', 'Guru');
+            })
+                ->whereYear('created_at', $request->year)
+                ->with('guru.user')
+                ->get();
+        }
+
+        $year = Perhitungan::selectRaw('YEAR(created_at) as year')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->get();
         $calculateReportService = app(\App\Services\CalculateReportService::class);
-        return view('admin.dataperhitungan', $calculateReportService->calculate());
+        return view('admin.dataperhitungan', array_merge($calculateReportService->calculate($data), ['year' => $year]));
     }
-    public function hitung($penilaianadmin_id)
+    public function hitung($penilaianAdmin)
     {
-        $penilaianAdmin = PenilaianAdmin::find($penilaianadmin_id);
         if (!$penilaianAdmin) {
             return back()->with('error', 'Data Penilaian Admin tidak ditemukan');
         }
@@ -39,7 +52,6 @@ class PerhitunganController extends Controller
             return back()->with('error', 'Data guru tidak ditemukan');
         }
 
-        // Tambahkan pengecekan jabatan guru
         if ($guru->jabatan === 'Kepala Sekolah') {
             return back()->with('error', 'Kepala Sekolah tidak perlu dinilai');
         }
@@ -54,8 +66,7 @@ class PerhitunganController extends Controller
             return back()->with('error', 'Nilai akhir dari kepala sekolah belum ada');
         }
 
-        // // Contoh: hitung nilai presensi final
-        $nilaiPresensi = ($penilaianAdmin->presensi_realita / $guru->jumlah_presensi) * 100;
+        $nilaiPresensi = ($penilaianAdmin->presensi_realita / $guru->presensi_ekspektasi) * 100;
         if ($nilaiPresensi >= 90 && $nilaiPresensi <= 100) {
             $skorPresensi = 4;
         } elseif ($nilaiPresensi >= 80 && $nilaiPresensi < 90) {
@@ -65,7 +76,8 @@ class PerhitunganController extends Controller
         } else {
             $skorPresensi = 1;
         }
-        $kehadiran_dikelas = ($penilaianSiswa->jam_masuk / $guru->jumlah_jam_mengajar) * 100;
+
+        $kehadiran_dikelas = ($penilaianSiswa->jam_masuk / $guru->jam_mengajar_ekspektasi) * 100;
         if ($kehadiran_dikelas >= 90 && $kehadiran_dikelas <= 100) {
             $skorKehadiran = 4;
         } elseif ($kehadiran_dikelas >= 80 && $kehadiran_dikelas < 90) {
@@ -76,18 +88,29 @@ class PerhitunganController extends Controller
             $skorKehadiran = 1;
         }
 
-        Perhitungan::updateOrCreate(
-            ['guru_id' => $guru->id],
-            [
+        $calculate = Perhitungan::where('guru_id', '=', $guru->id)
+            ->whereYear('created_at', now()->year);
+
+        if ($calculate->exists()) {
+            $calculate->first()->update([
                 'supervisi' => $nilaiKepsek,
                 'administrasi' => $penilaianAdmin->administrasi,
                 'presensi' => $skorPresensi,
                 'kehadiran_dikelas' => $skorKehadiran,
                 'sertifikat_pengembangan' => $penilaianAdmin->sertifikat_pengembangan,
                 'kegiatan_sosial' => $penilaianAdmin->kegiatan_sosial,
-                'rekan_sejawat' => null,
-            ]
-        );
+            ]);
+        } else {
+            Perhitungan::create([
+                'guru_id' => $guru->id,
+                'supervisi' => $nilaiKepsek,
+                'administrasi' => $penilaianAdmin->administrasi,
+                'presensi' => $skorPresensi,
+                'kehadiran_dikelas' => $skorKehadiran,
+                'sertifikat_pengembangan' => $penilaianAdmin->sertifikat_pengembangan,
+                'kegiatan_sosial' => $penilaianAdmin->kegiatan_sosial,
+            ]);
+        }
     }
 
     public function updateRataRataRekanSejawat($guruId)

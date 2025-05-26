@@ -28,40 +28,6 @@ class SiswaController extends Controller
         return view('siswa.penilaiansiswa', compact('gurus'));
     }
 
-    //     public function storePenilaian(Request $request)
-// {
-//     $request->validate([
-//         'guru_id' => 'required',
-//         'jam_masuk' => 'required|integer',
-//         'jam_tugas' => 'required|integer',
-//         'jam_tidak_masuk' => 'required|integer',
-//     ]);
-
-    //     $siswa = auth()->user()->siswa;
-
-    //     PenilaianSiswa::create([
-//         'siswa_id' => $siswa->id,
-//         'guru_id' => $request->guru_id,
-//         'jam_masuk' => $request->jam_masuk,
-//         'jam_tugas' => $request->jam_tugas,
-//         'jam_tidak_masuk' => $request->jam_tidak_masuk,
-//     ]);
-
-    //     // Ambil data guru
-//     $guru = Guru::findOrFail($request->guru_id);
-
-    //     // Hitung kehadiran di kelas
-//     if ($guru->jumlah_jam_mengajar > 0) {
-//         $kehadiran_dikelas = ($request->jam_masuk / $guru->jumlah_jam_mengajar) * 100;
-
-    //         $perhitungan = Perhitungan::firstOrCreate(['guru_id' => $request->guru_id]);
-//         $perhitungan->fill(['kehadiran_dikelas' => $kehadiran_dikelas])->save();
-
-    //     }
-
-    //     return redirect()->back()->with('success', 'Penilaian berhasil disimpan.');
-// }
-
     public function storePenilaian(Request $request)
     {
         $request->validate([
@@ -77,7 +43,7 @@ class SiswaController extends Controller
         PenilaianSiswa::create([
             'siswa_id' => $siswa->id,
             'guru_id' => $request->guru_id,
-            'jam_masuk' => $request->jam_masuk,
+            'jam_mengajar_realita' => $request->jam_masuk,
             'jam_tugas' => $request->jam_tugas,
             'jam_tidak_masuk' => $request->jam_tidak_masuk,
         ]);
@@ -92,22 +58,19 @@ class SiswaController extends Controller
             $kehadiran_dikelas = ($request->jam_masuk / $guru->jumlah_jam_mengajar) * 100;
             $value = $kehadiran_dikelas >= 90 ? 4 : ($kehadiran_dikelas >= 80 ? 3 : ($kehadiran_dikelas >= 70 ? 2 : 1));
 
-            // DEBUG LOG
-            \Log::info('Nilai Kehadiran Dihitung:', [
-                'guru_id' => $guru->id,
-                'jumlah_jam_mengajar' => $guru->jumlah_jam_mengajar,
-                'jam_masuk' => $request->jam_masuk,
-                'kehadiran_dikelas' => $kehadiran_dikelas,
-            ]);
-
-            $perhitungan = Perhitungan::firstOrCreate(
-                ['guru_id' => $guru->id],
-                []
-            );
-
-            $perhitungan->update([
-                'kehadiran_dikelas' => $value,
-            ]);
+            $perhitungan = Perhitungan::where('guru_id', '=', $guru->id)
+                ->whereYear('created_at', now()->year);
+            
+            if($perhitungan->exists()){
+                $perhitungan->first()->update([
+                    'kehadiran_dikelas' => $value,
+                ]);
+            } else {
+                Perhitungan::create([
+                    'guru_id' => $guru->id,
+                    'kehadiran_dikelas' => $value,
+                ]);
+            }
         } else {
             return back()->with('error', 'Jumlah jam mengajar guru tidak valid.');
         }
@@ -129,7 +92,7 @@ class SiswaController extends Controller
 
         // Update nilai jam masuk, tugas, tidak masuk
         $penilaian->update([
-            'jam_masuk' => $request->jam_masuk,
+            'jam_mengajar_realita' => $request->jam_masuk,
             'jam_tugas' => $request->jam_tugas,
             'jam_tidak_masuk' => $request->jam_tidak_masuk,
         ]);
