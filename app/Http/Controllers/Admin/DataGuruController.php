@@ -118,9 +118,11 @@ class DataGuruController extends Controller
     public function destroy($id)
     {
         DB::transaction(function () use ($id) {
-            $guru = Guru::findOrFail($id);
-            User::where('id', '=', $guru->user_id)->delete();
-            $guru->delete();
+            $guru = Guru::find($id);
+            if($guru){
+                $guru->user()->delete();
+                $guru->delete();
+            }
         });
 
         return redirect()->route('admin.dataguru.index')->with('success', 'Data guru berhasil dihapus.');

@@ -17,7 +17,14 @@ class PenilaianRekanSejawatController extends Controller
     }
     public function index()
     {
-        $gurus = Guru::where('id', '!=', auth()->user()->guru->id)->get();
+        $gurus = Guru::where('id', '!=', auth()->user()->guru->id)
+            ->whereHas('user', function($query){
+                $query->whereHas('roles', function($query){
+                    $query->where('name', '=', 'Guru');
+                });
+            })
+            ->get();
+
         return view('guru.penilaian.index', compact('gurus'));
     }
 

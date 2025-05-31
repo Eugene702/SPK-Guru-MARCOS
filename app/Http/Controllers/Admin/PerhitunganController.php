@@ -57,15 +57,6 @@ class PerhitunganController extends Controller
         }
 
         $penilaianSiswa = PenilaianSiswa::where('guru_id', $guru->id)->first();
-        if (!$penilaianSiswa) {
-            return back()->with('error', 'Penilaian siswa belum ada');
-        }
-
-        $nilaiKepsek = PenilaianOlehKepalaSekolah::where('guru_id', $guru->id)->value('nilai_akhir');
-        if (is_null($nilaiKepsek)) {
-            return back()->with('error', 'Nilai akhir dari kepala sekolah belum ada');
-        }
-
         $nilaiPresensi = ($penilaianAdmin->presensi_realita / $guru->presensi_ekspektasi) * 100;
         if ($nilaiPresensi >= 90 && $nilaiPresensi <= 100) {
             $skorPresensi = 4;
@@ -77,7 +68,7 @@ class PerhitunganController extends Controller
             $skorPresensi = 1;
         }
 
-        $kehadiran_dikelas = ($penilaianSiswa->jam_masuk / $guru->jam_mengajar_ekspektasi) * 100;
+        $kehadiran_dikelas = $penilaianSiswa ? ($penilaianSiswa->jam_masuk / $guru->jam_mengajar_ekspektasi) * 100 : 0;
         if ($kehadiran_dikelas >= 90 && $kehadiran_dikelas <= 100) {
             $skorKehadiran = 4;
         } elseif ($kehadiran_dikelas >= 80 && $kehadiran_dikelas < 90) {
@@ -93,7 +84,6 @@ class PerhitunganController extends Controller
 
         if ($calculate->exists()) {
             $calculate->first()->update([
-                'supervisi' => $nilaiKepsek,
                 'administrasi' => $penilaianAdmin->administrasi,
                 'presensi' => $skorPresensi,
                 'kehadiran_dikelas' => $skorKehadiran,
@@ -103,7 +93,6 @@ class PerhitunganController extends Controller
         } else {
             Perhitungan::create([
                 'guru_id' => $guru->id,
-                'supervisi' => $nilaiKepsek,
                 'administrasi' => $penilaianAdmin->administrasi,
                 'presensi' => $skorPresensi,
                 'kehadiran_dikelas' => $skorKehadiran,
