@@ -5,7 +5,6 @@
 <x-app-layout>
     <div class="flex h-screen">
         @include('components.sidebar-guru')
-
         <main class="flex-1 p-10 overflow-auto">
             <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-lg">
                 <h1 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Form Penilaian Guru</h1>

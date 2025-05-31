@@ -5,7 +5,6 @@
     <x-app-layout>
         <div class="flex h-screen">
             @include('components.sidebar-guru')
-
             {{-- Konten lainnya disini --}}
             <main class="flex-1 p-10 overflow-auto">
                 <div class="mb-10">

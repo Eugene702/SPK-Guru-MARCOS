@@ -6,6 +6,7 @@
         <div class="flex h-screen">
             @include('components.sidebar-siswa')
 
+            {{-- Konten lainnya disini --}}
             <main class="flex-1 p-10">
                 <div class="mb-10">
                     <div class="text-gray-800 text-center rounded-xl shadow-md p-6 bg-amber-400/25">
