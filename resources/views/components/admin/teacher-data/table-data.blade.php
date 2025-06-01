@@ -1,21 +1,21 @@
 <div x-data="{
     editId: null,
     data: {{ $gurus }},
-    handleOnClickDelete(e) {
+    handleOnClickDelete(e, data) {
         Swal.fire({
             title: 'Hapus guru!',
-            text: 'Apakah kamu yakin ingin menghapus guru ini?',
-            icon: 'warning',
+            text: `Apakah kamu yakin ingin menghapus guru ${data.user.name} ini?`,
+            icon: 'warning', 
             showCancelButton: true,
             confirmButtonText: 'Hapus',
             cancelButtonText: 'Batal',
             reverseButtons: true,
             confirmButtonColor: '#ffd480',
-            cancelButtonColor: '#6b7280',
+            cancelButtonColor: '#d1d5db',
             focusCancel: true,
             customClass: {
-                confirmButton: 'swal-confirm-btn',
-                cancelButton: 'swal-cancel-btn'
+                confirmButton: 'swal-confirm-btn text-black',
+                cancelButton: 'swal-cancel-btn text-black'
             }
         }).then(result => {
             if (result.isConfirmed) {
@@ -98,7 +98,7 @@
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
                             <form action="{{ route('admin.dataguru.destroy', $guru->id) }}" method="POST"
-                                @submit.prevent="handleOnClickDelete">
+                                @submit.prevent="() => handleOnClickDelete($event, {{ $guru }})">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="text-red-500 hover:text-red-700" title="Hapus">
                                     <i class="fa-solid fa-trash"></i>
