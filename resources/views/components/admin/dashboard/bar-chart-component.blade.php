@@ -119,7 +119,7 @@
 new Chart($refs.barChart, chartOptions);">
 
     <div class="w-full max-w-4xl mx-auto bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-        <div class="px-6 py-5 bg-gradient-to-r from-amber-50 via-yellow-50 to-orange-50 border-b border-yellow-200/30">
+        <div class="px-6 py-5 bg-gradient-to-r from-amber-100 via-yellow-100 to-amber-100 border-b border-yellow-200/30">
             <div class="flex items-center justify-center space-x-3">
                 <div class="flex space-x-1">
                     <div class="w-4 h-4 bg-blue-500 rounded-sm"></div>

@@ -5,9 +5,10 @@
     <x-app-layout>
         <div class="flex flex-row min-h-screen">
             @include('components.sidebar-admin')
-            <main class="flex-1 p-10">
-                <h1 class="text-2xl font-bold">Selamat Datang {{ auth()->user()->name }}</h1>
-                <table class="w-full border-collapse my-10">
+            <main class="flex-1 p-6 md:p-10">
+                <div class="max-w-7xl mx-auto bg-white shadow-xl rounded-xl p-6">
+                <h1 class="text-3xl font-bold text-center">Selamat Datang {{ auth()->user()->name }}</h1>
+                {{-- <table class="w-full border-collapse my-10">
                     <thead>
                         <tr>
                             <th class="bg-blue-900 text-white font-medium text-center py-3 px-2">Peringkat</th>
@@ -35,9 +36,9 @@
                             </tr>
                         @endforeach
                     </tbody>
-                </table>
+                </table> --}}
 
-                <x-steps-conducting-assessment />
+                {{-- <x-steps-conducting-assessment /> --}}
                 <x-admin.dashboard.bar-chart-component :barChartData="$barChartData" />
             </main>
         </div>

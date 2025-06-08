@@ -30,7 +30,7 @@ class ImportRequest extends FormRequest
         return [
             'document.required' => 'File tidak boleh kosong',
             'document.file' => 'File harus berupa file',
-            'document.extensions' => 'File harus berupa file dengan format xlsx',
+            'document.extensions' => 'File harus format xlsx',
             'document.max' => 'Ukuran file tidak boleh lebih dari 10 MB',
         ];
     }

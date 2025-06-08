@@ -56,33 +56,36 @@ class CalculateReportService
                 }
             };
 
+            // skor awal
             return [
                 'guru_id' => $item->guru_id,
                 'nama' => $item->guru->user->name ?? 'Nama tidak tersedia',
-                'supervisi' => $item->supervisi,
+                'supervisi' => round($item->supervisi, 4) ?? 0,
                 'administrasi' => $formatScore(round($item->administrasi ?? 0), true),
                 'presensi' => $formatScore(round($item->presensi ?? 0)),
                 'kehadiran_dikelas' => $formatScore(round($item->kehadiran_dikelas ?? 0)),
                 'sertifikat_pengembangan' => $item->sertifikat_pengembangan ?? 0,
                 'kegiatan_sosial' => $item->kegiatan_sosial ?? 0,
-                'rekan_sejawat' => $item->rekan_sejawat ?? 0,
+                'rekan_sejawat' => round($item->rekan_sejawat,4) ?? 0,
             ];
         });
 
+        // langkah 2
         $liguistics = $calculation->map(function ($item) {
             return [
                 'guru_id' => $item->guru_id,
                 'nama' => $item->guru->user->name ?? 'Nama tidak tersedia',
-                'supervisi' => $item->supervisi ?? 0,
+                'supervisi' => round($item->supervisi, 4) ?? 0,
                 'administrasi' => $item->administrasi ?? 0,
                 'presensi' => $item->presensi ?? 0,
                 'kehadiran_dikelas' => $item->kehadiran_dikelas ?? 0,
                 'sertifikat_pengembangan' => $item->sertifikat_pengembangan ?? 0,
                 'kegiatan_sosial' => $item->kegiatan_sosial ?? 0,
-                'rekan_sejawat' => $item->rekan_sejawat ?? 0,
+                'rekan_sejawat' => round($item->rekan_sejawat,4) ?? 0,
             ];
         });
 
+        // langkah 3
         $idealSolution = [
             'data' => $liguistics->toArray(),
             'aai' => collect($scoreWeights)->map(function ($_, $key) use ($liguistics) {
@@ -93,43 +96,97 @@ class CalculateReportService
             })->toArray(),
         ];
 
+        // // langkah 4
+        // $normalized = [
+        //     'data' => collect($idealSolution['data'])->map(function ($item) use ($scoreWeights, $idealSolution) {
+        //         return array_merge(
+        //             ['guru_id' => $item['guru_id'], 'nama' => $item['nama']],
+        //             collect($scoreWeights)->map(function ($_, $keyWeight) use ($item, $idealSolution) {
+        //                 $value = $item[$keyWeight];
+        //                 return $value != 0 ? $value / $idealSolution['ai'][$keyWeight] : 0;
+        //             })->toArray()
+        //         );
+        //     })->toArray(),
+        //     'aai' => collect($scoreWeights)->map(function ($_, $keyWeight) use ($idealSolution) {
+        //         $value = $idealSolution['aai'][$keyWeight];
+        //         return $value != 0 ? $value / $idealSolution['ai'][$keyWeight] : 0;
+        //     })->toArray(),
+        //     'ai' => collect($scoreWeights)->map(function ($_, $keyWeight) use ($idealSolution) {
+        //         $value = $idealSolution['ai'][$keyWeight];
+        //         return $value != 0 ? $value / $idealSolution['ai'][$keyWeight] : 0;
+        //     })->toArray(),
+        // ];
+
+        // langkah 4
         $normalized = [
             'data' => collect($idealSolution['data'])->map(function ($item) use ($scoreWeights, $idealSolution) {
                 return array_merge(
                     ['guru_id' => $item['guru_id'], 'nama' => $item['nama']],
                     collect($scoreWeights)->map(function ($_, $keyWeight) use ($item, $idealSolution) {
                         $value = $item[$keyWeight];
-                        return $value != 0 ? $value / $idealSolution['ai'][$keyWeight] : 0;
+                        $aiValue = $idealSolution['ai'][$keyWeight];
+                        // Lakukan pembulatan setelah pembagian
+                        $normalizedValue = ($aiValue != 0) ? ($value / $aiValue) : 0;
+                        return round($normalizedValue, 4); 
                     })->toArray()
                 );
             })->toArray(),
             'aai' => collect($scoreWeights)->map(function ($_, $keyWeight) use ($idealSolution) {
                 $value = $idealSolution['aai'][$keyWeight];
-                return $value != 0 ? $value / $idealSolution['ai'][$keyWeight] : 0;
+                $aiValue = $idealSolution['ai'][$keyWeight];
+                // Lakukan pembulatan setelah pembagian
+                $normalizedValue = ($aiValue != 0) ? ($value / $aiValue) : 0;
+                return round($normalizedValue, 4);
             })->toArray(),
             'ai' => collect($scoreWeights)->map(function ($_, $keyWeight) use ($idealSolution) {
                 $value = $idealSolution['ai'][$keyWeight];
-                return $value != 0 ? $value / $idealSolution['ai'][$keyWeight] : 0;
+                $aiValue = $idealSolution['ai'][$keyWeight];
+                // Lakukan pembulatan setelah pembagian
+                $normalizedValue = ($aiValue != 0) ? ($value / $aiValue) : 0;
+                return round($normalizedValue, 4);
             })->toArray(),
         ];
 
+        // langkah 5
+        // $weighting = [
+        //     'data' => collect($normalized['data'])->map(function ($item) use ($scoreWeights) {
+        //         return array_merge(
+        //             ['guru_id' => $item['guru_id'], 'nama' => $item['nama']],
+        //             collect($scoreWeights)->map(function ($weight, $keyWeight) use ($item) {
+        //                 return $item[$keyWeight] * $weight;
+        //             })->toArray()
+        //         );
+        //     })->toArray(),
+        //     'aai' => collect($scoreWeights)->map(function ($weight, $keyWeight) use ($normalized) {
+        //         return $normalized['aai'][$keyWeight] * $weight;
+        //     })->toArray(),
+        //     'ai' => collect($scoreWeights)->map(function ($weight, $keyWeight) use ($normalized) {
+        //         return $normalized['ai'][$keyWeight] * $weight;
+        //     })->toArray(),
+        // ];
+
+        // langkah 5
         $weighting = [
             'data' => collect($normalized['data'])->map(function ($item) use ($scoreWeights) {
                 return array_merge(
                     ['guru_id' => $item['guru_id'], 'nama' => $item['nama']],
                     collect($scoreWeights)->map(function ($weight, $keyWeight) use ($item) {
-                        return $item[$keyWeight] * $weight;
+                        // Lakukan pembulatan setelah perkalian
+                        return round($item[$keyWeight] * $weight, 4);
                     })->toArray()
                 );
             })->toArray(),
             'aai' => collect($scoreWeights)->map(function ($weight, $keyWeight) use ($normalized) {
-                return $normalized['aai'][$keyWeight] * $weight;
+                // Lakukan pembulatan setelah perkalian
+                return round($normalized['aai'][$keyWeight] * $weight, 4);
             })->toArray(),
             'ai' => collect($scoreWeights)->map(function ($weight, $keyWeight) use ($normalized) {
-                return $normalized['ai'][$keyWeight] * $weight;
+                // Lakukan pembulatan setelah perkalian
+                return round($normalized['ai'][$keyWeight] * $weight, 4);
             })->toArray(),
         ];
 
+        // langkah 6
         $utility = function () use ($weighting, $scoreWeights) {
             $aai_si = collect($weighting['aai'])->sum();
             $ai_si = collect($weighting['ai'])->sum();
@@ -152,6 +209,7 @@ class CalculateReportService
         };
         $utilityResult = $utility();
 
+        // langkah 7
         $utilityFinal = collect($utilityResult['data'])->map(function ($item) {
             $fkMinus = $item['kiMinus'] / ($item['kiMinus'] + $item['kiPlus']);
             $fkPlus = $item['kiPlus'] / ($item['kiPlus'] + $item['kiMinus']);
@@ -171,6 +229,7 @@ class CalculateReportService
             ];
         })->toArray();
 
+        // langkah 8
         $ranking = collect($utilityFinal)->map(function ($item) {
             return [
                 'guru_id' => $item['guru_id'],

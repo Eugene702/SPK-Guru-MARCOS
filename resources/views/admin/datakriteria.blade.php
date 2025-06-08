@@ -1,7 +1,7 @@
 <title>@yield('title', 'Data Kriteria')</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-<body class="bg-white">
+<body class="bg-creamy">
 <x-app-layout>
     <div class="flex flex-col md:flex-row min-h-screen">
         @include('components.sidebar-admin')

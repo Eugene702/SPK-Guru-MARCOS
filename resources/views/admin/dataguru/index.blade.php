@@ -2,13 +2,14 @@
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-<body class="bg-creamy">
+<body class="bg-creamy h-full">
     <x-app-layout>
         <div class="flex flex-col md:flex-row min-h-screen">
             @include('components.sidebar-admin')
 
             <main class="flex-1 p-6 md:p-10">
-                <div class="max-w-7xl mx-auto bg-white shadow-xl rounded-xl p-6">
+                {{-- Tambahkan class w-full dan max-w-xxxx (misalnya max-w-7xl) pada div ini --}}
+                <div class="mx-auto bg-white shadow-xl rounded-xl p-6 w-full max-w-5xl">
                     <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Data Guru</h1>
                     <p class="text-gray-600 text-center mb-4">
                         Menampilkan daftar lengkap seluruh guru beserta detail informasinya.
@@ -35,7 +36,11 @@
                     @endif
 
                     <x-admin.teacher-data.create-modal :$opsiKelas :$mataPelajarans :$attendanceFromFirstData />
-                    <x-admin.teacher-data.table-data :$gurus :$opsiKelas :$mataPelajarans />
+                    
+                    <div class="overflow-x-auto">
+                        <x-admin.teacher-data.table-data :$gurus :$opsiKelas :$mataPelajarans />
+                    </div>
+                </div>
             </main>
         </div>
     </x-app-layout>

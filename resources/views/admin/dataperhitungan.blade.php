@@ -7,7 +7,7 @@
             @include('components.sidebar-admin')
 
             <!-- Konten dashboard lainnya di sini -->
-            <main class="flex-1 p-6 space-y-10">
+                <main class="flex-1 p-6 space-y-10 overflow-x-hidden">
                 <div class="mb-10">
                     <div class="text-gray-800 text-center rounded-xl shadow-md p-6 bg-amber-400/25">
                         <h1 class="text-3xl font-bold text-gray-800 mb-4">Proses Perhitungan MARCOS</h1>
@@ -57,7 +57,7 @@
                     </div>
                 </div>
 
-                <section class="mt-5 bg-white p-6 rounded-xl shadow-md">
+                <section class="mt-5 bg-white p-6 rounded-xl shadow-md overflow-x-auto">
                     <h2 class="text-xl font-semibold text-orange-500 mb-2">1. Skor Awal Alternatif</h2>
                     <p class="text-gray-600 mb-4">Berikut adalah skor awal masing-masing guru berdasarkan kriteria yang telah ditentukan.</p>
                     <table class="w-full table-auto border-collapse border border-gray-300">
@@ -82,7 +82,7 @@
                     </table>
                 </section>
 
-                <section class="mt-5 bg-white p-6 rounded-xl shadow-md">
+                <section class="mt-5 bg-white p-6 rounded-xl shadow-md overflow-x-auto">
                     <h2 class="text-xl font-semibold text-orange-500 mb-2">2. Konversi Skor ke Linguistik</h2>
                     <p class="text-gray-600 mb-4">Skor awal dikonversi menjadi bentuk linguistik agar lebih representatif dalam proses evaluasi.</p>
                     <table class="w-full table-auto border-collapse border border-gray-300">
@@ -107,7 +107,7 @@
                     </table>
                 </section>
 
-                <section class="mt-5 bg-white p-6 rounded-xl shadow-md">
+                <section class="mt-5 bg-white p-6 rounded-xl shadow-md overflow-x-auto">
                     <h2 class="text-xl font-semibold text-orange-500 mb-2">3. Penentuan Solusi Ideal (AI) & Anti-Ideal (AAI)</h2>
                     <p class="text-gray-600 mb-4">Solusi ideal dan anti-ideal digunakan sebagai acuan pembanding terhadap seluruh alternatif.</p>
                     <table class="w-full table-auto border-collapse border border-gray-300">
@@ -146,7 +146,7 @@
                     </table>
                 </section>
 
-                <section class="mt-5 bg-white p-6 rounded-xl shadow-md">
+                <section class="mt-5 bg-white p-6 rounded-xl shadow-md overflow-x-auto">
                     <h2 class="text-xl font-semibold text-orange-500 mb-2">4. Normalisasi Matriks Keputusan</h2>
                     <p class="text-gray-600 mb-4">Normalisasi dilakukan untuk menyetarakan nilai antar alternatif terhadap solusi ideal.</p>
                     <table class="w-full table-auto border-collapse border border-gray-300">
@@ -185,7 +185,7 @@
                     </table>
                 </section>
 
-                <section class="mt-5 bg-white p-6 rounded-xl shadow-md">
+                <section class="mt-5 bg-white p-6 rounded-xl shadow-md overflow-x-auto">
                     <h2 class="text-xl font-semibold text-orange-500 mb-2">5. Matriks Tertimbang</h2>
                     <p class="text-gray-600 mb-4">Nilai normalisasi dikalikan dengan bobot kriteria untuk memperoleh nilai tertimbang.</p>
                     <table class="w-full table-auto border-collapse border border-gray-300">

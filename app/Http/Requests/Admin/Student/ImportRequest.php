@@ -22,14 +22,15 @@ class ImportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "document" => ['required', 'extensions:xlsx', 'max:10240']
+            "document" => ['required', 'file', 'extensions:xlsx', 'max:10240']
         ];
     }
 
     public function messages(){
         return [
             'document.required' => 'File tidak boleh kosong',
-            'document.extensions' => 'File harus berekstensi xlsx',
+            'document.file' => 'File harus berupa file',
+            'document.extensions' => 'File harus format xlsx',
             'document.max' => 'File tidak boleh lebih dari 10 MB'
         ];
     }

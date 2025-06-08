@@ -119,11 +119,11 @@
                                                     cancelButtonText: 'Batal',
                                                     reverseButtons: true,
                                                     confirmButtonColor: '#ffd480',
-                                                    cancelButtonColor: '#6b7280',
+                                                    cancelButtonColor: '#d1d5db',
                                                     focusCancel: true,
                                                     customClass: {
-                                                        confirmButton: 'swal-confirm-btn',
-                                                        cancelButton: 'swal-cancel-btn'
+                                                        confirmButton: 'swal-confirm-btn text-black',
+                                                        cancelButton: 'swal-cancel-btn text-black'
                                                     }
                                                 }).then(result => {
                                                     if (result.isConfirmed) {

@@ -1,21 +1,21 @@
 <div x-data="{
     editId: null,
     data: {{ $gurus }},
-    handleOnClickDelete(e) {
+    handleOnClickDelete(e, data) {
         Swal.fire({
             title: 'Hapus guru!',
-            text: 'Apakah kamu yakin ingin menghapus guru ini?',
-            icon: 'warning',
+            text: `Apakah kamu yakin ingin menghapus guru ${data.user.name} ini?`,
+            icon: 'warning', 
             showCancelButton: true,
             confirmButtonText: 'Hapus',
             cancelButtonText: 'Batal',
             reverseButtons: true,
             confirmButtonColor: '#ffd480',
-            cancelButtonColor: '#6b7280',
+            cancelButtonColor: '#d1d5db',
             focusCancel: true,
             customClass: {
-                confirmButton: 'swal-confirm-btn',
-                cancelButton: 'swal-cancel-btn'
+                confirmButton: 'swal-confirm-btn text-black',
+                cancelButton: 'swal-cancel-btn text-black'
             }
         }).then(result => {
             if (result.isConfirmed) {
@@ -24,19 +24,20 @@
         })
     }
 }">
-    <table class="min-w-full divide-y divide-gray-200">
+
+    <table class="table-auto divide-y divide-gray-200">
         <thead class="bg-thead text-black">
             <tr>
-                <th class="px-4 py-3 text-sm font-semibold text-center border">No</th>
-                <th class="px-4 py-3 text-sm font-semibold text-center border max-w-[120px]">NIP</th>
-                <th class="px-4 py-3 text-sm font-semibold text-center border">Nama Guru</th>
-                <th class="px-4 py-3 text-sm font-semibold text-center border">Jabatan</th>
-                <th class="px-4 py-3 text-sm font-semibold text-center border">Kelas</th>
-                <th class="px-4 py-3 text-sm font-semibold text-center border">Mata Pelajaran</th>
-                <th class="px-4 py-3 text-sm font-semibold text-center border">Jam Mengajar</th>
-                <th class="px-4 py-3 text-sm font-semibold text-center border">Presensi</th>
-                <th class="px-4 py-3 text-sm font-semibold text-center border max-w-[150px]">Email</th>
-                <th class="px-4 py-3 text-sm font-semibold text-center border">Aksi</th>
+                <th class="px-4 py-3 text-sm font-semibold text-center border min-w-[50px]">No</th>
+                <th class="px-4 py-3 text-sm font-semibold text-center border min-w-[150px]">NIP</th>
+                <th class="px-4 py-3 text-sm font-semibold text-center border min-w-[200px]">Nama Guru</th>
+                <th class="px-4 py-3 text-sm font-semibold text-center border min-w-[120px]">Jabatan</th>
+                <th class="px-4 py-3 text-sm font-semibold text-center border min-w-[70px]">Kelas</th>
+                <th class="px-4 py-3 text-sm font-semibold text-center border min-w-[200px]">Mata Pelajaran</th>
+                <th class="px-4 py-3 text-sm font-semibold text-center border min-w-[120px]">Jam Mengajar</th>
+                <th class="px-4 py-3 text-sm font-semibold text-center border min-w-[100px]">Presensi</th>
+                <th class="px-4 py-3 text-sm font-semibold text-center border min-w-[200px]">Email</th>
+                <th class="px-4 py-3 text-sm font-semibold text-center border min-w-[100px]">Aksi</th>
             </tr>
         </thead>
 
@@ -45,47 +46,88 @@
                 <tr class="{{ $loop->even ? 'bg-gray-50' : 'bg-white' }} text-center hover:bg-yellow-50 transition">
                     <td class="px-4 py-2 border">{{ $index + 1 }}</td>
 
-                    <td class="px-4 py-2 border whitespace-nowrap truncate max-w-[120px] relative">
+                    <td class="px-4 py-2 border whitespace-nowrap overflow-hidden text-ellipsis relative">
                         <div x-data="{ show: false, tooltipX: 0, tooltipY: 0 }" @mouseenter="show = true" @mouseleave="show = false"
-                            @mousemove="tooltipX = $event.clientX; tooltipY = $event.clientY">
+                            @mousemove="tooltipX = $event.clientX; tooltipY = $event.clientY" class="relative">
                             <span>{{ $guru->nip }}</span>
                             <div x-show="show" x-transition
                                 :style="`top: ${tooltipY + 10}px; left: ${tooltipX + 10}px`"
-                                class="fixed z-50 bg-black text-white text-xs px-2 py-1 rounded shadow pointer-events-none">
+                                class="absolute z-50 bg-black text-white text-xs px-2 py-1 rounded shadow pointer-events-none whitespace-nowrap">
                                 {{ $guru->nip }}
                             </div>
                         </div>
                     </td>
 
-
-                    <td class="px-4 py-2 border text-left">
-                        {{ $guru->user->name ?? 'Data user tidak tersedia' }}
+                    <td class="px-4 py-2 border whitespace-nowrap overflow-hidden text-ellipsis relative">
+                         <div x-data="{ show: false, tooltipX: 0, tooltipY: 0 }" @mouseenter="show = true" @mouseleave="show = false"
+                            @mousemove="tooltipX = $event.clientX; tooltipY = $event.clientY" class="relative">
+                            <span>{{ $guru->user->name ?? 'Data user tidak tersedia' }}</span>
+                             <div x-show="show" x-transition
+                                :style="`top: ${tooltipY + 10}px; left: ${tooltipX + 10}px`"
+                                class="absolute z-50 bg-black text-white text-xs px-2 py-1 rounded shadow pointer-events-none whitespace-nowrap">
+                                {{ $guru->user->name ?? 'Data user tidak tersedia' }}
+                            </div>
+                        </div>
                     </td>
 
-                    <td class="px-4 py-2 border">{{ $guru->jabatan }}</td>
-
-                    <td class="px-4 py-2 border text-left">
-                        @foreach ($guru->kelas as $kelas)
-                            <div>{{ $kelas->nama_kelas }}</div>
-                        @endforeach
+                    <td class="px-4 py-2 border whitespace-nowrap overflow-hidden text-ellipsis relative">
+                        <div x-data="{ show: false, tooltipX: 0, tooltipY: 0 }" @mouseenter="show = true" @mouseleave="show = false"
+                            @mousemove="tooltipX = $event.clientX; tooltipY = $event.clientY" class="relative">
+                            <span>{{ $guru->jabatan }}</span>
+                            <div x-show="show" x-transition
+                                :style="`top: ${tooltipY + 10}px; left: ${tooltipX + 10}px`"
+                                class="absolute z-50 bg-black text-white text-xs px-2 py-1 rounded shadow pointer-events-none whitespace-nowrap">
+                                {{ $guru->jabatan }}
+                            </div>
+                        </div>
                     </td>
 
-                    <td class="px-4 py-2 border text-left">
-                        @foreach ($guru->mataPelajarans as $mapel)
-                            <div>{{ $mapel->nama_mata_pelajaran }}</div>
-                        @endforeach
+                    <td class="px-4 py-2 border text-left whitespace-nowrap overflow-hidden text-ellipsis relative">
+                        <div x-data="{ show: false, tooltipX: 0, tooltipY: 0 }" @mouseenter="show = true" @mouseleave="show = false"
+                            @mousemove="tooltipX = $event.clientX; tooltipY = $event.clientY" class="relative">
+                            @foreach ($guru->kelas as $kelas)
+                                <div>{{ $kelas->nama_kelas }}</div>
+                            @endforeach
+                            @if ($guru->kelas->isNotEmpty())
+                                <div x-show="show" x-transition
+                                    :style="`top: ${tooltipY + 10}px; left: ${tooltipX + 10}px`"
+                                    class="absolute z-50 bg-black text-white text-xs px-2 py-1 rounded shadow pointer-events-none whitespace-nowrap">
+                                    @foreach ($guru->kelas as $kelas)
+                                        {{ $kelas->nama_kelas }}<br>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+                    </td>
+
+                    <td class="px-4 py-2 border text-left whitespace-nowrap overflow-hidden text-ellipsis relative">
+                        <div x-data="{ show: false, tooltipX: 0, tooltipY: 0 }" @mouseenter="show = true" @mouseleave="show = false"
+                            @mousemove="tooltipX = $event.clientX; tooltipY = $event.clientY" class="relative">
+                            @foreach ($guru->mataPelajarans as $mapel)
+                                <div>{{ $mapel->nama_mata_pelajaran }}</div>
+                            @endforeach
+                            @if ($guru->mataPelajarans->isNotEmpty())
+                                <div x-show="show" x-transition
+                                    :style="`top: ${tooltipY + 10}px; left: ${tooltipX + 10}px`"
+                                    class="absolute z-50 bg-black text-white text-xs px-2 py-1 rounded shadow pointer-events-none whitespace-nowrap">
+                                    @foreach ($guru->mataPelajarans as $mapel)
+                                        {{ $mapel->nama_mata_pelajaran }}<br>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
                     </td>
 
                     <td class="px-4 py-2 border">{{ $guru->jumlah_jam_mengajar }}</td>
                     <td class="px-4 py-2 border">{{ $guru->jumlah_presensi }}</td>
 
-                    <td class="px-4 py-2 border whitespace-nowrap truncate max-w-[150px] relative">
+                    <td class="px-4 py-2 border whitespace-nowrap overflow-hidden text-ellipsis relative">
                         <div x-data="{ show: false, tooltipX: 0, tooltipY: 0 }" @mouseenter="show = true" @mouseleave="show = false"
-                            @mousemove="tooltipX = $event.clientX; tooltipY = $event.clientY">
+                            @mousemove="tooltipX = $event.clientX; tooltipY = $event.clientY" class="relative">
                             <span>{{ $guru->user?->email ?? '-' }}</span>
                             <div x-show="show" x-transition
                                 :style="`top: ${tooltipY + 10}px; left: ${tooltipX + 10}px`"
-                                class="fixed z-50 bg-black text-white text-xs px-2 py-1 rounded shadow pointer-events-none">
+                                class="absolute z-50 bg-black text-white text-xs px-2 py-1 rounded shadow pointer-events-none whitespace-nowrap">
                                 {{ $guru->user?->email ?? '-' }}
                             </div>
                         </div>
@@ -98,7 +140,7 @@
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
                             <form action="{{ route('admin.dataguru.destroy', $guru->id) }}" method="POST"
-                                @submit.prevent="handleOnClickDelete">
+                                @submit.prevent="() => handleOnClickDelete($event, {{ $guru }})">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="text-red-500 hover:text-red-700" title="Hapus">
                                     <i class="fa-solid fa-trash"></i>

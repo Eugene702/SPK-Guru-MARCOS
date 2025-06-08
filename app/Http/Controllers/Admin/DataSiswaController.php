@@ -101,7 +101,7 @@ class DataSiswaController extends Controller
                 dd($e);
             }
 
-            return redirect()->back()->with('error', 'Gagal mengekspor data siswa.');
+            return redirect()->back()->with('error', 'Gagal mengunduh data siswa.');
         }
     }
 
@@ -140,13 +140,13 @@ class DataSiswaController extends Controller
                 }
             });
 
-            return redirect()->back()->with('success', 'Data siswa berhasil diimpor.');
+            return redirect()->back()->with('success', 'Data siswa berhasil diunggah.');
         } catch (\Exception $e) {
             if (config('app.debug')) {
                 dd($e);
             }
 
-            return redirect()->back()->with('error', 'Gagal mengimpor data siswa.');
+            return redirect()->back()->with('error', 'Gagal mengunggah data siswa.');
         }
     }
 }
