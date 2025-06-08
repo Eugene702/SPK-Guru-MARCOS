@@ -63,10 +63,10 @@
             })
         }
     }">
-        <div x-show="editId != null"
+        <div x-show="editId != null" x-cloak
             class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
             <div class="bg-white p-6 rounded-lg shadow-lg w-[95%] max-w-screen-xl">
-                <h2 class="text-xl font-bold mb-6 text-center">Tambah Data Guru</h2>
+                <h2 class="text-xl font-bold mb-6 text-center">Edit Data Guru</h2>
                 <form x-bind:action="`{{ url('/admin/dataguru') }}/${editId}`" method="POST"
                     @submit.prevent="handleSubmit">
                     @csrf
@@ -128,6 +128,7 @@
                                 <input type="number" name="jumlah_jam_mengajar"
                                     class="w-full border p-2 rounded-md border-gray-300 shadow-sm teachingHour"
                                     placeholder="Jumlah Jam Mengajar" :required="role != 'KepalaSekolah'"
+                                    min="0"
                                     x-model="teachingHour">
                             </div>
                             <div x-show="role != 'KepalaSekolah'" x-cloak>
@@ -135,6 +136,7 @@
                                 <input type="number" name="jumlah_presensi"
                                     class="w-full border p-2 rounded-md border-gray-300 shadow-sm totalAttendance"
                                     placeholder="Jumlah Presensi" :required="role != 'KepalaSekolah'"
+                                    min="0"
                                     x-model="totalAttendance">
                             </div>
                         </div>
@@ -176,7 +178,7 @@
                         <button type="button" x-on:click="editId = null"
                             class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
                         <button type="submit"
-                            class="px-4 py-2 bg-sidebar text-gray-800 rounded hover:bg-thead">Simpan</button>
+                            class="px-4 py-2 bg-sidebar text-gray-800 rounded hover:bg-thead">Simpan Perubahan</button>
                     </div>
                 </form>
             </div>

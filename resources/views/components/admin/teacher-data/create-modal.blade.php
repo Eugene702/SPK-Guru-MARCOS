@@ -47,7 +47,7 @@
         <button class="bg-green-600 text-white px-4 py-2 rounded mb-4" x-on:click="open = true">Tambah Data</button>
     </div>
 
-    <div x-show="open" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+    <div x-show="open" x-cloak class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white p-6 rounded-lg shadow-lg w-[95%] max-w-screen-xl">
             <h2 class="text-xl font-bold mb-6 text-center">Tambah Data Guru</h2>
             <form action="{{ route('admin.dataguru.storeguru') }}" method="POST" @submit.prevent="handleSubmit">
@@ -107,6 +107,7 @@
                             <input type="number" name="jumlah_jam_mengajar"
                                 class="w-full border p-2 rounded-md border-gray-300 shadow-sm teachingHour"
                                 placeholder="Jumlah Jam Mengajar" :required="role != 'KepalaSekolah'"
+                                min="0"
                                 x-model="teachingHour">
                         </div>
                         <div x-show="role != 'KepalaSekolah'" x-cloak>
@@ -114,6 +115,7 @@
                             <input type="number" name="jumlah_presensi"
                                 class="w-full border p-2 rounded-md border-gray-300 shadow-sm totalAttendance"
                                 placeholder="Jumlah Presensi" :required="role != 'KepalaSekolah'"
+                                min="0"
                                 x-model="totalAttendance">
                         </div>
                     </div>

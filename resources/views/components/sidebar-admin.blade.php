@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-<div class="bg-sidebar w-64 text-black flex flex-col justify-between">
+<div class="bg-sidebar w-64 !w-64 !min-w-[256px] shrink-0 text-black flex flex-col justify-between">
     <div>
         <ul class="p-4 space-y-6">
             <li>
@@ -27,17 +27,17 @@
             </li>
             <li>
                 <a href="/admin/datapenilaian" class="flex items-center gap-2 hover:bg-creamy hover:text-black px-2 py-2 rounded transition {{ request()->routeIs('admin.datapenilaian.*') ? 'bg-creamy' : '' }}">
-                    <i class="fas fa-check-circle w-5"></i> Data Penilaian
+                    <i class="fas fa-check-circle w-5"></i> Penilaian Guru
                 </a>
             </li>
             <li>
                 <a href="/admin/dataperhitungan" class="flex items-center gap-2 hover:bg-creamy hover:text-black px-2 py-2 rounded transition {{ request()->routeIs('admin.dataperhitungan.*') ? 'bg-creamy' : '' }}">
-                    <i class="fas fa-calculator w-5"></i> Data Perhitungan
+                    <i class="fas fa-calculator w-5"></i> Proses Perhitungan
                 </a>
             </li>
             <li>
                 <a href="/admin/data-hasil-akhir" class="flex items-center gap-2 hover:bg-creamy hover:text-black px-2 py-2 rounded transition {{ request()->routeIs('admin.final-result-data.index') ? 'bg-creamy' : '' }}">
-                    <i class="fas fa-ranking-star w-5"></i> Data Hasil Akhir
+                    <i class="fas fa-ranking-star w-5"></i> Hasil Akhir dan Peringkat
                 </a>
             </li>
         </ul>

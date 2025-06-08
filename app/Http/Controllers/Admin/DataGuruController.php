@@ -214,7 +214,7 @@ class DataGuruController extends Controller
                 }
             });
 
-            return redirect()->back()->with('success', 'Data guru berhasil diimpor.');
+            return redirect()->back()->with('success', 'Data guru berhasil diunggah.');
         } catch (\Exception $e) {
             if (config('app.debug')) {
                 dd($e);

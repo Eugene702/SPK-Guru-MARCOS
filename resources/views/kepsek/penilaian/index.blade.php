@@ -4,11 +4,10 @@
 <body class="text-black bg-creamy">
     <x-app-layout>
         <div class="flex h-screen">
-            @include('components.sidebar-kepsek')
 
             <main class="flex-1 p-10 overflow-auto">
                 <div class="mb-10">
-                    <div class="text-gray-800 text-center rounded-xl shadow-md p-6 bg-amber-400/25">
+                    <div class="max-w-6xl mx-auto text-gray-800 text-center rounded-xl shadow-md p-6 bg-[#ffd480]">
                         <h2 class="text-3xl font-bold mb-2">📋 Penilaian Guru oleh Kepala Sekolah</h2>
                         <p class="text-md">
                             Selamat datang di halaman penilaian guru. Di sini, Anda dapat memberikan evaluasi secara objektif terhadap performa guru dalam aspek supervisi di kelas.
@@ -19,8 +18,9 @@
                 </div>
 
                 {{-- Tabel Start --}}
-                <div class="overflow-x-auto max-w-7xl mx-auto bg-white shadow-xl rounded-xl p-6">
+                <div class="overflow-x-auto max-w-6xl mx-auto bg-white shadow-xl rounded-xl p-6">
                     <p class="text-center mb-4">Silakan isi penilaian berdasarkan kuesioner yang tersedia.</p>
+                    <div class="text-xl font-bold mb-4">Data yang belum ternilai</div>
                     <table class="min-w-full table-auto border border-gray-200">
                         <thead class="bg-thead">
                             <tr>
@@ -70,10 +70,10 @@
                             @endforeach
                         </tbody>
                     </table>
-                </div>
+                
 
                 <div class="overflow-x-auto shadow rounded-lg mt-10">
-                    <h1 class="text-xl font-bold">Sudah dinilai</h1>
+                    <h1 class="text-xl font-bold mb-4">Data yang sudah ternilai</h1>
                     <table class="min-w-full table-auto border border-gray-200">
                         <thead class="bg-thead">
                             <tr>
@@ -124,6 +124,12 @@
                         </tbody>
                     </table>
                 </div>
+
+                <div class="mt-10 text-center text-sm italic text-gray-500">
+                        "Penilaian bukan sekadar angka, tapi cerminan dedikasi dan kontribusi untuk masa depan yang
+                        lebih baik."
+                    </div>
+            </div>
             </main>
         </div>
     </x-app-layout>

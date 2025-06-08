@@ -1,14 +1,14 @@
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<title>@yield('title', 'Data Penilaian')</title>
+<title>@yield('title', 'Penilaian Guru Oleh Siswa')</title>
 
 <body class="text-black bg-creamy">
     <x-app-layout>
         <div class="flex h-screen">
-            @include('components.sidebar-siswa')
 
-            <main class="flex-1 p-10">
+            {{-- Konten lainnya disini --}}
+            <main class="flex-1 p-10 overflow-auto">
                 <div class="mb-10">
-                    <div class="text-gray-800 text-center rounded-xl shadow-md p-6 bg-amber-400/25">
+                    <div class="max-w-6xl mx-auto text-gray-800 text-center rounded-xl shadow-md p-6 bg-[#ffd480]">
                         <h2 class="text-3xl font-bold mb-2">📋 Penilaian Guru oleh Siswa</h2>
                         <p class="text-md">
                             Selamat datang di halaman penilaian guru. Di sini, Anda dapat memberikan evaluasi secara
@@ -21,10 +21,10 @@
                 </div>
 
                 {{-- Tabel Start --}}
-                <div class="max-w-7xl mx-auto bg-white shadow-xl rounded-xl p-6">
+                <div class="max-w-6xl mx-auto bg-white shadow-xl rounded-xl p-6">
                     <p class="text-center mb-4">Silakan isi sesuai agenda kelasmu!</p>
                     <div class="overflow-x-auto">
-                        <h1 class="text-xl font-bold">Belum dinilai</h1>
+                        <h1 class="text-xl font-bold mb-4">Data yang belum ternilai</h1>
                         <table class="min-w-full table-auto border border-gray-300">
                             <thead class="bg-thead">
                                 <tr>
@@ -53,7 +53,7 @@
                                     <tr>
                                         <td class="border px-6 py-4">{{ $loop->iteration }}</td>
                                         <td class="border px-6 py-4">{{ $guru->user->name }}</td>
-                                        <td class="border px-6 py-4">
+                                        <td class="border px-6 py-4 text-center">
                                             @foreach ($guru->mataPelajarans as $mapel)
                                                 {{ $mapel->nama_mata_pelajaran }}<br>
                                             @endforeach
@@ -77,11 +77,12 @@
                                         </td>
                                     </tr>
 
+                                    {{-- Modal --}}
                                     <div id="penilaianModal{{ $guru->id }}"
                                         class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
                                         <div class="bg-white rounded-lg w-full max-w-md p-6 relative">
 
-                                            <h2 class="text-2xl font-semibold mb-6 text-center">Penilaian Guru -
+                                            <h2 class="text-2xl font-semibold mb-6 text-center">Tambah Penilaian -
                                                 {{ $guru->user->name }}</h2>
 
                                             @php
@@ -106,7 +107,9 @@
                                                     <label for="jam_masuk" class="block text-gray-700">Jumlah Jam
                                                         Masuk</label>
                                                     <input type="number" id="jam_masuk" name="jam_masuk"
+                                                        min="0"
                                                         value="{{ $penilaian->jam_masuk ?? '' }}" required
+                                                        max="{{ $guru->jam_mengajar_ekspektasi /  $guru->kelas_count   }}"
                                                         class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                 </div>
 
@@ -115,6 +118,7 @@
                                                         Pemberian
                                                         Tugas</label>
                                                     <input type="number" id="jam_tugas" name="jam_tugas"
+                                                        min="0"
                                                         value="{{ $penilaian->jam_tugas ?? '' }}" required
                                                         class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                 </div>
@@ -123,6 +127,7 @@
                                                     <label for="jam_tidak_masuk" class="block text-gray-700">Jumlah Jam
                                                         Tidak Masuk</label>
                                                     <input type="number" id="jam_tidak_masuk" name="jam_tidak_masuk"
+                                                        min="0"
                                                         value="{{ $penilaian->jam_tidak_masuk ?? '' }}" required
                                                         class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                 </div>
@@ -135,7 +140,8 @@
                                                     </button>
                                                     <button type="submit"
                                                         class="px-4 py-2 bg-sidebar text-gray-800 rounded hover:bg-thead">
-                                                        {{ $guru->penilaianSiswa ? 'Simpan Perubahan' : 'Simpan' }}
+                                                        {{-- {{ $guru->penilaianSiswa ? 'Simpan Perubahan' : 'Simpan' }} --}}
+                                                        Simpan
                                                     </button>
                                                 </div>
                                             </form>
@@ -147,17 +153,17 @@
                     </div>
 
                     <div class="overflow-x-auto mt-10">
-                        <h1 class="text-xl font-bold">Sudah dinilai</h1>
+                        <h1 class="text-xl font-bold mb-4">Data yang sudah ternilai</h1>
                         <table class="min-w-full table-auto border border-gray-300">
                             <thead class="bg-thead">
                                 <tr>
-                                    <th class="border px-6 py-3">No</th>
-                                    <th class="border px-6 py-3">Nama Guru</th>
-                                    <th class="border px-6 py-3">Mata Pelajaran</th>
-                                    <th class="border px-6 py-3">Jumlah Jam Masuk Kelas</th>
-                                    <th class="border px-6 py-3">Jumlah Jam Pemberian Tugas di Kelas</th>
-                                    <th class="border px-6 py-3">Jumlah Jam Tidak Masuk Kelas</th>
-                                    <th class="border px-6 py-3">Aksi</th>
+                                    <th class="border px-6 py-3 text-sm">No</th>
+                                    <th class="border px-6 py-3 text-sm">Nama Guru</th>
+                                    <th class="border px-6 py-3 text-sm">Mata Pelajaran</th>
+                                    <th class="border px-6 py-3 text-sm">Jumlah Jam Masuk Kelas</th>
+                                    <th class="border px-6 py-3 text-sm">Jumlah Jam Pemberian Tugas di Kelas</th>
+                                    <th class="border px-6 py-3 text-sm">Jumlah Jam Tidak Masuk Kelas</th>
+                                    <th class="border px-6 py-3 text-sm">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
@@ -176,7 +182,7 @@
                                     <tr>
                                         <td class="border px-6 py-4">{{ $loop->iteration }}</td>
                                         <td class="border px-6 py-4">{{ $guru->user->name }}</td>
-                                        <td class="border px-6 py-4">
+                                        <td class="border px-6 py-4 text-center">
                                             @foreach ($guru->mataPelajarans as $mapel)
                                                 {{ $mapel->nama_mata_pelajaran }}<br>
                                             @endforeach
@@ -206,7 +212,7 @@
                                         class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
                                         <div class="bg-white rounded-lg w-full max-w-md p-6 relative">
 
-                                            <h2 class="text-2xl font-semibold mb-6 text-center">Penilaian Guru -
+                                            <h2 class="text-2xl font-semibold mb-6 text-center">Edit Penilaian -
                                                 {{ $guru->user->name }}</h2>
 
                                             @php
@@ -231,7 +237,9 @@
                                                     <label for="jam_masuk" class="block text-gray-700">Jumlah Jam
                                                         Masuk</label>
                                                     <input type="number" id="jam_masuk" name="jam_masuk"
+                                                        min="0"
                                                         value="{{ $penilaian->jam_mengajar_realita ?? '' }}" required
+                                                        max="{{ $guru->jam_mengajar_ekspektasi /  $guru->kelas_count   }}"
                                                         class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                 </div>
 
@@ -240,6 +248,7 @@
                                                         Pemberian
                                                         Tugas</label>
                                                     <input type="number" id="jam_tugas" name="jam_tugas"
+                                                        min="0"
                                                         value="{{ $penilaian->jam_tugas ?? '' }}" required
                                                         class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                 </div>
@@ -249,6 +258,7 @@
                                                         Jam
                                                         Tidak Masuk</label>
                                                     <input type="number" id="jam_tidak_masuk" name="jam_tidak_masuk"
+                                                        min="0"
                                                         value="{{ $penilaian->jam_tidak_masuk ?? '' }}" required
                                                         class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                 </div>
@@ -261,7 +271,8 @@
                                                     </button>
                                                     <button type="submit"
                                                         class="px-4 py-2 bg-sidebar text-gray-800 rounded hover:bg-thead">
-                                                        {{ $guru->penilaianSiswa ? 'Simpan Perubahan' : 'Simpan' }}
+                                                        {{-- {{ $guru->penilaianSiswa ? 'Simpan Perubahan' : 'Simpan' }} --}}
+                                                        Simpan Perubahan
                                                     </button>
                                                 </div>
                                             </form>
@@ -270,6 +281,10 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="mt-10 text-center text-sm italic text-gray-500">
+                        "Penilaian bukan sekadar angka, tapi cerminan dedikasi dan kontribusi untuk masa depan yang
+                        lebih baik."
+                    </div>
                     </div>
             </main>
         </div>

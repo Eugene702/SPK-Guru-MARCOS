@@ -1,36 +1,40 @@
 <div x-data="{ open: false, data: null }" x-init="$watch('data', value => data === null ? $refs.fileUpload.value = null : null)">
-    <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
-        x-on:click="open = true">
+    <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors" x-on:click="open = true">
         {{ $buttonText }}
     </button>
 
-    <form action="{{ route($routeName) }}" enctype="multipart/form-data" method="post"
-        class="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50" x-show="open"
-        x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" x-cloak>
-        @csrf
+    <!-- Modal wrapper -->
+    <div 
+        class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50"
+        x-show="open"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        x-cloak
+    >
+        <!-- Modal content -->
+        <form action="{{ route($routeName) }}" enctype="multipart/form-data" method="post"
+            class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 overflow-hidden transform transition-all"
+            x-show="open"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-95"
+            x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-95"
+            @click.outside="open = false"
+        >
+            @csrf
 
-        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 overflow-hidden transform transition-all"
-            x-show="open" x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
-            x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
-            x-transition:leave-end="opacity-0 scale-95" @click.outside="open = false">
-
+            <!-- Modal header -->
             <div class="px-8 py-5 border-b border-gray-100">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-xl font-semibold text-gray-800">Unggah Dokumen</h3>
-                    <button type="button"
-                        class="text-gray-400 hover:text-gray-600 transition-colors focus:outline-none"
-                        @click="open = false">
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
+                <h3 class="text-xl font-semibold text-gray-800 text-center">Unggah Dokumen</h3>
             </div>
 
+            <!-- Modal body -->
             <div class="px-8 py-6">
                 <div class="space-y-6">
                     <div class="text-center">
@@ -49,7 +53,7 @@
                             x-ref="fileUpload" name="document" />
                         <label for="fileUpload" class="w-full">
                             <div
-                                class="bg-[#ffd480] hover:bg-[#ffca66] text-white py-3 px-4 rounded-lg transition-all shadow-md flex items-center justify-center cursor-pointer">
+                                class="bg-[#ffd480] hover:bg-[#ffca66] text-gray-800 py-3 px-4 rounded-lg transition-all shadow-md flex items-center justify-center cursor-pointer">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 4v16m8-8H4" />
@@ -83,23 +87,17 @@
                 </div>
             </div>
 
-            <div class="px-8 py-5 bg-gray-50 flex justify-end space-x-3">
-                <button type="button"
-                    class="px-5 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 font-medium"
-                    @click="open = false">
+            <!-- Modal footer -->
+            <div class="px-8 py-5 flex justify-end space-x-3">
+                <button type="button" @click="open = false"
+                    class="px-5 py-2.5 bg-gray-300 text-black rounded-lg hover:bg-gray-400 transition-colors font-medium">
                     Batal
                 </button>
                 <button type="submit"
-                    class="px-5 py-2.5 bg-[#ffd480] text-white rounded-lg hover:bg-[#ffca66] transition-colors focus:outline-none focus:ring-2 focus:ring-[#ffd480] font-medium shadow-sm">
+                    class="px-5 py-2.5 bg-[#ffd480] text-black rounded-lg hover:bg-[#ffb343] transition-colors font-medium shadow-sm">
                     Unggah
                 </button>
             </div>
-        </div>
-    </form>
-
-    <style>
-        [x-cloak] {
-            display: none !important;
-        }
-    </style>
+        </form>
+    </div>
 </div>
