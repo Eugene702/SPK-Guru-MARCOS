@@ -23,7 +23,9 @@ class SiswaController extends Controller
         // Ambil semua guru yang ngajarnya di kelas siswa
         $gurus = Guru::whereHas('kelas', function ($query) use ($kelasId) {
             $query->where('kelas_id', $kelasId);
-        })->get();
+        })
+        ->withCount('kelas')
+        ->get();
 
         return view('siswa.penilaiansiswa', compact('gurus'));
     }

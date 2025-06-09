@@ -2,7 +2,13 @@
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-<body class="bg-creamy h-full">
+<style>
+    [x-cloak] {
+        display: none !important;
+    }
+</style>
+
+<body class="bg-creamy h-full" x-data>
     <x-app-layout>
         <div class="flex flex-col md:flex-row min-h-screen">
             @include('components.sidebar-admin')

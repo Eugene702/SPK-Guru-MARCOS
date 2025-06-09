@@ -107,7 +107,9 @@
                                                     <label for="jam_masuk" class="block text-gray-700">Jumlah Jam
                                                         Masuk</label>
                                                     <input type="number" id="jam_masuk" name="jam_masuk"
+                                                        min="0"
                                                         value="{{ $penilaian->jam_masuk ?? '' }}" required
+                                                        max="{{ $guru->jam_mengajar_ekspektasi /  $guru->kelas_count   }}"
                                                         class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                 </div>
 
@@ -116,6 +118,7 @@
                                                         Pemberian
                                                         Tugas</label>
                                                     <input type="number" id="jam_tugas" name="jam_tugas"
+                                                        min="0"
                                                         value="{{ $penilaian->jam_tugas ?? '' }}" required
                                                         class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                 </div>
@@ -124,6 +127,7 @@
                                                     <label for="jam_tidak_masuk" class="block text-gray-700">Jumlah Jam
                                                         Tidak Masuk</label>
                                                     <input type="number" id="jam_tidak_masuk" name="jam_tidak_masuk"
+                                                        min="0"
                                                         value="{{ $penilaian->jam_tidak_masuk ?? '' }}" required
                                                         class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                 </div>
@@ -233,7 +237,9 @@
                                                     <label for="jam_masuk" class="block text-gray-700">Jumlah Jam
                                                         Masuk</label>
                                                     <input type="number" id="jam_masuk" name="jam_masuk"
+                                                        min="0"
                                                         value="{{ $penilaian->jam_mengajar_realita ?? '' }}" required
+                                                        max="{{ $guru->jam_mengajar_ekspektasi /  $guru->kelas_count   }}"
                                                         class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                 </div>
 
@@ -242,6 +248,7 @@
                                                         Pemberian
                                                         Tugas</label>
                                                     <input type="number" id="jam_tugas" name="jam_tugas"
+                                                        min="0"
                                                         value="{{ $penilaian->jam_tugas ?? '' }}" required
                                                         class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                 </div>
@@ -251,6 +258,7 @@
                                                         Jam
                                                         Tidak Masuk</label>
                                                     <input type="number" id="jam_tidak_masuk" name="jam_tidak_masuk"
+                                                        min="0"
                                                         value="{{ $penilaian->jam_tidak_masuk ?? '' }}" required
                                                         class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                 </div>
