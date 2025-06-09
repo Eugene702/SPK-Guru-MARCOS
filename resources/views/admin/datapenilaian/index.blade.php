@@ -136,9 +136,22 @@
                                             <td class="border px-4 py-2">
                                                 {{ $guru->user->name ?? 'Data user tidak tersedia' }}</td>
                                             <td class="border px-4 py-2">
-                                                {{ $guru->penilaianAdmin->administrasi ?? '-' }}</td>
+                                                @if ($guru->penilaianAdmin->administrasi)
+                                                    @if ($guru->penilaianAdmin->administrasi == 4)
+                                                        <span>Lengkap</span>
+                                                    @elseif ($guru->penilaianAdmin->administrasi == 3)
+                                                        <span>Cukup</span>
+                                                    @elseif ($guru->penilaianAdmin->administrasi == 2)
+                                                        <span>Kurang</span>
+                                                    @else
+                                                        <span>-</span>
+                                                    @endif
+                                                @else
+                                                    <span>-</span>
+                                                @endif
                                             <td class="border px-4 py-2">
-                                                {{ $guru->penilaianAdmin->presensi_realita ?? '-' }}</td>
+                                                {{ $guru->penilaianAdmin->presensi_realita ?? '-' }}
+                                            </td>
                                             <td class="border px-4 py-2">
                                                 {{ $guru->penilaianAdmin->sertifikat_pengembangan ?? '-' }}</td>
                                             <td class="border px-4 py-2">
@@ -194,7 +207,7 @@
                                         class="block text-sm font-medium text-gray-700">Administrasi</label>
                                     <select name="administrasi" id="administrasi" x-model="formData.administrasi"
                                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
-                                        <option value="">-- Pilih Sub Kriteria --</option>
+                                        <option value="">-- Pilih Nilai --</option>
                                         <option value="4">Lengkap</option>
                                         <option value="3">Cukup</option>
                                         <option value="2">Kurang</option>

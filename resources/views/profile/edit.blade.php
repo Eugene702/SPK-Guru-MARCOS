@@ -11,14 +11,8 @@
             $role = auth()->user()->roles()->first()->name;
         @endphp
 
-        @if ($role == 'KepalaSekolah')
-            @include('components.sidebar-kepsek')
-        @elseif ($role == 'Admin')
+        @if ($role == 'Admin')
             @include('components.sidebar-admin')
-        @elseif ($role == 'Guru')
-            @include('components.sidebar-guru')
-        @else
-            @include('components.sidebar-siswa')
         @endif
 
         <div class="flex flex-1 justify-center py-12 px-4 sm:px-6 lg:px-8">

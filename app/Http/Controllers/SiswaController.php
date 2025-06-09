@@ -56,8 +56,9 @@ class SiswaController extends Controller
             return back()->with('error', 'Guru tidak ditemukan.');
         }
 
-        if ($guru->jumlah_jam_mengajar > 0) {
-            $kehadiran_dikelas = ($request->jam_masuk / $guru->jumlah_jam_mengajar) * 100;
+        if ($guru->jam_mengajar_ekspektasi > 0) {
+            $penilaianSiswa = PenilaianSiswa::where('guru_id', "=", $guru->id)->sum('jam_mengajar_realita');
+            $kehadiran_dikelas = (($request->jam_masuk + $penilaianSiswa) / $guru->jam_mengajar_ekspektasi) * 100;
             $value = $kehadiran_dikelas >= 90 ? 4 : ($kehadiran_dikelas >= 80 ? 3 : ($kehadiran_dikelas >= 70 ? 2 : 1));
 
             $perhitungan = Perhitungan::where('guru_id', '=', $guru->id)
@@ -89,10 +90,7 @@ class SiswaController extends Controller
             'jam_tidak_masuk' => 'required|integer',
         ]);
 
-        // Cari data penilaian yang mau diupdate
         $penilaian = PenilaianSiswa::findOrFail($id);
-
-        // Update nilai jam masuk, tugas, tidak masuk
         $penilaian->update([
             'jam_mengajar_realita' => $request->jam_masuk,
             'jam_tugas' => $request->jam_tugas,
@@ -103,8 +101,9 @@ class SiswaController extends Controller
         $guru = Guru::findOrFail($penilaian->guru_id);
 
         // Hitung kehadiran di kelas ulang
-        if ($guru->jumlah_jam_mengajar > 0) {
-            $kehadiran_dikelas = ($request->jam_masuk / $guru->jumlah_jam_mengajar) * 100;
+        if ($guru->jam_mengajar_ekspektasi > 0) {
+            $penilaianSiswa = PenilaianSiswa::where('guru_id', "=", $guru->id)->sum('jam_mengajar_realita');
+            $kehadiran_dikelas = ($penilaianSiswa / $guru->jam_mengajar_ekspektasi) * 100;
             $value = $kehadiran_dikelas >= 90 ? 4 : ($kehadiran_dikelas >= 80 ? 3 : ($kehadiran_dikelas >= 70 ? 2 : 1));
 
             // Update ke tabel perhitungans

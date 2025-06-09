@@ -53,7 +53,7 @@
             return {
                 showButton: false,
                 init() {
-                    const scrollThreshold = 100;
+                    const scrollThreshold = 10;
                     window.addEventListener('scroll', () => {
                         this.showButton = window.pageYOffset > scrollThreshold;
                     });

@@ -90,6 +90,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::get('/{guru}', 'form')->name('form');
                 Route::post('/', 'store')->name('store');
+                Route::put('/', 'store')->name('store');
             });
         });
 
@@ -116,6 +117,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::get('/{guru_id}', 'form')->name('form');
                 Route::post('/', 'store')->name('store');
+                Route::put('/', 'store')->name('store');
             });
         });
 });
