@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-<div class="bg-sidebar w-64 !w-64 !min-w-[256px] shrink-0 text-black flex flex-col justify-between">
+<div class="bg-sidebar w-64 !w-64 !min-w-[256px] shrink-0 text-black flex flex-col justify-between h-screen sticky top-0">
     <div>
         <ul class="p-4 space-y-6">
             <li>

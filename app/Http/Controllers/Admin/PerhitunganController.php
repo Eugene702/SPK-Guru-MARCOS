@@ -56,7 +56,7 @@ class PerhitunganController extends Controller
             return back()->with('error', 'Kepala Sekolah tidak perlu dinilai');
         }
 
-        $penilaianSiswa = PenilaianSiswa::where('guru_id', $guru->id)->first();
+        $penilaianSiswa = PenilaianSiswa::where('guru_id', "=", $guru->id)->sum('jam_mengajar_realita');
         $nilaiPresensi = ($penilaianAdmin->presensi_realita / $guru->presensi_ekspektasi) * 100;
         if ($nilaiPresensi >= 90 && $nilaiPresensi <= 100) {
             $skorPresensi = 4;
@@ -68,8 +68,8 @@ class PerhitunganController extends Controller
             $skorPresensi = 1;
         }
 
-        $kehadiran_dikelas = $penilaianSiswa ? ($penilaianSiswa->jam_masuk / $guru->jam_mengajar_ekspektasi) * 100 : 0;
-        if ($kehadiran_dikelas >= 90 && $kehadiran_dikelas <= 100) {
+        $kehadiran_dikelas = $penilaianSiswa ? ($penilaianSiswa / $guru->jam_mengajar_ekspektasi) * 100 : 0;
+            if ($kehadiran_dikelas >= 90 && $kehadiran_dikelas <= 100) {
             $skorKehadiran = 4;
         } elseif ($kehadiran_dikelas >= 80 && $kehadiran_dikelas < 90) {
             $skorKehadiran = 3;

@@ -1,3 +1,4 @@
+<title>Login</title>
 <x-guest-layout>
     <!-- Session Status -->
     <h1 class="text-2xl font-bold text-center mb-4 uppercase">Login</h1>

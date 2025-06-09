@@ -93,58 +93,83 @@
                                                     ->first();
                                             @endphp
 
-                                            <form
-                                                action="{{ $penilaian ? route('siswa.penilaiansiswa.update', $penilaian->id) : route('siswa.penilaiansiswa.store', $guru->id) }}"
-                                                method="POST" class="space-y-4">
-                                                @csrf
-                                                @if ($penilaian)
-                                                    @method('PUT')
-                                                @endif
+                                            <div x-data="{
+                                                expectTeachingHour: {{ $guru->jam_mengajar_ekspektasi / $guru->kelas_count }},
+                                                form: {
+                                                    expectTeachingHour: 0,
+                                                    assignment: 0,
+                                                    absent: 0,
+                                                    error: null
+                                                },
+                                            
+                                                onSubmit(e) {
+                                                    const total = parseInt(this.form.expectTeachingHour) + parseInt(this.form.assignment) + parseInt(this.form.absent);
+                                                    if (total != parseInt(this.expectTeachingHour)) {
+                                                        this.form.error = `Jumlah jam tidak sesuai dengan jam mengajar ekspektasi ${this.expectTeachingHour}`;
+                                                    } else {
+                                                        this.form.error = null;
+                                                        e.target.submit();
+                                                    }
+                                                }
+                                            }">
+                                                <form
+                                                    action="{{ $penilaian ? route('siswa.penilaiansiswa.update', $penilaian->id) : route('siswa.penilaiansiswa.store', $guru->id) }}"
+                                                    method="POST" class="space-y-4" x-on:submit.prevent="onSubmit">
+                                                    @csrf
+                                                    @if ($penilaian)
+                                                        @method('PUT')
+                                                    @endif
 
-                                                <input type="hidden" name="guru_id" value="{{ $guru->id }}">
+                                                    <input type="hidden" name="guru_id" value="{{ $guru->id }}">
+                                                    <div>
+                                                        <label for="jam_masuk" class="block text-gray-700">Jumlah Jam
+                                                            Masuk</label>
+                                                        <input type="number" id="jam_masuk" name="jam_masuk"
+                                                            min="0" value="{{ $penilaian->jam_masuk ?? '' }}"
+                                                            required
+                                                            max="{{ $guru->jam_mengajar_ekspektasi / $guru->kelas_count }}"
+                                                            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                            x-model="form.expectTeachingHour">
+                                                    </div>
 
-                                                <div>
-                                                    <label for="jam_masuk" class="block text-gray-700">Jumlah Jam
-                                                        Masuk</label>
-                                                    <input type="number" id="jam_masuk" name="jam_masuk"
-                                                        min="0"
-                                                        value="{{ $penilaian->jam_masuk ?? '' }}" required
-                                                        max="{{ $guru->jam_mengajar_ekspektasi /  $guru->kelas_count   }}"
-                                                        class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                                </div>
+                                                    <div>
+                                                        <label for="jam_tugas" class="block text-gray-700">Jumlah Jam
+                                                            Pemberian
+                                                            Tugas</label>
+                                                        <input type="number" id="jam_tugas" name="jam_tugas"
+                                                            min="0" value="{{ $penilaian->jam_tugas ?? '' }}"
+                                                            required
+                                                            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                            x-model="form.assignment">
+                                                    </div>
 
-                                                <div>
-                                                    <label for="jam_tugas" class="block text-gray-700">Jumlah Jam
-                                                        Pemberian
-                                                        Tugas</label>
-                                                    <input type="number" id="jam_tugas" name="jam_tugas"
-                                                        min="0"
-                                                        value="{{ $penilaian->jam_tugas ?? '' }}" required
-                                                        class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                                </div>
+                                                    <div>
+                                                        <label for="jam_tidak_masuk" class="block text-gray-700">Jumlah
+                                                            Jam
+                                                            Tidak Masuk</label>
+                                                        <input type="number" id="jam_tidak_masuk"
+                                                            name="jam_tidak_masuk" min="0"
+                                                            value="{{ $penilaian->jam_tidak_masuk ?? '' }}" required
+                                                            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                            x-model="form.absent">
+                                                    </div>
 
-                                                <div>
-                                                    <label for="jam_tidak_masuk" class="block text-gray-700">Jumlah Jam
-                                                        Tidak Masuk</label>
-                                                    <input type="number" id="jam_tidak_masuk" name="jam_tidak_masuk"
-                                                        min="0"
-                                                        value="{{ $penilaian->jam_tidak_masuk ?? '' }}" required
-                                                        class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                                </div>
-
-                                                <div class="flex justify-end mt-2">
-                                                    <button type="button"
-                                                        onclick="document.getElementById('penilaianModal{{ $guru->id }}').classList.add('hidden')"
-                                                        class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 mr-2">
-                                                        Batal
-                                                    </button>
-                                                    <button type="submit"
-                                                        class="px-4 py-2 bg-sidebar text-gray-800 rounded hover:bg-thead">
-                                                        {{-- {{ $guru->penilaianSiswa ? 'Simpan Perubahan' : 'Simpan' }} --}}
-                                                        Simpan
-                                                    </button>
-                                                </div>
-                                            </form>
+                                                    <p x-show="form.error != null" x-text="form.error"
+                                                        class="text-red-400 mt-4"></p>
+                                                    <div class="flex justify-end mt-2">
+                                                        <button type="button"
+                                                            onclick="document.getElementById('penilaianModal{{ $guru->id }}').classList.add('hidden')"
+                                                            class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 mr-2">
+                                                            Batal
+                                                        </button>
+                                                        <button type="submit"
+                                                            class="px-4 py-2 bg-sidebar text-gray-800 rounded hover:bg-thead">
+                                                            {{-- {{ $guru->penilaianSiswa ? 'Simpan Perubahan' : 'Simpan' }} --}}
+                                                            Simpan
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 @endforeach
@@ -223,68 +248,94 @@
                                                     ->first();
                                             @endphp
 
-                                            <form
-                                                action="{{ $penilaian ? route('siswa.penilaiansiswa.update', $penilaian->id) : route('siswa.penilaiansiswa.store', $guru->id) }}"
-                                                method="POST" class="space-y-4">
-                                                @csrf
-                                                @if ($penilaian)
-                                                    @method('PUT')
-                                                @endif
+                                            <div x-data="{
+                                                expectTeachingHour: {{ $guru->jam_mengajar_ekspektasi / $guru->kelas_count }},
+                                                form: {
+                                                    expectTeachingHour: {{ $penilaian->jam_mengajar_realita ?? 0 }},
+                                                    assignment: {{ $penilaian->jam_tugas ?? 0 }},
+                                                    absent: {{ $penilaian->jam_tidak_masuk ?? 0 }},
+                                                    error: null
+                                                },
+                                            
+                                                onSubmit(e) {
+                                                    const total = parseInt(this.form.expectTeachingHour) + parseInt(this.form.assignment) + parseInt(this.form.absent);
+                                                    if (total != parseInt(this.expectTeachingHour)) {
+                                                        this.form.error = `Jumlah jam tidak sesuai dengan jam mengajar ekspektasi ${this.expectTeachingHour}`;
+                                                    } else {
+                                                        this.form.error = null;
+                                                        e.target.submit();
+                                                    }
+                                                }
+                                            }">
+                                                <form
+                                                    action="{{ $penilaian ? route('siswa.penilaiansiswa.update', $penilaian->id) : route('siswa.penilaiansiswa.store', $guru->id) }}"
+                                                    method="POST" class="space-y-4" x-on:submit.prevent="onSubmit">
+                                                    @csrf
+                                                    @if ($penilaian)
+                                                        @method('PUT')
+                                                    @endif
 
-                                                <input type="hidden" name="guru_id" value="{{ $guru->id }}">
+                                                    <input type="hidden" name="guru_id"
+                                                        value="{{ $guru->id }}">
+                                                    <div>
+                                                        <label for="jam_masuk" class="block text-gray-700">Jumlah Jam
+                                                            Masuk</label>
+                                                        <input type="number" id="jam_masuk" name="jam_masuk"
+                                                            min="0" value="{{ $penilaian->jam_masuk ?? '' }}"
+                                                            required
+                                                            max="{{ $guru->jam_mengajar_ekspektasi / $guru->kelas_count }}"
+                                                            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                            x-model="form.expectTeachingHour">
+                                                    </div>
 
-                                                <div>
-                                                    <label for="jam_masuk" class="block text-gray-700">Jumlah Jam
-                                                        Masuk</label>
-                                                    <input type="number" id="jam_masuk" name="jam_masuk"
-                                                        min="0"
-                                                        value="{{ $penilaian->jam_mengajar_realita ?? '' }}" required
-                                                        max="{{ $guru->jam_mengajar_ekspektasi /  $guru->kelas_count   }}"
-                                                        class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                                </div>
+                                                    <div>
+                                                        <label for="jam_tugas" class="block text-gray-700">Jumlah Jam
+                                                            Pemberian
+                                                            Tugas</label>
+                                                        <input type="number" id="jam_tugas" name="jam_tugas"
+                                                            min="0" value="{{ $penilaian->jam_tugas ?? '' }}"
+                                                            required
+                                                            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                            x-model="form.assignment">
+                                                    </div>
 
-                                                <div>
-                                                    <label for="jam_tugas" class="block text-gray-700">Jumlah Jam
-                                                        Pemberian
-                                                        Tugas</label>
-                                                    <input type="number" id="jam_tugas" name="jam_tugas"
-                                                        min="0"
-                                                        value="{{ $penilaian->jam_tugas ?? '' }}" required
-                                                        class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                                </div>
+                                                    <div>
+                                                        <label for="jam_tidak_masuk"
+                                                            class="block text-gray-700">Jumlah
+                                                            Jam
+                                                            Tidak Masuk</label>
+                                                        <input type="number" id="jam_tidak_masuk"
+                                                            name="jam_tidak_masuk" min="0"
+                                                            value="{{ $penilaian->jam_tidak_masuk ?? '' }}" required
+                                                            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                            x-model="form.absent">
+                                                    </div>
 
-                                                <div>
-                                                    <label for="jam_tidak_masuk" class="block text-gray-700">Jumlah
-                                                        Jam
-                                                        Tidak Masuk</label>
-                                                    <input type="number" id="jam_tidak_masuk" name="jam_tidak_masuk"
-                                                        min="0"
-                                                        value="{{ $penilaian->jam_tidak_masuk ?? '' }}" required
-                                                        class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                                </div>
-
-                                                <div class="flex justify-end mt-2">
-                                                    <button type="button"
-                                                        onclick="document.getElementById('penilaianModal{{ $guru->id }}').classList.add('hidden')"
-                                                        class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 mr-2">
-                                                        Batal
-                                                    </button>
-                                                    <button type="submit"
-                                                        class="px-4 py-2 bg-sidebar text-gray-800 rounded hover:bg-thead">
-                                                        {{-- {{ $guru->penilaianSiswa ? 'Simpan Perubahan' : 'Simpan' }} --}}
-                                                        Simpan Perubahan
-                                                    </button>
-                                                </div>
-                                            </form>
+                                                    <p x-show="form.error != null" x-text="form.error"
+                                                        class="text-red-400 mt-4"></p>
+                                                    <div class="flex justify-end mt-2">
+                                                        <button type="button"
+                                                            onclick="document.getElementById('penilaianModal{{ $guru->id }}').classList.add('hidden')"
+                                                            class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 mr-2">
+                                                            Batal
+                                                        </button>
+                                                        <button type="submit"
+                                                            class="px-4 py-2 bg-sidebar text-gray-800 rounded hover:bg-thead">
+                                                            {{-- {{ $guru->penilaianSiswa ? 'Simpan Perubahan' : 'Simpan' }} --}}
+                                                            Simpan
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 @endforeach
                             </tbody>
                         </table>
                         <div class="mt-10 text-center text-sm italic text-gray-500">
-                        "Penilaian bukan sekadar angka, tapi cerminan dedikasi dan kontribusi untuk masa depan yang
-                        lebih baik."
-                    </div>
+                            "Penilaian bukan sekadar angka, tapi cerminan dedikasi dan kontribusi untuk masa depan yang
+                            lebih baik."
+                        </div>
                     </div>
             </main>
         </div>

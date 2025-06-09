@@ -141,18 +141,20 @@
                                         <td class="border px-4 py-2">{{ $siswa->user->name }}</td>
                                         <td class="border px-4 py-2">{{ $siswa->kelas->nama_kelas }}</td>
                                         <td class="border px-4 py-2">{{ $siswa->user->email }} </td>
-                                        <td class="border px-4 py-2 flex justify-center gap-2">
-                                            <button x-on:click="editOpen = true"
-                                                class="text-yellow-500 hover:text-yellow-700">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </button>
-                                            <form x-on:submit.prevent="handleOnClickDelete"
-                                                action="{{ route('admin.datasiswa.destroy', $siswa->id) }}"
-                                                method="POST" class="deleteStudent">
-                                                @csrf @method('DELETE')
-                                                <button type="submit" class="text-red-500 hover:text-red-700"><i
-                                                        class="fa-solid fa-trash"></i></button>
-                                            </form>
+                                        <td class="border px-4 py-2 flex justify-center items-center gap-2">
+                                            <div class="flex gap-2 items-start">
+                                                <button x-on:click="editOpen = true"
+                                                    class="text-yellow-500 hover:text-yellow-700">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </button>
+                                                <form x-on:submit.prevent="handleOnClickDelete"
+                                                    action="{{ route('admin.datasiswa.destroy', $siswa->id) }}"
+                                                    method="POST" class="deleteStudent">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit" class="text-red-500 hover:text-red-700"><i
+                                                            class="fa-solid fa-trash"></i></button>
+                                                </form>
+                                            </div>
 
                                             <div x-show="editOpen" x-cloak
                                                 class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
@@ -197,7 +199,7 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                        <div class="flex justify-end gap-2">
+                                                        <div class="flex justify-start gap-2">
                                                             <button type="button" x-on:click="editOpen = false"
                                                                 class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
                                                             <button type="submit"

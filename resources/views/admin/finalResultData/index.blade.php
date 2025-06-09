@@ -3,7 +3,7 @@
 
 <body>
     <x-app-layout>
-        <div class="flex h-screen">
+        <div class="flex min-h-screen">
             @include('components.sidebar-admin')
 
             <main class="flex-1 p-10 min-h-screen">
