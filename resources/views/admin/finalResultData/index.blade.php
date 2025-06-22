@@ -38,7 +38,7 @@
                                     <tr class="{{ $loop->first ? 'bg-yellow-100 font-semibold' : 'hover:bg-creamy' }}">
                                         <td class="px-6 py-3 border">{{ $loop->iteration }}</td>
                                         <td class="px-6 py-3 border">{{ $row['nama'] }}</td>
-                                        <td class="px-6 py-3 border">{{ number_format($row['fk'], 2) }}</td>
+                                        <td class="px-6 py-3 border">{{ number_format($row['fk'], 4) }}</td>
                                         <td class="px-6 py-3 border">
                                             @if ($loop->first)
                                                 <span class="bg-green-600 text-white text-sm px-3 py-1 rounded-full">Terbaik</span>
